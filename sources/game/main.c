@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:45:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/22 13:29:04 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/11/22 14:21:37 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	__on_event(t_app *app, t_scene *scene,
 	bdy = ecs_entity_get(env->ecs, env->player, RIGIDBODY);
 
 	if (t == MLX_KEYDOWN && e == K_ESCAPE)
-		mlx_loop_end(app->mlx);
+		app_load(app, 0);
 	else if (t == MLX_KEYDOWN && (e == K_RIGHT || e == K_LEFT))
 		bdy->vel.x = ((e == K_RIGHT) - (e == K_LEFT)) * 5;
 	else if (t == MLX_KEYDOWN && (e == K_DOWN || e == K_UP))
@@ -138,17 +138,14 @@ static void	__on_update(t_app *app, t_scene *scene)
 static void	__on_init(t_app *app, t_scene *scene)
 {
 	t_env		*env;
-	uint16_t	comps[63];
 
-	comps[0] = sizeof(t_vector);
-	comps[1] = sizeof(t_rigidbody);
-	comps[2] = sizeof(t_collider);
-	comps[3] = sizeof(t_sprite);
 	env = ft_calloc(sizeof(t_env), 1);
 	if (!env)
 		return ;
 	scene->env = env;
-	env->ecs = ecs_create(comps, NB_COMPONENTS);
+	env->ecs = ecs_create(NB_COMPONENTS,
+		sizeof(t_vector), sizeof(t_rigidbody),
+		sizeof(t_collider), sizeof(t_sprite));
 	env->textures[0] = mlx_png_file_to_image(app->mlx, "resources/player.png", NULL, NULL);
 	env->textures[1] = mlx_png_file_to_image(app->mlx, "resources/bullet.png", NULL, NULL);
 	env->player = player_create(env->ecs, 200, 200, env->textures[0]);
@@ -169,11 +166,33 @@ static void	__on_clear(t_app *app, t_scene *scene)
 	free(env);
 }
 
+static void	__scene2_update(t_app *app, t_scene *scene)
+{
+	(void) scene;
+	mlx_string_put(app->mlx, app->win, (app->params.width >> 1) - 100, app->params.height >> 1, 0xFFFFFFFF, "MAIN MENU");
+}
+
+static void __scene2_init(t_app *app, t_scene *scene)
+{
+	(void) scene;
+	mlx_set_font_scale(app->mlx, app->win, "resources/pixelated.ttf", 50);
+}
+
+static void	__scene2_event(t_app *app, t_scene *scene, mlx_event_type t, int e)
+{
+	(void) scene;
+	if (t == MLX_MOUSEDOWN && e == 1)
+		app_load(app, 1);
+	else if(t == MLX_KEYDOWN && e == K_ESCAPE)
+		mlx_loop_end(app->mlx);
+}
+
 int	main(void)
 {
-	t_scene	scenes[1];
+	t_scene	scenes[2];
 
-	scenes[0] = (t_scene){NULL, __on_init, __on_event, __on_update, __on_clear};
-	app_autorun((t_win_params){800, 600, 60, "so_long"}, scenes, 1);
+	scenes[1] = (t_scene){NULL, __on_init, __on_event, __on_update, __on_clear};
+	scenes[0] = (t_scene){NULL, __scene2_init, __scene2_event, __scene2_update, NULL};
+	app_autorun((t_win_params){800, 600, 60, "so_long"}, scenes, 2);
 	return (0);
 }
