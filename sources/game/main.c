@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:45:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/22 11:41:30 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/11/22 13:29:04 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,56 +45,37 @@ static uint32_t	bullet_create(t_ecs *ecs, void *mlx, uint32_t player, void *text
 	a = atan2f(my - pos.y, mx - pos.x);
 	id = ecs_entity_create(ecs);
 	ecs_entity_add(ecs, id, TRANSFORM, &((t_vector){pos.x, pos.y}));
-	ecs_entity_add(ecs, id, RIGIDBODY, &((t_rigidbody){{cos(a) * 10, sin(a) * 10}, {0, 0}, 0}));
+	ecs_entity_add(ecs, id, RIGIDBODY,
+			&((t_rigidbody){{cos(a) * 10, sin(a) * 10}, {0, 0}, 0}));
 	ecs_entity_add(ecs, id, SPRITE, &((t_sprite){texture}));
 	return (id);
 }
 
-static int	__keydown_hook(int key, void *param)
+static void	__on_event(t_app *app, t_scene *scene,
+					mlx_event_type t, int e)
 {
-	t_app		*app;
 	t_env		*env;
 	t_rigidbody	*bdy;
 
-	app = (t_app *)param;
-	env = (t_env *)app->scenes[app->scene_index].env;
+	env = (t_env *)scene->env;
 	bdy = ecs_entity_get(env->ecs, env->player, RIGIDBODY);
-	if (key == 41)
+
+	if (t == MLX_KEYDOWN && e == K_ESCAPE)
 		mlx_loop_end(app->mlx);
-	if (key == K_RIGHT || key == K_LEFT)
-		bdy->vel.x = ((key == K_RIGHT) - (key == K_LEFT)) * 5;
-	if (key == K_DOWN || key == K_UP)
-		bdy->vel.y = ((key == K_DOWN) - (key == K_UP)) * 5;
-	return (0);
-}
-
-static int	__keyup_hook(int key, void *param)
-{
-	t_env		*env;
-	t_rigidbody	*bdy;
-
-	env = (t_env *)((t_scene *)param)->env;
-	bdy = ecs_entity_get(env->ecs, env->player, RIGIDBODY);
-	if ((key == K_RIGHT && bdy->vel.x > 0) || (key == K_LEFT && bdy->vel.x < 0))
+	else if (t == MLX_KEYDOWN && (e == K_RIGHT || e == K_LEFT))
+		bdy->vel.x = ((e == K_RIGHT) - (e == K_LEFT)) * 5;
+	else if (t == MLX_KEYDOWN && (e == K_DOWN || e == K_UP))
+		bdy->vel.y = ((e == K_DOWN) - (e == K_UP)) * 5;
+	else if (t == MLX_KEYUP &&
+		((e == K_RIGHT && bdy->vel.x > 0) || (e == K_LEFT && bdy->vel.x < 0)))
 		bdy->vel.x = 0;
-	if ((key == K_DOWN && bdy->vel.y > 0) || (key == K_UP && bdy->vel.y < 0))
+	else if (t == MLX_KEYUP &&
+		((e == K_DOWN && bdy->vel.y > 0) || (e == K_UP && bdy->vel.y < 0)))
 		bdy->vel.y = 0;
-	return (0);
-}
-
-
-static int	__mouse_up_hook(int button, void* param)
-{
-	if (button == 1)
-		((t_env *)((t_scene *)param)->env)->is_shooting = false;
-    return (0);
-}
-
-static int	__mouse_down_hook(int button, void* param)
-{
-	if (button == 1)
-		((t_env *)((t_scene *)param)->env)->is_shooting = true;
-    return (0);
+	else if (t == MLX_MOUSEUP && e == 1)
+		env->is_shooting = false;
+	else if (t == MLX_MOUSEDOWN && e == 1)
+		env->is_shooting = true;
 }
 
 void physics_system(t_ecs *ecs, t_ecs_queue **queue, float w, float h)
@@ -171,11 +152,6 @@ static void	__on_init(t_app *app, t_scene *scene)
 	env->textures[0] = mlx_png_file_to_image(app->mlx, "resources/player.png", NULL, NULL);
 	env->textures[1] = mlx_png_file_to_image(app->mlx, "resources/bullet.png", NULL, NULL);
 	env->player = player_create(env->ecs, 200, 200, env->textures[0]);
-	mlx_on_event(app->mlx, app->win, MLX_KEYUP, __keyup_hook, scene);
-	mlx_on_event(app->mlx, app->win, MLX_KEYDOWN, __keydown_hook, app);
-	mlx_on_event(app->mlx, app->win, MLX_MOUSEDOWN, __mouse_down_hook, scene);
-	mlx_on_event(app->mlx, app->win, MLX_MOUSEUP, __mouse_up_hook, scene);
-
 }
 
 static void	__on_clear(t_app *app, t_scene *scene)
@@ -197,7 +173,7 @@ int	main(void)
 {
 	t_scene	scenes[1];
 
-	scenes[0] = (t_scene){NULL, __on_init, __on_update, __on_clear};
+	scenes[0] = (t_scene){NULL, __on_init, __on_event, __on_update, __on_clear};
 	app_autorun((t_win_params){800, 600, 60, "so_long"}, scenes, 1);
 	return (0);
 }

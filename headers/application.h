@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:46:45 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/21 18:22:36 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/11/22 13:23:25 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@
 # include <stdint.h>
 # include <stdlib.h>
 
-#define MAX_SCENES 10
+# define MAX_SCENES 10
 
 typedef struct s_scene	t_scene;
 typedef struct s_app	t_app;
-typedef void			(*t_scene_callback)(t_app *app, t_scene *scene);
-typedef void			(*t_event_callback)(t_app *app, t_scene *scene);
+typedef void			(*t_scene_callback)(t_app *, t_scene *);
+typedef void			(*t_event_callback)(t_app *, t_scene *,
+					mlx_event_type ,int);
 
 typedef struct s_win_params
 {
@@ -37,6 +38,7 @@ typedef struct s_scene
 {
 	void				*env;
 	t_scene_callback	on_init;
+	t_event_callback	on_event;
 	t_scene_callback	on_update;
 	t_scene_callback	on_destroy;
 }	t_scene;
@@ -54,4 +56,11 @@ typedef struct s_app
 
 void	app_autorun(t_win_params params, t_scene *scenes, uint8_t nb_scenes);
 void	app_load(t_app *app, uint8_t scene);
+
+int		__app_keyup_hook(int event, void *p);
+int		__app_keydown_hook(int event, void *p);
+int		__app_mousedown_hook(int event, void *p);
+int		__app_mouseup_hook(int event, void *p);
+int		__app_mousewheel_hook(int event, void *p);
+
 #endif

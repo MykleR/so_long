@@ -48,5 +48,80 @@
    ".objs/game/application.o"
   ],
   "file": "sources/game/application.c"
+ },
+ {
+  "directory": "/nfs/homes/mrouves/Documents/github/so_long",
+  "arguments": [
+   "clang",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-O3",
+   "-DNDEBUG",
+   "-g",
+   "-I",
+   "headers",
+   "-I",
+   "lib/MacroLibX/includes",
+   "-I",
+   "lib/libft/headers",
+   "-I",
+   "lib/lib-ecs/headers",
+   "-c",
+   "sources/game/main.c",
+   "-o",
+   ".objs/game/main.o"
+  ],
+  "file": "sources/game/main.c"
+ },
+ {
+  "directory": "/nfs/homes/mrouves/Documents/github/so_long",
+  "arguments": [
+   "clang",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-O3",
+   "-DNDEBUG",
+   "-g",
+   "-I",
+   "headers",
+   "-I",
+   "lib/MacroLibX/includes",
+   "-I",
+   "lib/libft/headers",
+   "-I",
+   "lib/lib-ecs/headers",
+   "-c",
+   "sources/application/app.c",
+   "-o",
+   ".objs/application/app.o"
+  ],
+  "file": "sources/application/app.c"
+ },
+ {
+  "directory": "/nfs/homes/mrouves/Documents/github/so_long",
+  "arguments": [
+   "clang",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-O3",
+   "-DNDEBUG",
+   "-g",
+   "-I",
+   "headers",
+   "-I",
+   "lib/MacroLibX/includes",
+   "-I",
+   "lib/libft/headers",
+   "-I",
+   "lib/lib-ecs/headers",
+   "-c",
+   "sources/application/app_hooks.c",
+   "-o",
+   ".objs/application/app_hooks.o"
+  ],
+  "file": "sources/application/app_hooks.c"
  }
 ]
