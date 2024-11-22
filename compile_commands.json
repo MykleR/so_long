@@ -1,0 +1,52 @@
+[
+ {
+  "directory": "/nfs/homes/mrouves/Documents/cursus/so_long",
+  "arguments": [
+   "clang",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-O3",
+   "-DNDEBUG",
+   "-g",
+   "-I",
+   "headers",
+   "-I",
+   "lib/MacroLibX/includes",
+   "-I",
+   "lib/libft/headers",
+   "-I",
+   "lib/lib-ecs/headers",
+   "-c",
+   "sources/game/main.c",
+   "-o",
+   ".objs/game/main.o"
+  ],
+  "file": "sources/game/main.c"
+ },
+ {
+  "directory": "/nfs/homes/mrouves/Documents/cursus/so_long",
+  "arguments": [
+   "clang",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-O3",
+   "-DNDEBUG",
+   "-g",
+   "-I",
+   "headers",
+   "-I",
+   "lib/MacroLibX/includes",
+   "-I",
+   "lib/libft/headers",
+   "-I",
+   "lib/lib-ecs/headers",
+   "-c",
+   "sources/game/application.c",
+   "-o",
+   ".objs/game/application.o"
+  ],
+  "file": "sources/game/application.c"
+ }
+]

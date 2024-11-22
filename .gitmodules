@@ -1,0 +1,9 @@
+[submodule "lib/MacroLibX"]
+	path = lib/MacroLibX
+	url = https://github.com/seekrs/MacroLibX
+[submodule "lib/lib-ecs"]
+	path = lib/lib-ecs
+	url = https://github.com/MykleR/lib-ecs.git
+[submodule "lib/libft"]
+	path = lib/libft
+	url = https://github.com/MykleR/libft.git
