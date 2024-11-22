@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:00:34 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/21 17:10:48 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/11/22 15:30:11 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_env
 	t_ecs_queue	*queue;
 	uint32_t	player;
 	bool		is_shooting;
-	t_ecs	*ecs;
+	t_ecs		*ecs;
 }			t_env;
 
 #endif
