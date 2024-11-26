@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:45:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/22 15:53:03 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/11/26 16:16:10 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	__on_event(t_app *app, t_scene *scene,
 		env->is_shooting = true;
 }
 
-static void	physics_system(t_ecs *ecs, t_ecs_queue **queue, float w, float h)
+static void	physics_system(t_ecs *ecs, t_ecs_queue *queue, float w, float h)
 {
 	t_ecs_ulist	query;
 	t_vector	*pos;
@@ -98,8 +98,8 @@ static void	physics_system(t_ecs *ecs, t_ecs_queue **queue, float w, float h)
 			if ((!roundf(bdy->vel.x) && !roundf(bdy->vel.y))
 				|| (pos->x <= 1 || pos->y <= 1
 					|| pos->x >= w - 1 || pos->y >= h - 1))
-				ecs_queue_add(queue, KILL, (t_ecs_queue_payload)
-				{0, query.values[query.len], 0});
+				ecs_queue_add(queue, (t_ecs_queue_entry)
+				{0, query.values[query.len], 0, KILL});
 		}
 		pos->x = fclampf(w - 1, 1, pos->x + bdy->vel.x);
 		pos->y = fclampf(h - 1, 1, pos->y + bdy->vel.y);
@@ -154,6 +154,7 @@ static void	__on_init(t_app *app, t_scene *scene)
 	env->textures[1] = mlx_png_file_to_image(app->mlx,
 			"resources/bullet.png", NULL, NULL);
 	env->player = player_create(env->ecs, 200, 200, env->textures[0]);
+	ecs_queue_create(&env->queue, ECS_ENTITY_CAP);
 	scene->env = env;
 }
 

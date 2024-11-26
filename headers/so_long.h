@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:00:34 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/22 15:30:11 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/11/26 16:15:07 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_tilemap
 typedef struct s_env
 {
 	void		*textures[2];
-	t_ecs_queue	*queue;
+	t_ecs_queue	queue;
 	uint32_t	player;
 	bool		is_shooting;
 	t_ecs		*ecs;
