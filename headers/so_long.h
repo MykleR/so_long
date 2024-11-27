@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:00:34 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/26 16:15:07 by mykle            ###   ########.fr       */
+/*   Updated: 2024/11/27 15:52:43 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,14 @@ typedef enum e_component
 	SPRITE,
 }	t_component;
 
+typedef enum __attribute__((__packed__)) e_collider_type
+{
+	STATIONARY,
+	PLAYER,
+	PROJECTILE,
+	ENNEMY,
+}	t_collider_type;
+
 typedef struct s_vector
 {
 	float	x;
@@ -42,16 +50,13 @@ typedef struct s_rigidbody
 {
 	t_vector	vel;
 	t_vector	accel;
-	bool		is_kinematic;
+	bool		kinematic;
 }	t_rigidbody;
 
 typedef struct s_collider
 {
-	union
-	{
-		t_vector	box;
-		float		radius;
-	};
+	t_vector		box;
+	t_collider_type	type;
 }	t_collider;
 
 typedef struct s_sprite

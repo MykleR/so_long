@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:45:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/26 16:16:10 by mykle            ###   ########.fr       */
+/*   Updated: 2024/11/27 15:57:59 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	physics_system(t_ecs *ecs, t_ecs_queue *queue, float w, float h)
 	{
 		pos = ecs_entity_get(ecs, query.values[query.len], TRANSFORM);
 		bdy = ecs_entity_get(ecs, query.values[query.len], RIGIDBODY);
-		if (!bdy->is_kinematic)
+		if (!bdy->kinematic)
 		{
 			bdy->vel.x += bdy->accel.x;
 			bdy->vel.y += bdy->accel.y;
