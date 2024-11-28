@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:58:46 by mykle             #+#    #+#             */
-/*   Updated: 2024/11/28 15:18:22 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/11/28 15:27:50 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,7 @@ static uint32_t box_create(t_ecs *ecs, float x, float y, float vx, float vy)
 	id = ecs_entity_create(ecs);
 	ecs_entity_add(ecs, id, POSITION, &(t_vector){x, y});
 	ecs_entity_add(ecs, id, VELOCITY, &(t_vector){vx , vy});
-	ecs_entity_add(ecs, id, COLLIDER, &(t_collider){10, 10, MOVING, 0});
+	ecs_entity_add(ecs, id, COLLIDER, &(t_collider){50, 50, MOVING, 0});
 	return (id);
 }
 
@@ -291,11 +291,11 @@ void	box_system(t_ecs *ecs, t_app *app, t_qtree *qt)
 		pos = ecs_entity_get(ecs, query.values[query.len], POSITION);
 		vel = ecs_entity_get(ecs, query.values[query.len], VELOCITY);
 		col = ecs_entity_get(ecs, query.values[query.len], COLLIDER);
-		pos->x = fclampf(pos->x + vel->x, app->params.width - (col->w >> 1) - 1, (col->w >> 1) + 1);
-		pos->y = fclampf(pos->y + vel->y, app->params.height - (col->h >> 1) - 1, (col->h >> 1) + 1);
-		if (pos->x - (col->w >> 1) < (col->w >> 1) + 1 || pos->x + (col->w >> 1) > app->params.width - (col->w >> 1) - 1)
+		pos->x = fclampf(pos->x + vel->x, app->params.width - col->w - 1, 1);
+		pos->y = fclampf(pos->y + vel->y, app->params.height - col->h - 1, 1);
+		if (pos->x <= 1 || pos->x + col->w >= app->params.width - 1)
 			vel->x = -vel->x;
-		if (pos->y - (col->h >> 1) < (col->h >> 1) + 1 || pos->y + (col->h >> 1) > app->params.height - (col->h >> 1) - 1)
+		if (pos->y <= 1 || pos->y + col->h >= app->params.height - 1)
 			vel->y = -vel->y;
 		insertItem(qt, 0, query.values[query.len], (t_aabb){pos->x, pos->y, col->w, col->h});
 		box_draw(app, *pos, col->w, col->h, col->is_colliding ? 0xFFFF0000 : 0xFFFFFFFF);
