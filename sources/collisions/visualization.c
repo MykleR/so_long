@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:58:46 by mykle             #+#    #+#             */
-/*   Updated: 2024/11/28 17:15:52 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/11/28 21:18:21 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 #define VELOCITY 1
 #define COLLIDER 2
 
-#define MAX_ITEMS 4
+#define GRID_CELL_SIZE 25
+#define GRID_CELL_CAP 10
 
 typedef enum e_collision_tag
 {
@@ -52,75 +53,142 @@ typedef struct
 
 typedef struct
 {
-    uint16_t	count;			// Nombre actuel d'objets dans ce nœud
-    uint16_t	child_index;	// Index du premier enfant (dans le tableau global), -1 s'il n'y en a pas
-} t_qtree_node;
-
-typedef struct {
-    t_qtree_node	*nodes; // Tableau contenant tous les nœuds
-    uint16_t		count;       // Nombre actuel de nœuds
-    uint16_t		cap;        // Capacité actuelle du tableau de nœuds
-} t_qtree;
+	t_ecs_ulist	**cells;
+	uint16_t	cell_size;
+	uint16_t	cell_row;
+	t_vector	pos;
+} t_collision_grid;
 
 
 typedef struct	s_env
 {
-	t_qtree *qt;
 	t_ecs	*ecs;
+	t_collision_grid *grid;
 }	t_env;
 
-
-t_qtree *createQuadTree(t_aabb bounds, uint16_t cap)
+static bool	grid_fill(t_collision_grid *grid)
 {
-	(void) bounds;
-	(void) cap;
+	uint32_t	i;
+
+	grid->cells = ft_calloc(sizeof(t_ecs_ulist *), grid->cell_row * grid->cell_row);
+	if (__builtin_expect(!grid->cells, 0))
+		return (false);
+	i = -1;
+	while (++i < grid->cell_row * grid->cell_row)
+	{
+		*(grid->cells + i) = list_create(GRID_CELL_CAP);
+		if (!(*(grid->cells + i)))
+		{
+			free(grid->cells);
+			return (false);
+		}
+	}
+	return (true);
+}
+
+t_collision_grid	*grid_create(t_vector pos, uint16_t w)
+{
+	t_collision_grid	*grid;
+
+	grid = malloc(sizeof(t_collision_grid));
+	if (__builtin_expect(!grid, 0))
+		return (NULL);
+	grid->cell_size = GRID_CELL_SIZE;
+	grid->cell_row = w;
+	grid->pos = pos;
+	if (__builtin_expect(grid_fill(grid), 1))
+		return (grid);
+	free(grid);
 	return (NULL);
+	
 }
 
-void freeQuadTree(t_qtree *qt)
+void	grid_destroy(t_collision_grid *grid)
 {
-	(void)qt;
+	uint32_t	i;
+
+	i = -1;
+	while (++i < grid->cell_row * grid->cell_row)
+		list_destroy(*(grid->cells + i));
+	free(grid->cells);
+	free(grid);
 }
 
-// Fonction pour agrandir la capacité du QuadTree
-void growQuadTree(t_qtree *qt)
+void	grid_clear(t_collision_grid *grid)
 {
-	(void)qt;
+	uint32_t	i;
+
+	i = -1;
+	while (++i < grid->cell_row * grid->cell_row)
+	{
+		ft_memset(grid->cells[i]->values, 0, sizeof(uint32_t) * grid->cells[i]->len);
+		grid->cells[i]->len = 0;
+	}
 }
 
-// Fonction pour subdiviser un nœud
-void subdivide(t_qtree *qt, uint16_t node_index)
+void	grid_insert(t_collision_grid *grid, uint32_t id, t_vector pos)
 {
-	(void)qt; (void) node_index;
+	uint32_t	i;
+	uint32_t	j;
+	uint32_t	index;
+
+	j = floor((pos.x - grid->pos.x) / grid->cell_size);
+	i = floor((pos.y - grid->pos.y) / grid->cell_size);
+	index = i * grid->cell_row + j;
+	list_add(grid->cells[index], id);
 }
 
-// Vérifie si une boîte `b` est contenue dans une boîte `a`
-bool contains(t_aabb a, t_aabb b) {
-    return (b.x > a.x && b.x < a.x + a.w &&
-            b.y > a.y && b.y < a.y + a.h);
+static bool	intersects(t_aabb b, t_aabb a) {
+    return (b.x <= a.x + a.w && b.x + b.w >= a.x &&
+             b.y <= a.y + a.h & b.y + b.h >= a.y);
 }
 
-// Vérifie si deux boîtes se chevauchent
-bool intersects(t_aabb a, t_aabb b) {
-    return !(b.x > a.x + a.w || b.x + b.w < a.x ||
-             b.y > a.y + a.h || b.y + b.h < a.y);
-}
-
-int insertItem(t_qtree *qt, uint16_t node_index, uint32_t id, t_aabb box)
+static void check_collisions(t_ecs* ecs, t_ecs_ulist l1, t_ecs_ulist l2, void (*f)(t_ecs *, uint32_t, uint32_t))
 {
-	(void)qt; (void) node_index; (void)id; (void)box;
-	return (0);
+	t_collider	*col1;
+	t_collider	*col2;
+	t_vector	*pos1;
+	t_vector	*pos2;
+	uint32_t	i;
+
+	while(l1.len--)
+	{
+		i = l2.len;
+		while(i--)
+		{
+			col1 = ecs_entity_get(ecs, l1.values[l1.len], COLLIDER);
+			col2 = ecs_entity_get(ecs, l2.values[i], COLLIDER);
+			pos1 = ecs_entity_get(ecs, l1.values[l1.len], POSITION);
+			pos2 = ecs_entity_get(ecs, l2.values[i], POSITION);
+			if (l2.values[i] != l1.values[l1.len] && intersects(
+				(t_aabb){pos1->x, pos1->y, col1->w, col1->h},
+				(t_aabb){pos2->x, pos2->y, col2->w, col2->h}))
+				f(ecs, l1.values[l1.len], l2.values[i]);
+		}
+	}
 }
 
-void clearQuadTree(t_qtree *qt, t_aabb bounds)
+bool	is_ingrid(int16_t i, int16_t j, uint16_t row)
 {
-	(void)qt;(void)bounds;
+    return (i >= 0 && i < row && j >= 0 && j < row);
 }
 
-
-void detectCollisions(t_qtree *qt, t_ecs *ecs, uint16_t node_index, void (*f)(t_ecs *, uint32_t, uint32_t))
+void	grid_process(t_collision_grid *grid, t_ecs *ecs, void (*f)(t_ecs *, uint32_t, uint32_t))
 {
-	(void) f; (void) node_index; (void) ecs; (void) qt;
+	static int	offset_r[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
+    static int	offset_c[8] = {-1,  0,  1, -1, 1, -1, 0, 1};
+	uint32_t	i;
+	uint32_t	j;
+
+	i = -1;
+	while (++i < grid->cell_row * grid->cell_row)
+	{
+		check_collisions(ecs, *(grid->cells[i]), *(grid->cells[i]), f);
+		j = -1;
+		while (++j < 8)
+			if (is_ingrid(i / grid->cell_row + offset_r[j], i % grid->cell_row + offset_c[j], grid->cell_row))
+				check_collisions(ecs, *grid->cells[i], *grid->cells[i + grid->cell_row * offset_r[j] + offset_c[j]], f);
+	}
 }
 
 // Exemple de callback pour afficher les paires en collision
@@ -137,13 +205,6 @@ float	fclampf(float x, float max, float min)
 	return (fmaxf(fminf(max, x), min));
 }
 
-int	wich_quadrent(t_vector pos, t_vector center)
-{
-	if (pos.y < center.y)
-		return (pos.x >= center.x);
-	return ((pos.x >= center.x) + 2);
-}
-
 bool	is_in_bound(t_vector pos, t_vector bound, int w, int h)
 {
 	return (pos.x >= bound.x && pos.x <= bound.x + w
@@ -157,7 +218,7 @@ static uint32_t box_create(t_ecs *ecs, float x, float y, float vx, float vy)
 	id = ecs_entity_create(ecs);
 	ecs_entity_add(ecs, id, POSITION, &(t_vector){x, y});
 	ecs_entity_add(ecs, id, VELOCITY, &(t_vector){vx , vy});
-	ecs_entity_add(ecs, id, COLLIDER, &(t_collider){20, 20, MOVING, 0});
+	ecs_entity_add(ecs, id, COLLIDER, &(t_collider){5, 5, MOVING, 0});
 	return (id);
 }
 
@@ -187,12 +248,23 @@ void	box_draw(t_app *app, t_vector pos, int w, int h, uint32_t color)
 	}
 }
 
-void	bound_draw(t_app *app, t_aabb bound, uint32_t color)
+void	grid_draw(t_app *app, t_collision_grid *grid)
 {
-	box_draw(app, (t_vector){bound.x, bound.y}, bound.w, bound.h, color);
+	uint16_t	i;
+	uint16_t	j;
+
+	i = -1;
+	while (++i < grid->cell_row)
+	{
+		j = -1;
+		while (++j < grid->cell_row)
+			box_draw(app, (t_vector){grid->pos.x + j * grid->cell_size,
+				grid->pos.y + i * grid->cell_size},
+				grid->cell_size, grid->cell_size, 0x50FFFFFF);
+	}
 }
 
-void	box_system(t_ecs *ecs, t_app *app, t_qtree *qt)
+void	box_system(t_ecs *ecs, t_app *app, t_collision_grid *grid)
 {
 	t_ecs_ulist	query;
 	t_vector	*pos;
@@ -211,17 +283,10 @@ void	box_system(t_ecs *ecs, t_app *app, t_qtree *qt)
 			vel->x = -vel->x;
 		if (pos->y <= 1 || pos->y + col->h >= app->params.height - 1)
 			vel->y = -vel->y;
-		insertItem(qt, 0, query.values[query.len], (t_aabb){round(pos->x), round(pos->y), col->w, col->h});
 		box_draw(app, *pos, col->w, col->h, col->is_colliding ? 0xFFFF0000 : 0xFFFFFFFF);
 		col->is_colliding = false;
+		grid_insert(grid, query.values[query.len], *pos);
 	}
-}
-
-void drawQuadTree(t_app *app, t_qtree *qt, uint16_t index)
-{
-	(void)app;
-	(void)qt;
-	(void)index;
 }
 
 static void	__init(t_app *app, t_scene *scene)
@@ -234,7 +299,7 @@ static void	__init(t_app *app, t_scene *scene)
 	if (!env)
 		return ;
 	scene->env = env;
-	env->qt = createQuadTree((t_aabb){0, 0, app->params.width, app->params.height}, 1024);
+	env->grid = grid_create((t_vector){0, 0}, 50);
 	env->ecs = ecs_create(3, sizeof(t_vector),
 					sizeof(t_vector), sizeof(t_collider));
 	srand(time(NULL));
@@ -243,8 +308,8 @@ static void	__init(t_app *app, t_scene *scene)
 		box_create(env->ecs,
 			 ((float)rand()/(float)(RAND_MAX)) * app->params.width,
 			 ((float)rand()/(float)(RAND_MAX)) * app->params.height,
-			 cos(rand()/(float)(RAND_MAX) * 2 * M_PI - M_PI) / 2,
-			 sin(rand()/(float)(RAND_MAX) * 2 * M_PI - M_PI) / 2);
+			 cos(rand()/(float)(RAND_MAX) * 2 * M_PI - M_PI),
+			 sin(rand()/(float)(RAND_MAX) * 2 * M_PI - M_PI));
 }
 
 static void	__update(t_app *app, t_scene *scene)
@@ -253,10 +318,10 @@ static void	__update(t_app *app, t_scene *scene)
 
 	env = (t_env *)scene->env;
 	mlx_clear_window(app->mlx, app->win);
-	clearQuadTree(env->qt, (t_aabb){0, 0, app->params.width, app->params.height});
-	box_system(env->ecs, app, env->qt);
-	detectCollisions(env->qt, env->ecs, 0, collisionCallback);
-	drawQuadTree(app, env->qt, 0);
+	grid_clear(env->grid);
+	box_system(env->ecs, app, env->grid);
+	grid_process(env->grid, env->ecs, collisionCallback);
+	//grid_draw(app, env->grid);
 }
 
 static void	__event(t_app *app, t_scene *scene, mlx_event_type t, int e)
@@ -271,7 +336,7 @@ static void	__clear(t_app *app, t_scene *scene)
 	(void) app;
 	if (!scene->env)
 		return ;
-	freeQuadTree(((t_env *)scene->env)->qt);
+	grid_destroy(((t_env *)scene->env)->grid);
 	ecs_destroy(((t_env *)scene->env)->ecs);
 	free(scene->env);
 }
