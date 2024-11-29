@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:58:46 by mykle             #+#    #+#             */
-/*   Updated: 2024/11/28 21:18:21 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/11/29 14:07:56 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #define VELOCITY 1
 #define COLLIDER 2
 
-#define GRID_CELL_SIZE 25
+#define GRID_CELL_SIZE 50
 #define GRID_CELL_CAP 10
 
 typedef enum e_collision_tag
@@ -173,6 +173,7 @@ bool	is_ingrid(int16_t i, int16_t j, uint16_t row)
     return (i >= 0 && i < row && j >= 0 && j < row);
 }
 
+/*
 void	grid_process(t_collision_grid *grid, t_ecs *ecs, void (*f)(t_ecs *, uint32_t, uint32_t))
 {
 	static int	offset_r[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
@@ -188,6 +189,38 @@ void	grid_process(t_collision_grid *grid, t_ecs *ecs, void (*f)(t_ecs *, uint32_
 		while (++j < 8)
 			if (is_ingrid(i / grid->cell_row + offset_r[j], i % grid->cell_row + offset_c[j], grid->cell_row))
 				check_collisions(ecs, *grid->cells[i], *grid->cells[i + grid->cell_row * offset_r[j] + offset_c[j]], f);
+	}
+}
+*/
+typedef void (*collide_event) (t_ecs *, uint32_t, uint32_t);
+
+static void	check_neightbours(t_collision_grid *grid, t_ecs *ecs,
+				collide_event callback, uint32_t i)
+{
+	static const int	offsets[16] = {
+		-1, -1, -1, 0, 0, 1, 1, 1, -1,  0,  1, -1, 1, -1, 0, 1};
+	uint32_t	j;
+	uint32_t	nbour;
+
+	j = -1;
+	while (++j < 8)
+	{
+		nbour = i + grid->cell_row * offsets[j] + offsets[j + 8];
+		if (is_ingrid(nbour / grid->cell_row, nbour % grid->cell_row,
+				grid->cell_row))
+			check_collisions(ecs, *grid->cells[i], *grid->cells[nbour], callback);
+	}
+}
+
+void	grid_process(t_collision_grid *grid, t_ecs *ecs, collide_event callback)
+{
+	uint32_t	i;
+
+	i = -1;
+	while (++i < grid->cell_row * grid->cell_row)
+	{
+		check_collisions(ecs, *(grid->cells[i]), *(grid->cells[i]), callback);
+		check_neightbours(grid, ecs, callback, i);
 	}
 }
 
@@ -218,7 +251,7 @@ static uint32_t box_create(t_ecs *ecs, float x, float y, float vx, float vy)
 	id = ecs_entity_create(ecs);
 	ecs_entity_add(ecs, id, POSITION, &(t_vector){x, y});
 	ecs_entity_add(ecs, id, VELOCITY, &(t_vector){vx , vy});
-	ecs_entity_add(ecs, id, COLLIDER, &(t_collider){5, 5, MOVING, 0});
+	ecs_entity_add(ecs, id, COLLIDER, &(t_collider){20, 20, MOVING, 0});
 	return (id);
 }
 
@@ -299,7 +332,7 @@ static void	__init(t_app *app, t_scene *scene)
 	if (!env)
 		return ;
 	scene->env = env;
-	env->grid = grid_create((t_vector){0, 0}, 50);
+	env->grid = grid_create((t_vector){0, 0}, 40);
 	env->ecs = ecs_create(3, sizeof(t_vector),
 					sizeof(t_vector), sizeof(t_collider));
 	srand(time(NULL));
@@ -308,8 +341,8 @@ static void	__init(t_app *app, t_scene *scene)
 		box_create(env->ecs,
 			 ((float)rand()/(float)(RAND_MAX)) * app->params.width,
 			 ((float)rand()/(float)(RAND_MAX)) * app->params.height,
-			 cos(rand()/(float)(RAND_MAX) * 2 * M_PI - M_PI),
-			 sin(rand()/(float)(RAND_MAX) * 2 * M_PI - M_PI));
+			 cos(rand()/(float)(RAND_MAX) * M_PI * 2),
+			 sin(rand()/(float)(RAND_MAX) * M_PI * 2));
 }
 
 static void	__update(t_app *app, t_scene *scene)
@@ -321,7 +354,7 @@ static void	__update(t_app *app, t_scene *scene)
 	grid_clear(env->grid);
 	box_system(env->ecs, app, env->grid);
 	grid_process(env->grid, env->ecs, collisionCallback);
-	//grid_draw(app, env->grid);
+	grid_draw(app, env->grid);
 }
 
 static void	__event(t_app *app, t_scene *scene, mlx_event_type t, int e)

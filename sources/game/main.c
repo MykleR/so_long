@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:45:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/27 15:57:59 by mykle            ###   ########.fr       */
+/*   Updated: 2024/11/29 15:36:30 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <math.h>
 
-static float	fclampf(float max, float min, float x)
+float	fclampf(float max, float min, float x)
 {
 	return (fminf(fmaxf(x, min), max));
 }
@@ -29,6 +29,17 @@ static uint32_t	player_create(t_ecs *ecs, int x, int y, void *texture)
 	ecs_entity_add(ecs, id, TRANSFORM, &((t_vector){x, y}));
 	ecs_entity_add(ecs, id, RIGIDBODY, &((t_rigidbody){{0, 0}, {0, 0}, 1}));
 	ecs_entity_add(ecs, id, SPRITE, &((t_sprite){texture}));
+	return (id);
+}
+
+static uint32_t	wall_create(t_ecs *ecs, t_aabb bounds, void *texture)
+{
+	uint32_t	id;
+
+	id = ecs_entity_create(ecs);
+	ecs_entity_add(ecs, id, TRANSFORM, &((t_vector){bounds.x, bounds.y}));
+	ecs_entity_add(ecs, id, SPRITE, &((t_sprite){texture}));
+	ecs_entity_add(ecs, id, COLLIDER, &((t_collider){bounds.w, bounds.h, STATIONARY}));
 	return (id);
 }
 
@@ -49,6 +60,7 @@ static uint32_t	bullet_create(t_ecs *ecs, void *mlx,
 	ecs_entity_add(ecs, id, RIGIDBODY,
 		&((t_rigidbody){{cos(a) * 10, sin(a) * 10}, {0, 0}, 0}));
 	ecs_entity_add(ecs, id, SPRITE, &((t_sprite){texture}));
+	ecs_entity_add(ecs, id, COLLIDER, &((t_collider){10, 10, PROJECTILE}));
 	return (id);
 }
 
@@ -78,7 +90,7 @@ static void	__on_event(t_app *app, t_scene *scene,
 		env->is_shooting = true;
 }
 
-static void	physics_system(t_ecs *ecs, t_ecs_queue *queue, float w, float h)
+static void	move_system(t_ecs *ecs)
 {
 	t_ecs_ulist	query;
 	t_vector	*pos;
@@ -89,20 +101,29 @@ static void	physics_system(t_ecs *ecs, t_ecs_queue *queue, float w, float h)
 	{
 		pos = ecs_entity_get(ecs, query.values[query.len], TRANSFORM);
 		bdy = ecs_entity_get(ecs, query.values[query.len], RIGIDBODY);
-		if (!bdy->kinematic)
-		{
-			bdy->vel.x += bdy->accel.x;
-			bdy->vel.y += bdy->accel.y;
-			bdy->vel.x *= 0.982;
-			bdy->vel.y *= 0.982;
-			if ((!roundf(bdy->vel.x) && !roundf(bdy->vel.y))
-				|| (pos->x <= 1 || pos->y <= 1
-					|| pos->x >= w - 1 || pos->y >= h - 1))
-				ecs_queue_add(queue, (t_ecs_queue_entry)
-				{0, query.values[query.len], 0, KILL});
-		}
-		pos->x = fclampf(w - 1, 1, pos->x + bdy->vel.x);
-		pos->y = fclampf(h - 1, 1, pos->y + bdy->vel.y);
+		bdy->vel.x += bdy->accel.x;
+		bdy->vel.y += bdy->accel.y;
+		pos->x = pos->x + bdy->vel.x;
+		pos->y = pos->y + bdy->vel.y;
+	}
+}
+
+static void collide_system(t_ecs *ecs, t_col_grid *grid, t_ecs_queue *queue)
+{
+	t_ecs_ulist	query;
+	t_vector	*pos;
+	t_collider	*col;
+
+	query = *ecs_query(ecs, (1ULL << TRANSFORM) | (1ULL << COLLIDER));
+	while (query.len--)
+	{
+		pos = ecs_entity_get(ecs, query.values[query.len], TRANSFORM);
+		col = ecs_entity_get(ecs, query.values[query.len], COLLIDER);
+		if (col->type == PROJECTILE 
+				&& !intersects(grid->bounds, (t_aabb){pos->x, pos->y, col->w, col->h}))
+			ecs_queue_add(queue, (t_ecs_queue_entry){0, query.values[query.len], 0, KILL});
+		else
+			grid_insert(grid, query.values[query.len], *pos);
 	}
 }
 
@@ -123,6 +144,16 @@ void	draw_system(t_ecs *ecs, void *mlx, void *win)
 	}
 }
 
+void __on_collide(t_ecs *ecs, uint32_t a, uint32_t b)
+{
+	t_collider	*col1 = ecs_entity_get(ecs, a, COLLIDER);
+	t_collider	*col2 = ecs_entity_get(ecs, b, COLLIDER);
+	if (col1->type == col2->type)
+		return ;
+	if (col1->type == STATIONARY && col2->type == PROJECTILE)
+		ecs_entity_kill(ecs, b);
+}
+
 static void	__on_update(t_app *app, t_scene *scene)
 {
 	t_env		*env;
@@ -133,14 +164,16 @@ static void	__on_update(t_app *app, t_scene *scene)
 	mlx_clear_window(app->mlx, app->win);
 	if (env->is_shooting)
 		bullet_create(env->ecs, app->mlx, env->player, env->textures[1]);
-	physics_system(env->ecs, &env->queue,
-		app->params.width, app->params.height);
+	move_system(env->ecs);
+	collide_system(env->ecs, &env->grid, &env->queue);
 	draw_system(env->ecs, app->mlx, app->win);
+	grid_process(&env->grid, env->ecs, __on_collide);
 	ecs_queue_process(env->ecs, &env->queue);
 }
 
 static void	__on_init(t_app *app, t_scene *scene)
 {
+	uint32_t	i;
 	t_env		*env;
 
 	env = ft_calloc(sizeof(t_env), 1);
@@ -153,8 +186,17 @@ static void	__on_init(t_app *app, t_scene *scene)
 			"resources/player.png", NULL, NULL);
 	env->textures[1] = mlx_png_file_to_image(app->mlx,
 			"resources/bullet.png", NULL, NULL);
+	env->textures[2] = mlx_png_file_to_image(app->mlx,
+			"resources/wall.png", NULL, NULL);
 	env->player = player_create(env->ecs, 200, 200, env->textures[0]);
+	srand(time(NULL));
+	i = -1;
+	while (++i < 10)
+		wall_create(env->ecs, (t_aabb){
+			(rand()/(float)RAND_MAX) * app->params.width,
+			(rand()/(float)RAND_MAX) * app->params.height, 32, 32}, env->textures[2]);
 	ecs_queue_create(&env->queue, ECS_ENTITY_CAP);
+	grid_create(&env->grid, (t_aabb){0, 0, app->params.width, app->params.height});
 	scene->env = env;
 }
 
@@ -163,13 +205,14 @@ static void	__on_clear(t_app *app, t_scene *scene)
 	t_env	*env;
 
 	env = (t_env *)scene->env;
-	if (env)
-	{
-		mlx_destroy_image(app->mlx, env->textures[0]);
-		mlx_destroy_image(app->mlx, env->textures[1]);
-		ecs_queue_destroy(&env->queue);
-		ecs_destroy(env->ecs);
-	}
+	if (!env)
+		return ;
+	mlx_destroy_image(app->mlx, env->textures[0]);
+	mlx_destroy_image(app->mlx, env->textures[1]);
+	mlx_destroy_image(app->mlx, env->textures[2]);
+	grid_destroy(&env->grid);
+	ecs_queue_destroy(&env->queue);
+	ecs_destroy(env->ecs);
 	free(env);
 }
 

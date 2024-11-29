@@ -123,5 +123,30 @@
    ".objs/application/app_hooks.o"
   ],
   "file": "sources/application/app_hooks.c"
+ },
+ {
+  "directory": "/nfs/homes/mrouves/Documents/github/so_long",
+  "arguments": [
+   "clang",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-O3",
+   "-DNDEBUG",
+   "-g",
+   "-I",
+   "headers",
+   "-I",
+   "lib/MacroLibX/includes",
+   "-I",
+   "lib/libft/headers",
+   "-I",
+   "lib/lib-ecs/headers",
+   "-c",
+   "sources/collisions/visualization.c",
+   "-o",
+   ".objs/collisions/visualization.o"
+  ],
+  "file": "sources/collisions/visualization.c"
  }
 ]
