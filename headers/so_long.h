@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:00:34 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/02 21:38:34 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/03 00:09:14 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ typedef struct s_aabb
 {
 	int	x;
 	int	y;
-	int w;
-	int h;
+	int	w;
+	int	h;
 }	t_aabb;
 
 typedef struct s_col_grid
@@ -120,13 +120,13 @@ typedef struct s_game_env
 
 //	============================== Functions =============================
 
-typedef void (*collide_event) (t_ecs *, uint32_t, uint32_t);
+typedef void	(*t_collide_event) (t_ecs *, uint32_t, uint32_t);
 
 bool	grid_create(t_col_grid *grid, t_aabb bounds);
 void	grid_destroy(t_col_grid *grid);
 void	grid_clear(t_col_grid *grid);
 void	grid_insert(t_col_grid *grid, uint32_t id, t_vector pos);
-void	grid_process(t_col_grid *grid, t_ecs *ecs, collide_event callback);
+void	grid_process(t_col_grid *grid, t_ecs *ecs, t_collide_event callback);
 bool	intersects(t_aabb a, t_aabb b);
 
 #endif

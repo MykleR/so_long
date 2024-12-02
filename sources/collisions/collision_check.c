@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:21:11 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/02 21:39:58 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/03 00:09:33 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool	is_ingrid(int16_t row, int16_t col, uint16_t w, uint16_t h)
 }
 
 static void	check_collisions(t_ecs *ecs, t_ecs_ulist l1,
-					t_ecs_ulist l2, collide_event callback)
+					t_ecs_ulist l2, t_collide_event callback)
 {
 	t_collider	*col1;
 	t_collider	*col2;
@@ -50,7 +50,7 @@ static void	check_collisions(t_ecs *ecs, t_ecs_ulist l1,
 }
 
 static void	check_neightbours(t_col_grid *grid, t_ecs *ecs,
-				collide_event callback, uint32_t i)
+				t_collide_event callback, uint32_t i)
 {
 	static const int	offsets[16] = {-1, -1, -1, 0, 0, 1, 1, 1,
 		-1, 0, 1, -1, 1, -1, 0, 1};
@@ -68,7 +68,7 @@ static void	check_neightbours(t_col_grid *grid, t_ecs *ecs,
 	}
 }
 
-void	grid_process(t_col_grid *grid, t_ecs *ecs, collide_event callback)
+void	grid_process(t_col_grid *grid, t_ecs *ecs, t_collide_event callback)
 {
 	uint32_t	i;
 

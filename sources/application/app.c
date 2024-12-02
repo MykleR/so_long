@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:09:21 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/22 15:24:11 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/03 00:06:34 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,19 @@ static int	__app_update(void *param)
 
 	app = (t_app *)param;
 	scene = (app->scenes + app->scene_index);
-	if (scene->on_update && !app->scene_loading)
+	if (__builtin_expect(scene->on_update && !app->scene_loading, 1))
 		scene->on_update(app, scene);
-	if (app->scene_loading)
-	{
-		scene = app->scenes + app->scene_last;
-		if (scene->on_destroy)
-			scene->on_destroy(app, scene);
-		scene->env = NULL;
-		scene = app->scenes + app->scene_index;
-		if (scene->on_init)
-			scene->on_init(app, scene);
-		app->scene_last = app->scene_index;
-		app->scene_loading = false;
-	}
+	if (__builtin_expect(!app->scene_loading, 1))
+		return (0);
+	scene = app->scenes + app->scene_last;
+	if (scene->on_destroy)
+		scene->on_destroy(app, scene);
+	scene->env = NULL;
+	scene = app->scenes + app->scene_index;
+	if (scene->on_init)
+		scene->on_init(app, scene);
+	app->scene_last = app->scene_index;
+	app->scene_loading = false;
 	return (0);
 }
 
@@ -46,7 +45,7 @@ static int	__app_window_hook(int event, void *p)
 	scene = (app->scenes + app->scene_index);
 	if (__builtin_expect(!event, 0))
 		mlx_loop_end(app->mlx);
-	if (__builtin_expect(scene->on_event != NULL && !app->scene_loading, 1))
+	if (__builtin_expect(scene->on_event && !app->scene_loading, 1))
 		scene->on_event(app, scene, MLX_WINDOW_EVENT, event);
 	return (0);
 }
