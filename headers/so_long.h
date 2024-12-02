@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:00:34 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/29 15:35:31 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/02 21:38:34 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <math.h>
 # include "application.h"
 # include "ecs_extra.h"
+# include "libft.h"
 
 # define NB_COMPONENTS 4
 # define NB_TEXTURES 3
@@ -100,7 +101,7 @@ typedef struct s_aabb
 
 typedef struct s_col_grid
 {
-	t_ecs_ulist	**cells;
+	t_ecs_ulist	*cells;
 	uint32_t	area;
 	uint16_t	length;
 	uint16_t	cell_size;
@@ -121,7 +122,7 @@ typedef struct s_game_env
 
 typedef void (*collide_event) (t_ecs *, uint32_t, uint32_t);
 
-void	grid_create(t_col_grid *grid, t_aabb bounds);
+bool	grid_create(t_col_grid *grid, t_aabb bounds);
 void	grid_destroy(t_col_grid *grid);
 void	grid_clear(t_col_grid *grid);
 void	grid_insert(t_col_grid *grid, uint32_t id, t_vector pos);

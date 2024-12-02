@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:45:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/29 15:36:30 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/02 21:47:11 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ static void	__on_init(t_app *app, t_scene *scene)
 		wall_create(env->ecs, (t_aabb){
 			(rand()/(float)RAND_MAX) * app->params.width,
 			(rand()/(float)RAND_MAX) * app->params.height, 32, 32}, env->textures[2]);
-	ecs_queue_create(&env->queue, ECS_ENTITY_CAP);
+	ecs_queue_create(&env->queue);
 	grid_create(&env->grid, (t_aabb){0, 0, app->params.width, app->params.height});
 	scene->env = env;
 }

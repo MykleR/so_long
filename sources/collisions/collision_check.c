@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:21:11 by mrouves           #+#    #+#             */
-/*   Updated: 2024/11/29 15:23:07 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/02 21:39:58 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ static void	check_neightbours(t_col_grid *grid, t_ecs *ecs,
 	{
 		nbour = i + grid->length * offsets[j] + offsets[j + 8];
 		if (is_ingrid(nbour / grid->length, nbour % grid->length,
-				grid->length, grid->length) && grid->cells[nbour]->len)
-			check_collisions(ecs, *grid->cells[i],
-				*grid->cells[nbour], callback);
+				grid->length, grid->length) && grid->cells[nbour].len)
+			check_collisions(ecs, *(grid->cells + i),
+				*(grid->cells + nbour), callback);
 	}
 }
 
@@ -75,10 +75,10 @@ void	grid_process(t_col_grid *grid, t_ecs *ecs, collide_event callback)
 	i = -1;
 	while (++i < grid->area)
 	{
-		if ((*(grid->cells + i))->len)
+		if ((grid->cells + i)->len)
 		{
-			check_collisions(ecs, *(grid->cells[i]),
-				*(grid->cells[i]), callback);
+			check_collisions(ecs, *(grid->cells + i),
+				*(grid->cells + i), callback);
 			check_neightbours(grid, ecs, callback, i);
 		}
 	}
