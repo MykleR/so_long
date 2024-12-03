@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:23:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 23:19:20 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/03 23:34:59 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static uint32_t	player_create(t_ecs *ecs, int x, int y, t_sprite s)
 	return (id);
 }
 
-static uint32_t tile_create(t_ecs *ecs, int x, int y, t_sprite s)
+static uint32_t	tile_create(t_ecs *ecs, int x, int y, t_sprite s)
 {
 	uint32_t	id;
 
@@ -60,7 +60,7 @@ static void	place_tiles(t_ecs *ecs, t_tilemap *map, t_sprite *sprites)
 int	__on_init(t_app *app, t_scene *scene)
 {
 	t_env		*env;
-	t_prog_args *args;
+	t_prog_args	*args;
 
 	env = ft_calloc(sizeof(t_env), 1);
 	args = (t_prog_args *)app->params.args;
@@ -77,8 +77,8 @@ int	__on_init(t_app *app, t_scene *scene)
 	import_sprite(app->mlx, "resources/player.png", env->textures);
 	import_sprite(app->mlx, "resources/wall.png", env->textures + 1);
 	place_tiles(env->ecs, &args->tilemap, env->textures);
-	env->player = player_create(env->ecs, SPRITE_SIZE * 15,
-					SPRITE_SIZE * 15, env->textures[0]);
-	env->last_pos = (t_vector){app->params.w / 2, app->params.h /2};
+	env->player = player_create(env->ecs, SPRITE_SIZE * 8,
+			SPRITE_SIZE * 8, env->textures[0]);
+	env->last_pos = (t_vector){app->params.w / 2, app->params.h / 2};
 	return (0);
 }

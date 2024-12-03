@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:39:24 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 21:53:40 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/03 23:31:02 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 # define ARRAY_LIST_INIT 32
 
-typedef struct	s_array_list
+typedef struct s_array_list
 {
 	void		*data;
 	uint16_t	len;

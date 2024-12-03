@@ -6,13 +6,13 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:24:01 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 23:26:29 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/03 23:35:43 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "manda.h"
 
-static void collide_system(t_ecs *ecs, t_col_grid *grid)
+static void	collide_system(t_ecs *ecs, t_col_grid *grid)
 {
 	t_ecs_ulist	query;
 	t_vector	*pos;
@@ -24,7 +24,7 @@ static void collide_system(t_ecs *ecs, t_col_grid *grid)
 		pos = ecs_entity_get(ecs, query.values[query.len], TRANSFORM);
 		col = ecs_entity_get(ecs, query.values[query.len], COLLIDER);
 		grid_insert(grid, (t_aabb){pos->x, pos->y, col->w, col->h},
-			  query.values[query.len]);
+			query.values[query.len]);
 	}
 }
 
@@ -40,12 +40,12 @@ static void	draw_system(t_ecs *ecs, void *mlx, void *win, t_aabb cam)
 		img = ecs_entity_get(ecs, query.values[query.len], SPRITE);
 		pos = ecs_entity_get(ecs, query.values[query.len], TRANSFORM);
 		if (intersects((t_aabb){pos->x, pos->y, img->w, img->h}, cam))
-		mlx_put_image_to_window(mlx, win, img->texture,
+			mlx_put_image_to_window(mlx, win, img->texture,
 				pos->x - cam.x, pos->y - cam.y);
 	}
 }
 
-static void __on_collide(uint32_t a, uint32_t b, void *ptr)
+static void	__on_collide(uint32_t a, uint32_t b, void *ptr)
 {
 	t_env		*env;
 	t_collider	*col1;
@@ -61,7 +61,6 @@ static void __on_collide(uint32_t a, uint32_t b, void *ptr)
 	if (col1->type == PLAYER && col2->type == STATIC)
 		*pos1 = env->last_pos;
 }
-
 
 int	__on_update(t_app *app, t_scene *scene)
 {

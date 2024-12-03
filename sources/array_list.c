@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:46:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 22:06:35 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/03 23:32:03 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	array_list_remove(t_array_list *list, uint16_t index)
 		return ;
 	list->len--;
 	ft_memcpy(list->data + list->len * list->mem,
-		   list->data + index * list->mem, list->mem);
+		list->data + index * list->mem, list->mem);
 }
 
 void	array_list_insert(t_array_list *list, void *ptr)
@@ -52,7 +52,7 @@ void	array_list_insert(t_array_list *list, void *ptr)
 		if (new_size >> 1 != list->cap)
 			new_size = UINT16_MAX;
 		list->data = ft_realloc(list->data, list->cap * list->mem,
-						new_size * list->mem);
+				new_size * list->mem);
 		list->cap = new_size;
 	}
 	ft_memcpy(list->data + list->len * list->mem, ptr, list->mem);

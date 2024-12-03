@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:23:49 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 19:18:30 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/03 23:33:23 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ void	tilemap_set(t_tilemap *map, uint32_t x, uint32_t y, t_tile t)
 	if (__builtin_expect(!map || !map->tiles || x >= map->w || y >= map->h, 0))
 		return ;
 	if (__builtin_expect(t != FLOOR && t != WALL && t != ITEM
-		&& t != EXIT && t != SPAWN, 0))
+			&& t != EXIT && t != SPAWN, 0))
 		t = FLOOR;
 	*(map->tiles + y * map->w + x) = t;
 }
-
