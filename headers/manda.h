@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 11:37:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 14:47:16 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/03 20:59:15 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@
 
 # include "application.h"
 # include "collision.h"
+# include "parsing.h"
 
 # define NB_SCENES 1
 # define NB_COMPONENTS 3
 # define NB_TEXTURES 2
+# define SPRITE_SIZE 32
 
 # define K_LEFT 4
 # define K_RIGHT 7
@@ -71,12 +73,22 @@ typedef struct s_sprite
 	int		h;
 }	t_sprite;
 
+typedef struct s_prog_args
+{
+	char		**argv;
+	int			argc;
+	t_tilemap	tilemap;
+}	t_prog_args;
+
 typedef struct s_env
 {
 	t_sprite	textures[NB_TEXTURES];
 	t_ecs		*ecs;
 	t_col_grid	grid;
+	t_aabb		camera;
+	t_tilemap	tilemap;
 	uint32_t	player;
+	t_vector	last_pos;
 }			t_env;
 
 //	============================== Functions =============================

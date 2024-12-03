@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:46:45 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 15:03:41 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/03 19:43:12 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define APPLICATION_H
 
 # include "mlx.h"
-# include "mlx_profile.h"
 
 # include <stdint.h>
 # include <stdlib.h>
@@ -27,11 +26,12 @@
 typedef struct s_scene	t_scene;
 typedef struct s_app	t_app;
 typedef int				(*t_scene_callback)(t_app *, t_scene *);
-typedef int				(*t_event_callback)(t_app *, t_scene *, mlx_event_type,
-				int);
+typedef int				(*t_event_callback)(t_app *, t_scene *,
+		mlx_event_type, int);
 
 typedef struct s_win_params
 {
+	void				*args;
 	const char			*name;
 	uint32_t			w;
 	uint32_t			h;

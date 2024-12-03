@@ -6,14 +6,14 @@
 #    By: mrouves <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 18:27:35 by mrouves           #+#    #+#              #
-#    Updated: 2024/12/03 17:48:51 by mrouves          ###   ########.fr        #
+#    Updated: 2024/12/03 18:23:01 by mrouves          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ifeq ($(MODE), bonus)
-include sources/bonus.mk
+include sources/sources_bonus.mk
 else
-include sources/manda.mk
+include sources/sources_manda.mk
 endif
 
 NAME 			:= so_long

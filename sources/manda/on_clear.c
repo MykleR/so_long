@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:20:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 15:44:50 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/03 19:29:49 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	__on_clear(t_app *app, t_scene *scene)
 	grid_destroy(&env->grid);
 	i = -1;
 	while (++i < NB_TEXTURES)
-		mlx_destroy_image(app->mlx, env->textures[i].texture);
+		if (env->textures[i].texture)
+			mlx_destroy_image(app->mlx, env->textures[i].texture);
 	free(env);
 	return (0);
 }
