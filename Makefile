@@ -6,14 +6,17 @@
 #    By: mrouves <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 18:27:35 by mrouves           #+#    #+#              #
-#    Updated: 2024/11/21 18:55:41 by mrouves          ###   ########.fr        #
+#    Updated: 2024/12/03 17:48:51 by mrouves          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-include sources/sources.mk
+ifeq ($(MODE), bonus)
+include sources/bonus.mk
+else
+include sources/manda.mk
+endif
 
 NAME 			:= so_long
-
 DIR_HEADERS		:= headers
 DIR_SOURCES		:= sources
 DIR_OBJS		:= .objs
@@ -42,7 +45,10 @@ RED				= \033[0;31m
 END				= \033[0m
 DIR_DUP			= mkdir -p $(@D)
 
-all: $(NAME)
+all: $(NAME) $(OBJS)
+
+bonus: 
+	@$(MAKE) MODE=$@ --no-print-directory -j
 
 $(NAME): $(OBJS) $(ECS) $(MLX) $(LIBFT)
 	@$(CC) $(CFLAGS) $(IFLAGS) $^ -o $@ -lm -lSDL2

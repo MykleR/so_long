@@ -1,18 +1,17 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    sources.mk                                         :+:      :+:    :+:    #
+#    bonus.mk                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mrouves <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/10/29 16:59:36 by mrouves           #+#    #+#              #
-#    Updated: 2024/11/29 14:10:30 by mrouves          ###   ########.fr        #
+#    Created: 2024/12/03 17:46:12 by mrouves           #+#    #+#              #
+#    Updated: 2024/12/03 17:47:05 by mrouves          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SOURCES		:=	game/main.c\
-				collisions/collision_check.c\
-				collisions/collision_grid.c\
-				application/app.c\
-				application/app_hooks.c
-
+SOURCES		:= application/app.c\
+			   application/app_extra.c\
+			   application/app_hooks.c\
+			   collisions/collision_check.c\
+			   collisions/collision_grid.c

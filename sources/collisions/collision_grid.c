@@ -6,11 +6,11 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 12:41:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/02 21:38:21 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/03 12:05:43 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "manda.h"
 
 bool	grid_create(t_col_grid *grid, t_aabb bounds)
 {
@@ -57,19 +57,19 @@ void	grid_clear(t_col_grid *grid)
 		grid->cells[i].len = 0;
 }
 
-void	grid_insert(t_col_grid *grid, uint32_t id, t_vector pos)
+void	grid_insert(t_col_grid *grid, uint32_t id, int x, int y)
 {
 	uint32_t	i;
 	uint32_t	j;
 	uint32_t	index;
 
-	if (__builtin_expect(pos.x <= grid->bounds.x
-			|| pos.x >= grid->bounds.x + grid->bounds.w
-			|| pos.y <= grid->bounds.y
-			|| pos.y >= grid->bounds.y + grid->bounds.h, 0))
+	if (__builtin_expect(x <= grid->bounds.x
+			|| x >= grid->bounds.x + grid->bounds.w
+			|| y <= grid->bounds.y
+			|| y >= grid->bounds.y + grid->bounds.h, 0))
 		return ;
-	j = floor((pos.x - grid->bounds.x) / grid->cell_size);
-	i = floor((pos.y - grid->bounds.y) / grid->cell_size);
+	j = (x - grid->bounds.x) / grid->cell_size;
+	i = (y - grid->bounds.y) / grid->cell_size;
 	index = i * grid->length + j;
 	if (__builtin_expect(index < grid->area, 1))
 		list_add(grid->cells + index, id);

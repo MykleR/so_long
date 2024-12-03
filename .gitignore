@@ -2,6 +2,7 @@
 *.d
 .cache/
 so_long
+compile_commands.json
 
 # Object files
 *.o

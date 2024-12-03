@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:45:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/02 21:47:11 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/03 11:33:20 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,8 @@ static void	move_system(t_ecs *ecs)
 		bdy = ecs_entity_get(ecs, query.values[query.len], RIGIDBODY);
 		bdy->vel.x += bdy->accel.x;
 		bdy->vel.y += bdy->accel.y;
-		pos->x = pos->x + bdy->vel.x;
-		pos->y = pos->y + bdy->vel.y;
+		pos->x += bdy->vel.x;
+		pos->y += bdy->vel.y;
 	}
 }
 

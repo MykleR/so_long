@@ -6,11 +6,11 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:21:11 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 00:09:33 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/03 12:27:29 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "manda.h"
 
 bool	intersects(t_aabb b, t_aabb a)
 {
