@@ -6,7 +6,7 @@
 #    By: mrouves <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 18:27:35 by mrouves           #+#    #+#              #
-#    Updated: 2024/12/03 18:23:01 by mrouves          ###   ########.fr        #
+#    Updated: 2024/12/03 23:43:54 by mrouves          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,7 +76,7 @@ fclean: clean
 	@printf "$(RED)$(NAME) removed$(END)\n"
 	@$(MAKE) -C $(DIR_ECS) --no-print-directory fclean
 	@$(MAKE) -C $(DIR_LIBFT) --no-print-directory fclean
-#	@$(MAKE) -C $(DIR_MLX) --no-print-directory fclean
+	@$(MAKE) -C $(DIR_MLX) --no-print-directory fclean
 
 re: fclean all
 
