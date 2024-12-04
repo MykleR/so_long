@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:24:01 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 16:18:28 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 23:20:56 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,21 @@ static void	draw_system(t_ecs *ecs, void *mlx, void *win, t_aabb cam)
 
 void	__player_collide(uint32_t player, uint32_t other, void *ptr)
 {
+	t_app		*app;
 	t_env		*env;
 	t_collider	*col1;
 	t_collider	*col2;
 
-	env = (t_env *)((t_scene *)ptr)->env;
+	app = (t_app *)ptr;
+	env = (t_env *)(app->scenes + app->scene_index)->env;
 	col1 = ecs_entity_get(env->ecs, player, C_COLLIDER);
 	col2 = ecs_entity_get(env->ecs, other, C_COLLIDER);
 	if (col1->tag != T_PLAYER || col1->tag == col2->tag)
 		return ;
+	if (col2->tag == T_ITEM)
+		ecs_entity_kill(env->ecs, other);
+	if (col2->tag == T_EXIT)
+		mlx_loop_end(app->mlx);
 }
 
 int	__on_update(t_app *app, t_scene *scene)
@@ -67,7 +73,7 @@ int	__on_update(t_app *app, t_scene *scene)
 	env = (t_env *)scene->env;
 	mlx_clear_window(app->mlx, app->win);
 	collide_system(env->ecs, &env->grid);
-	grid_process(&env->grid, scene);
+	grid_process(&env->grid, app);
 	pos = ecs_entity_get(env->ecs, env->player, C_POSITION);
 	env->camera.x = pos->x - env->camera.w / 2;
 	env->camera.y = pos->y - env->camera.h / 2;

@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:23:49 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 14:42:33 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 20:43:24 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,20 @@ bool	tilemap_create(t_tilemap *map, uint16_t w, uint16_t h)
 	map->w = w;
 	map->h = h;
 	map->area = w * h;
+	map->spawn = (t_point){-1, -1};
+	map->exit = (t_point){-1, -1};
 	map->tiles = ft_calloc(sizeof(t_tile), map->area);
 	return (map->tiles != NULL);
+}
+
+bool	tilemap_copy(t_tilemap *dst, t_tilemap *src)
+{
+	if (!tilemap_create(dst, src->w, src->h))
+		return (false);
+	ft_memcpy(dst->tiles, src->tiles, sizeof(t_tile) * src->area);
+	dst->spawn = src->spawn;
+	dst->exit = src->exit;
+	return (true);
 }
 
 void	tilemap_destroy(t_tilemap *map)
@@ -31,19 +43,19 @@ void	tilemap_destroy(t_tilemap *map)
 	ft_memset(map, 0, sizeof(t_tilemap));
 }
 
-t_tile	tilemap_get(t_tilemap *map, uint16_t x, uint16_t y)
+t_tile	tilemap_get(t_tilemap *map, uint16_t i, uint16_t j)
 {
-	if (__builtin_expect(!map || !map->tiles || x >= map->w || y >= map->h, 0))
+	if (__builtin_expect(!map || !map->tiles || j >= map->w || i >= map->h, 0))
 		return (FLOOR);
-	return (*(map->tiles + y * map->w + x));
+	return (*(map->tiles + i * map->w + j));
 }
 
-void	tilemap_set(t_tilemap *map, uint16_t x, uint16_t y, t_tile t)
+void	tilemap_set(t_tilemap *map, uint16_t i, uint16_t j, t_tile t)
 {
-	if (__builtin_expect(!map || !map->tiles || x >= map->w || y >= map->h, 0))
+	if (__builtin_expect(!map || !map->tiles || j >= map->w || i >= map->h, 0))
 		return ;
 	if (__builtin_expect(t != FLOOR && t != WALL && t != ITEM
 			&& t != EXIT && t != SPAWN, 0))
 		t = FLOOR;
-	*(map->tiles + y * map->w + x) = t;
+	*(map->tiles + i * map->w + j) = t;
 }

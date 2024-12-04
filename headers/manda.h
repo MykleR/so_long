@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 11:37:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 16:12:33 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 22:38:42 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # define NB_SCENES 1
 # define NB_COMPONENTS 3
-# define NB_TEXTURES 2
+# define NB_TEXTURES 5
 
 # define K_LEFT 4
 # define K_RIGHT 7
@@ -45,8 +45,8 @@ typedef enum __attribute__((__packed__)) e_collider_tag
 {
 	T_BLOCK,
 	T_PLAYER,
-	T_ENNEMY,
 	T_ITEM,
+	T_EXIT,
 }	t_collider_tag;
 
 //
@@ -95,6 +95,7 @@ typedef struct s_env
 	t_col_grid	grid;
 	t_aabb		camera;
 	uint32_t	player;
+	uint32_t	nb_move;
 }			t_env;
 
 //	============================== Functions =============================

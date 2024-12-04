@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:57:36 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 15:16:56 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 22:05:31 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,28 @@ typedef enum e_tile
 	SPAWN = 'P'
 }	t_tile;
 
+typedef struct s_point
+{
+	uint16_t	i;
+	uint16_t	j;
+}	t_point;
+
 typedef struct s_tilemap
 {
 	t_tile		*tiles;
 	uint32_t	area;
 	uint16_t	w;
 	uint16_t	h;
-	uint16_t	spawn_x;
-	uint16_t	spawn_y;
-	uint16_t	exit_x;
-	uint16_t	exit_y;
+	t_point		spawn;
+	t_point		exit;
 }	t_tilemap;
 
 bool	tilemap_parse(t_tilemap *map, const char *path);
 bool	tilemap_create(t_tilemap *map, uint16_t w, uint16_t h);
+bool	tilemap_copy(t_tilemap *dst, t_tilemap *src);
+bool	tilemap_check(t_tilemap *map);
 void	tilemap_destroy(t_tilemap *map);
-t_tile	tilemap_get(t_tilemap *map, uint16_t x, uint16_t y);
-void	tilemap_set(t_tilemap *map, uint16_t x, uint16_t y, t_tile t);
+t_tile	tilemap_get(t_tilemap *map, uint16_t i, uint16_t j);
+void	tilemap_set(t_tilemap *map, uint16_t i, uint16_t j, t_tile t);
 
 #endif

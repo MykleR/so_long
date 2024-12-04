@@ -6,7 +6,7 @@
 #    By: mrouves <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/29 16:59:36 by mrouves           #+#    #+#              #
-#    Updated: 2024/12/04 13:23:24 by mrouves          ###   ########.fr        #
+#    Updated: 2024/12/04 20:04:50 by mrouves          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SOURCES		:=	manda/main.c\
 				application/app_extra.c\
 				parsing/tilemap.c\
 				parsing/tilemap_parsing.c\
+				parsing/tilemap_check.c\
 				collisions/collision_check.c\
 				collisions/collision_grid.c\
 
