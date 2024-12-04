@@ -6,19 +6,18 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 11:37:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 20:59:15 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 13:25:20 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MANDA_H
 # define MANDA_H
 
-# include "ecs.h"
-# include "libft.h"
+# include <ecs.h>
 
-# include "application.h"
-# include "collision.h"
-# include "parsing.h"
+# include <application.h>
+# include <collision.h>
+# include <parsing.h>
 
 # define NB_SCENES 1
 # define NB_COMPONENTS 3

@@ -6,14 +6,14 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:57:36 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 19:19:51 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 13:25:44 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-# include "libft.h"
+# include <libft.h>
 # include <fcntl.h>
 
 typedef enum e_tile

@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:46:45 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 19:43:12 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 13:26:09 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "mlx.h"
 
 # include <stdint.h>
-# include <stdlib.h>
 # include <stdbool.h>
 # include <stdarg.h>
 

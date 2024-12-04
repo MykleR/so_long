@@ -6,11 +6,11 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:24:01 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 23:35:43 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 13:27:19 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "manda.h"
+#include <manda.h>
 
 static void	collide_system(t_ecs *ecs, t_col_grid *grid)
 {

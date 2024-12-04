@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:09:21 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 16:02:23 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 13:26:18 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	__app_update(void *param)
 	scene = app->scenes + app->scene_last;
 	if (scene->on_destroy && scene->on_destroy(app, scene) == APP_ERROR)
 		return (__app_stop(app, 1));
-	scene->env = NULL;
+	scene->env = 0;
 	scene = app->scenes + app->scene_index;
 	if (scene->on_init && scene->on_init(app, scene) == APP_ERROR)
 		return (__app_stop(app, 1));

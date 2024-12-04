@@ -6,11 +6,11 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:23:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 23:34:59 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 13:27:07 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "manda.h"
+#include <manda.h>
 
 static bool	import_sprite(void *mlx, char *path, t_sprite *out)
 {
