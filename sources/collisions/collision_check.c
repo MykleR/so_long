@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:21:11 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 23:09:23 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 14:54:22 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ static bool	is_ingrid(int16_t row, int16_t col, uint16_t w, uint16_t h)
 	return (row >= 0 && row < h && col >= 0 && col < w);
 }
 
-static void	check_collisions(t_array_list *l1, t_array_list *l2,
-				t_collide_event callback, void *data)
+static void	check_collisions(t_array_list *l1, t_array_list *l2, void *data)
 {
 	t_col_info	*col1;
 	t_col_info	*col2;
@@ -40,13 +39,17 @@ static void	check_collisions(t_array_list *l1, t_array_list *l2,
 		{
 			col2 = array_list_get(l2, j);
 			if (col1->id != col2->id && intersects(col1->bounds, col2->bounds))
-				callback(col1->id, col2->id, data);
+			{
+				if (__builtin_expect(col1->on_collide != NULL, 1))
+					col1->on_collide(col1->id, col2->id, data);
+				if (__builtin_expect(col2->on_collide != NULL, 1))
+					col2->on_collide(col2->id, col1->id, data);
+			}
 		}
 	}
 }
 
-static void	check_neightbours(t_col_grid *grid, uint32_t i,
-				t_collide_event callback, void *data)
+static void	check_neightbours(t_col_grid *grid, uint32_t i, void *data)
 {
 	static const int	offsets[16] = {-1, -1, -1, 0, 0, 1, 1, 1,
 		-1, 0, 1, -1, 1, -1, 0, 1};
@@ -59,12 +62,11 @@ static void	check_neightbours(t_col_grid *grid, uint32_t i,
 		nbour = i + grid->length * offsets[j] + offsets[j + 8];
 		if (is_ingrid(nbour / grid->length, nbour % grid->length,
 				grid->length, grid->length) && grid->cells[nbour].len)
-			check_collisions(grid->cells + i, grid->cells + nbour,
-				callback, data);
+			check_collisions(grid->cells + i, grid->cells + nbour, data);
 	}
 }
 
-void	grid_process(t_col_grid *grid, t_collide_event callback, void *data)
+void	grid_process(t_col_grid *grid, void *data)
 {
 	uint32_t	i;
 
@@ -73,8 +75,8 @@ void	grid_process(t_col_grid *grid, t_collide_event callback, void *data)
 	{
 		if ((grid->cells + i)->len)
 		{
-			check_collisions(grid->cells + i, grid->cells + i, callback, data);
-			check_neightbours(grid, i, callback, data);
+			check_collisions(grid->cells + i, grid->cells + i, data);
+			check_neightbours(grid, i, data);
 		}
 	}
 	grid_clear(grid);

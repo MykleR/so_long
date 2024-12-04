@@ -6,13 +6,13 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:23:49 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 13:29:50 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 14:42:33 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-bool	tilemap_create(t_tilemap *map, uint32_t w, uint32_t h)
+bool	tilemap_create(t_tilemap *map, uint16_t w, uint16_t h)
 {
 	if (__builtin_expect(!map || !w || !h, 0))
 		return (false);
@@ -31,14 +31,14 @@ void	tilemap_destroy(t_tilemap *map)
 	ft_memset(map, 0, sizeof(t_tilemap));
 }
 
-t_tile	tilemap_get(t_tilemap *map, uint32_t x, uint32_t y)
+t_tile	tilemap_get(t_tilemap *map, uint16_t x, uint16_t y)
 {
 	if (__builtin_expect(!map || !map->tiles || x >= map->w || y >= map->h, 0))
 		return (FLOOR);
 	return (*(map->tiles + y * map->w + x));
 }
 
-void	tilemap_set(t_tilemap *map, uint32_t x, uint32_t y, t_tile t)
+void	tilemap_set(t_tilemap *map, uint16_t x, uint16_t y, t_tile t)
 {
 	if (__builtin_expect(!map || !map->tiles || x >= map->w || y >= map->h, 0))
 		return ;

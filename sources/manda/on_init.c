@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:23:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 13:59:21 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 16:18:11 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ static bool	import_sprite(void *mlx, char *path, t_sprite *out)
 }
 
 static uint32_t	entity_create(t_ecs *ecs, t_vector pos,
-		t_sprite sprite, t_collider_tag tag)
+		t_sprite *sprite, t_collider_tag tag)
 {
 	uint32_t	id;
 
 	id = ecs_entity_create(ecs);
 	ecs_entity_add(ecs, id, C_POSITION, &pos);
 	ecs_entity_add(ecs, id, C_COLLIDER,
-		&((t_collider){sprite.w, sprite.h, tag}));
-	ecs_entity_add(ecs, id, C_SPRITE, &sprite);
+		&((t_collider){NULL, sprite->w, sprite->h, tag}));
+	ecs_entity_add(ecs, id, C_SPRITE, sprite);
 	return (id);
 }
 
@@ -37,15 +37,22 @@ static void	place_tiles(t_ecs *ecs, t_tilemap *map, t_sprite *sprites)
 {
 	uint32_t	x;
 	uint32_t	y;
+	t_tile		tile;
 
 	y = -1;
 	while (++y < map->h)
 	{
 		x = -1;
 		while (++x < map->w)
-			if (tilemap_get(map, x, y) == WALL)
-				entity_create(ecs, (t_vector){x * SPRITE_SIZE,
-				  y * SPRITE_SIZE}, sprites[1], T_BLOCK);
+		{
+			tile = tilemap_get(map, x, y);
+			if (tile == WALL)
+				entity_create(ecs, (t_vector){x * TILE_SIZE,
+					y * TILE_SIZE}, sprites + 1, T_BLOCK);
+			else if (tile == ITEM)
+				entity_create(ecs, (t_vector){x * TILE_SIZE,
+					y * TILE_SIZE}, sprites + 2, T_ITEM);
+		}
 	}
 }
 
@@ -66,9 +73,10 @@ int	__on_init(t_app *app, t_scene *scene)
 		return (APP_ERROR);
 	import_sprite(app->mlx, "resources/player.png", env->textures);
 	import_sprite(app->mlx, "resources/wall.png", env->textures + 1);
+	env->player = entity_create(env->ecs, (t_vector){TILE_SIZE * 8,
+			TILE_SIZE * 8}, env->textures, T_PLAYER);
+	((t_collider *)(ecs_entity_get(env->ecs, env->player,
+						C_COLLIDER)))->on_collide = __player_collide;
 	place_tiles(env->ecs, &args->tilemap, env->textures);
-	env->player = entity_create(env->ecs, (t_vector){SPRITE_SIZE * 8,
-			SPRITE_SIZE * 8}, env->textures[0], T_PLAYER);
-	env->last_pos = (t_vector){app->params.w / 2, app->params.h / 2};
 	return (0);
 }

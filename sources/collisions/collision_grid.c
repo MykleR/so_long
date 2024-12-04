@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 12:41:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/03 23:09:27 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 14:52:08 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	grid_clear(t_col_grid *grid)
 		grid->cells[i].len = 0;
 }
 
-void	grid_insert(t_col_grid *grid, t_aabb bounds, uint32_t id)
+void	grid_insert(t_col_grid *grid, t_collide_event callback,
+			t_aabb bounds, uint32_t id)
 {
 	uint32_t	i;
 	uint32_t	j;
@@ -75,5 +76,6 @@ void	grid_insert(t_col_grid *grid, t_aabb bounds, uint32_t id)
 	i = (bounds.y - grid->bounds.y) / grid->cell_size;
 	index = i * grid->length + j;
 	if (__builtin_expect(index < grid->area, 1))
-		array_list_insert(grid->cells + index, &((t_col_info){bounds, id}));
+		array_list_insert(grid->cells + index,
+			&((t_col_info){callback, bounds, id}));
 }

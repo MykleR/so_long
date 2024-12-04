@@ -6,15 +6,15 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:35:58 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 13:29:15 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 14:43:46 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-static void	tilemap_parse_line(t_tilemap *map, const char *line, uint32_t y)
+static void	tilemap_parse_line(t_tilemap *map, const char *line, uint16_t y)
 {
-	uint32_t	x;
+	uint16_t	x;
 
 	x = 0;
 	while (*line)
@@ -24,7 +24,7 @@ static void	tilemap_parse_line(t_tilemap *map, const char *line, uint32_t y)
 	}
 }
 
-static void	tilemap_get_bounds(const char *path, uint32_t *w, uint32_t *h)
+static void	tilemap_get_bounds(const char *path, uint16_t *w, uint16_t *h)
 {
 	int		fd;
 	char	*line;
@@ -47,7 +47,7 @@ bool	tilemap_parse(t_tilemap *map, const char *path)
 {
 	char		*line;
 	int			fd;
-	uint32_t	y;
+	uint16_t	y;
 
 	tilemap_get_bounds(path, &map->w, &map->h);
 	if (!tilemap_create(map, map->w, map->h))

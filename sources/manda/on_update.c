@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:24:01 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 14:00:54 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 16:18:28 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static void	collide_system(t_ecs *ecs, t_col_grid *grid)
 	{
 		pos = ecs_entity_get(ecs, query.values[query.len], C_POSITION);
 		col = ecs_entity_get(ecs, query.values[query.len], C_COLLIDER);
-		grid_insert(grid, (t_aabb){pos->x, pos->y, col->w, col->h},
+		grid_insert(grid, col->on_collide,
+			(t_aabb){pos->x, pos->y, col->w, col->h},
 			query.values[query.len]);
 	}
 }
@@ -45,21 +46,17 @@ static void	draw_system(t_ecs *ecs, void *mlx, void *win, t_aabb cam)
 	}
 }
 
-static void	__on_collide(uint32_t a, uint32_t b, void *ptr)
+void	__player_collide(uint32_t player, uint32_t other, void *ptr)
 {
 	t_env		*env;
 	t_collider	*col1;
 	t_collider	*col2;
-	t_vector	*pos1;
 
 	env = (t_env *)((t_scene *)ptr)->env;
-	col1 = ecs_entity_get(env->ecs, a, C_COLLIDER);
-	col2 = ecs_entity_get(env->ecs, b, C_COLLIDER);
-	if (col1->tag == col2->tag)
+	col1 = ecs_entity_get(env->ecs, player, C_COLLIDER);
+	col2 = ecs_entity_get(env->ecs, other, C_COLLIDER);
+	if (col1->tag != T_PLAYER || col1->tag == col2->tag)
 		return ;
-	pos1 = ecs_entity_get(env->ecs, a, C_POSITION);
-	if (col1->tag == T_PLAYER && col2->tag == T_BLOCK)
-		*pos1 = env->last_pos;
 }
 
 int	__on_update(t_app *app, t_scene *scene)
@@ -70,7 +67,7 @@ int	__on_update(t_app *app, t_scene *scene)
 	env = (t_env *)scene->env;
 	mlx_clear_window(app->mlx, app->win);
 	collide_system(env->ecs, &env->grid);
-	grid_process(&env->grid, __on_collide, scene);
+	grid_process(&env->grid, scene);
 	pos = ecs_entity_get(env->ecs, env->player, C_POSITION);
 	env->camera.x = pos->x - env->camera.w / 2;
 	env->camera.y = pos->y - env->camera.h / 2;

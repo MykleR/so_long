@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 11:37:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 13:48:06 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 16:12:33 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # define NB_SCENES 1
 # define NB_COMPONENTS 3
 # define NB_TEXTURES 2
-# define SPRITE_SIZE 32
 
 # define K_LEFT 4
 # define K_RIGHT 7
@@ -47,7 +46,7 @@ typedef enum __attribute__((__packed__)) e_collider_tag
 	T_BLOCK,
 	T_PLAYER,
 	T_ENNEMY,
-	T_COLLECTIBLE,
+	T_ITEM,
 }	t_collider_tag;
 
 //
@@ -67,6 +66,7 @@ typedef struct s_vector
 // t_collider_type	type -> Collider tag
 typedef struct s_collider
 {
+	t_collide_event	on_collide;
 	uint16_t		w;
 	uint16_t		h;
 	t_collider_tag	tag;
@@ -94,9 +94,7 @@ typedef struct s_env
 	t_ecs		*ecs;
 	t_col_grid	grid;
 	t_aabb		camera;
-	t_tilemap	tilemap;
 	uint32_t	player;
-	t_vector	last_pos;
 }			t_env;
 
 //	============================== Functions =============================
@@ -105,4 +103,5 @@ int		__on_init(t_app *app, t_scene *scene);
 int		__on_event(t_app *app, t_scene *scene, mlx_event_type t, int e);
 int		__on_update(t_app *app, t_scene *scene);
 int		__on_clear(t_app *app, t_scene *scene);
+void	__player_collide(uint32_t player, uint32_t other, void *data);
 #endif

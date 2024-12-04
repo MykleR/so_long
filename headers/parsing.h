@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:57:36 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 13:25:44 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 15:16:56 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <libft.h>
 # include <fcntl.h>
+
+# define TILE_SIZE 32
 
 typedef enum e_tile
 {
@@ -28,15 +30,19 @@ typedef enum e_tile
 typedef struct s_tilemap
 {
 	t_tile		*tiles;
-	uint64_t	area;
-	uint32_t	w;
-	uint32_t	h;
+	uint32_t	area;
+	uint16_t	w;
+	uint16_t	h;
+	uint16_t	spawn_x;
+	uint16_t	spawn_y;
+	uint16_t	exit_x;
+	uint16_t	exit_y;
 }	t_tilemap;
 
 bool	tilemap_parse(t_tilemap *map, const char *path);
-bool	tilemap_create(t_tilemap *map, uint32_t w, uint32_t h);
+bool	tilemap_create(t_tilemap *map, uint16_t w, uint16_t h);
 void	tilemap_destroy(t_tilemap *map);
-t_tile	tilemap_get(t_tilemap *map, uint32_t x, uint32_t y);
-void	tilemap_set(t_tilemap *map, uint32_t x, uint32_t y, t_tile t);
+t_tile	tilemap_get(t_tilemap *map, uint16_t x, uint16_t y);
+void	tilemap_set(t_tilemap *map, uint16_t x, uint16_t y, t_tile t);
 
 #endif
