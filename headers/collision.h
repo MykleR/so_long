@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 11:44:14 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 13:23:44 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 13:43:56 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,6 @@
 
 # define COLGRID_CELL_INIT 16
 # define COLGRID_CELL_SIZE 50
-
-// COLLISIONS
-typedef enum __attribute__((__packed__)) e_collider_type
-{
-	STATIC,
-	PLAYER,
-	PROJECTILE,
-	ENNEMY,
-}	t_collider_type;
 
 typedef struct s_aabb
 {

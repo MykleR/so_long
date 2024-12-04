@@ -6,7 +6,7 @@
 #    By: mrouves <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 18:27:35 by mrouves           #+#    #+#              #
-#    Updated: 2024/12/03 23:43:54 by mrouves          ###   ########.fr        #
+#    Updated: 2024/12/04 13:33:19 by mrouves          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ ECS				:= $(DIR_ECS)/lib-ecs.a
 OBJS			:= $(addprefix $(DIR_OBJS)/, $(SOURCES:%.c=%.o))
 
 CC				:= clang
-CFLAGS			:= -Wall -Wextra -Werror -O3 -DNDEBUG -g
+CFLAGS			:= -Wall -Wextra -Werror -DNDEBUG -g
 IFLAGS			:= -I $(DIR_HEADERS) -I $(MLX_INCLUDES) -I $(LIBFT_INCLUDES) -I $(ECS_INCLUDES)
 
 GREEN			= \033[0;32m

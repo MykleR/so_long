@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:23:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 13:27:07 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 13:59:21 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,16 @@ static bool	import_sprite(void *mlx, char *path, t_sprite *out)
 	return (out->texture != NULL);
 }
 
-static uint32_t	player_create(t_ecs *ecs, int x, int y, t_sprite s)
+static uint32_t	entity_create(t_ecs *ecs, t_vector pos,
+		t_sprite sprite, t_collider_tag tag)
 {
 	uint32_t	id;
 
 	id = ecs_entity_create(ecs);
-	ecs_entity_add(ecs, id, TRANSFORM, &((t_vector){x, y}));
-	ecs_entity_add(ecs, id, COLLIDER, &((t_collider){s.w, s.h, PLAYER}));
-	ecs_entity_add(ecs, id, SPRITE, &s);
-	return (id);
-}
-
-static uint32_t	tile_create(t_ecs *ecs, int x, int y, t_sprite s)
-{
-	uint32_t	id;
-
-	id = ecs_entity_create(ecs);
-	ecs_entity_add(ecs, id, TRANSFORM, &((t_vector){x, y}));
-	ecs_entity_add(ecs, id, COLLIDER, &((t_collider){s.w, s.h, STATIC}));
-	ecs_entity_add(ecs, id, SPRITE, &s);
+	ecs_entity_add(ecs, id, C_POSITION, &pos);
+	ecs_entity_add(ecs, id, C_COLLIDER,
+		&((t_collider){sprite.w, sprite.h, tag}));
+	ecs_entity_add(ecs, id, C_SPRITE, &sprite);
 	return (id);
 }
 
@@ -53,7 +44,8 @@ static void	place_tiles(t_ecs *ecs, t_tilemap *map, t_sprite *sprites)
 		x = -1;
 		while (++x < map->w)
 			if (tilemap_get(map, x, y) == WALL)
-				tile_create(ecs, x * SPRITE_SIZE, y * SPRITE_SIZE, sprites[1]);
+				entity_create(ecs, (t_vector){x * SPRITE_SIZE,
+				  y * SPRITE_SIZE}, sprites[1], T_BLOCK);
 	}
 }
 
@@ -67,18 +59,16 @@ int	__on_init(t_app *app, t_scene *scene)
 	if (!env || !args)
 		return (APP_ERROR);
 	scene->env = env;
+	env->camera = (t_aabb){0, 0, app->params.w, app->params.h};
 	env->ecs = ecs_create(NB_COMPONENTS, sizeof(t_vector),
 			sizeof(t_collider), sizeof(t_sprite));
-	if (!env->ecs)
-		return (APP_ERROR);
-	env->camera = (t_aabb){0, 0, app->params.w, app->params.h};
-	if (!grid_create(&env->grid, env->camera))
+	if (!env->ecs || !grid_create(&env->grid, env->camera))
 		return (APP_ERROR);
 	import_sprite(app->mlx, "resources/player.png", env->textures);
 	import_sprite(app->mlx, "resources/wall.png", env->textures + 1);
 	place_tiles(env->ecs, &args->tilemap, env->textures);
-	env->player = player_create(env->ecs, SPRITE_SIZE * 8,
-			SPRITE_SIZE * 8, env->textures[0]);
+	env->player = entity_create(env->ecs, (t_vector){SPRITE_SIZE * 8,
+			SPRITE_SIZE * 8}, env->textures[0], T_PLAYER);
 	env->last_pos = (t_vector){app->params.w / 2, app->params.h / 2};
 	return (0);
 }

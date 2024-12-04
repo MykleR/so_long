@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 11:37:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 13:25:20 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/04 13:48:06 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,19 @@
 // COMPONENTS
 typedef enum __attribute__((__packed__)) e_component
 {
-	TRANSFORM,
-	COLLIDER,
-	SPRITE,
+	C_POSITION,
+	C_COLLIDER,
+	C_SPRITE,
 }	t_component;
+
+// COLLISIONS
+typedef enum __attribute__((__packed__)) e_collider_tag
+{
+	T_BLOCK,
+	T_PLAYER,
+	T_ENNEMY,
+	T_COLLECTIBLE,
+}	t_collider_tag;
 
 //
 //	============================== Structs =============================
@@ -60,7 +69,7 @@ typedef struct s_collider
 {
 	uint16_t		w;
 	uint16_t		h;
-	t_collider_type	type;
+	t_collider_tag	tag;
 }	t_collider;
 
 // Sprite, used to represet SPRITE component
