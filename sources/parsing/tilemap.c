@@ -6,32 +6,34 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:23:49 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 13:44:25 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 18:16:08 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-bool	tilemap_create(t_tilemap *map, uint16_t w, uint16_t h)
+bool	tilemap_create(t_tilemap *map, uint8_t w, uint8_t h)
 {
-	if (__builtin_expect(!map || !w || !h, 0))
+	if (__builtin_expect(!map || !w || !h || w >= TILEMAP_MAX_SIZE
+		|| h >= TILEMAP_MAX_SIZE, 0))
 		return (false);
-	map->w = w;
-	map->h = h;
+	map->size = (t_point){h, w};
 	map->area = w * h;
 	map->spawn = (t_point){-1, -1};
 	map->exit = (t_point){-1, -1};
+	map->to_collect = 0;
 	map->tiles = ft_calloc(sizeof(t_tile), map->area);
 	return (map->tiles != NULL);
 }
 
-bool	tilemap_copy(t_tilemap *dst, t_tilemap *src)
+bool	tilemap_copy(t_tilemap *dst, t_tilemap src)
 {
-	if (!tilemap_create(dst, src->w, src->h))
+	if (!tilemap_create(dst, src.size.j, src.size.i))
 		return (false);
-	ft_memcpy(dst->tiles, src->tiles, sizeof(t_tile) * src->area);
-	dst->spawn = src->spawn;
-	dst->exit = src->exit;
+	ft_memcpy(dst->tiles, src.tiles, sizeof(t_tile) * src.area);
+	dst->spawn = src.spawn;
+	dst->exit = src.exit;
+	dst->to_collect = src.to_collect;
 	return (true);
 }
 
@@ -43,20 +45,21 @@ void	tilemap_destroy(t_tilemap *map)
 	ft_memset(map, 0, sizeof(t_tilemap));
 }
 
-t_tile	tilemap_get(t_tilemap *map, uint16_t i, uint16_t j)
+t_tile	tilemap_get(t_tilemap map, uint8_t i, uint8_t j)
 {
-	if (__builtin_expect(!map || !map->tiles || j >= map->w || i >= map->h, 0))
+	if (__builtin_expect(!map.tiles || j >= map.size.j || i >= map.size.i, 0))
 		return (FLOOR);
-	return (*(map->tiles + i * map->w + j));
+	return (*(map.tiles + i * map.size.j + j));
 }
 
-bool	tilemap_set(t_tilemap *map, uint16_t i, uint16_t j, t_tile t)
+bool	tilemap_set(t_tilemap *map, uint8_t i, uint8_t j, t_tile t)
 {
-	if (__builtin_expect(!map || !map->tiles || j >= map->w || i >= map->h, 0))
+	if (__builtin_expect(!map || !map->tiles
+		|| j >= map->size.j || i >= map->size.i, 0))
 		return (false);
 	if (__builtin_expect(t != FLOOR && t != WALL && t != ITEM
 			&& t != EXIT && t != SPAWN, 0))
 		return (false);
-	*(map->tiles + i * map->w + j) = t;
+	*(map->tiles + i * map->size.j + j) = t;
 	return (true);
 }

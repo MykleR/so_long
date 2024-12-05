@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 11:37:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 22:38:42 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 15:54:39 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ typedef struct s_env
 	t_aabb		camera;
 	uint32_t	player;
 	uint32_t	nb_move;
+	uint16_t	collected;
+	uint16_t	to_collect;
 }			t_env;
 
 //	============================== Functions =============================

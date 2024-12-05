@@ -6,13 +6,18 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:24:01 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 23:24:05 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 18:37:52 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <manda.h>
 
-static void	collide_system(t_ecs *ecs, t_col_grid *grid)
+static float	lerp(float v0, float v1, float t)
+{
+	return (v0 + t * (v1 - v0));
+}
+
+void	collide_system(t_ecs *ecs, t_col_grid *grid)
 {
 	t_ecs_ulist	query;
 	t_vector	*pos;
@@ -29,7 +34,7 @@ static void	collide_system(t_ecs *ecs, t_col_grid *grid)
 	}
 }
 
-static void	draw_system(t_ecs *ecs, void *mlx, void *win, t_aabb cam)
+void	draw_system(t_ecs *ecs, void *mlx, void *win, t_aabb cam)
 {
 	t_ecs_ulist	query;
 	t_sprite	*img;
@@ -60,8 +65,11 @@ void	__player_collide(uint32_t player, uint32_t other, void *ptr)
 	if (col1->tag != T_PLAYER || col1->tag == col2->tag)
 		return ;
 	if (col2->tag == T_ITEM)
+	{
+		env->collected++;
 		ecs_entity_kill(env->ecs, other);
-	if (col2->tag == T_EXIT)
+	}
+	if (col2->tag == T_EXIT && env->collected == env->to_collect)
 		mlx_loop_end(app->mlx);
 }
 
@@ -75,8 +83,10 @@ int	__on_update(t_app *app, t_scene *scene)
 	collide_system(env->ecs, &env->grid);
 	grid_process(&env->grid, app);
 	pos = ecs_entity_get(env->ecs, env->player, C_POSITION);
-	env->camera.x = pos->x - env->camera.w / 2;
-	env->camera.y = pos->y - env->camera.h / 2;
+	env->camera.x = lerp(env->camera.x, pos->x - (float)env->camera.w / 2, .05);
+	env->camera.y = lerp(env->camera.y, pos->y - (float)env->camera.h / 2, .05);
+	env->grid.bounds.x = env->camera.x;
+	env->grid.bounds.y = env->camera.y;
 	draw_system(env->ecs, app->mlx, app->win, env->camera);
 	return (0);
 }

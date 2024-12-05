@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:23:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 22:45:25 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 16:11:09 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static uint32_t	tile_create(t_ecs *ecs, t_vector pos,
 	ecs_entity_add(ecs, id, C_SPRITE, sprite);
 	ecs_entity_add(ecs, id, C_POSITION, &pos);
 	return (id);
-
 }
 
 static uint32_t	player_create(t_ecs *ecs, t_vector pos, t_sprite *sprite)
@@ -56,21 +55,21 @@ static uint32_t	player_create(t_ecs *ecs, t_vector pos, t_sprite *sprite)
 	return (id);
 }
 
-static void	place_tiles(t_ecs *ecs, t_tilemap *map, t_sprite *sprites)
+static void	place_tiles(t_ecs *ecs, t_tilemap map, t_sprite *sprites)
 {
-	uint32_t	x;
-	uint32_t	y;
+	uint32_t	i;
+	uint32_t	j;
 	t_vector	pos;
 	t_tile		tile;
 
-	y = -1;
-	while (++y < map->h)
+	i = -1;
+	while (++i < map.size.i)
 	{
-		x = -1;
-		while (++x < map->w)
+		j = -1;
+		while (++j < map.size.j)
 		{
-			pos = (t_vector){x * TILE_SIZE, y * TILE_SIZE};
-			tile = tilemap_get(map, y, x);
+			pos = (t_vector){j * TILE_SIZE, i * TILE_SIZE};
+			tile = tilemap_get(map, i, j);
 			tile_create(ecs, pos, sprites + 1, tile);
 		}
 	}
@@ -81,11 +80,10 @@ int	__on_init(t_app *app, t_scene *scene)
 	t_env		*env;
 	t_prog_args	*args;
 
-	env = ft_calloc(sizeof(t_env), 1);
 	args = (t_prog_args *)app->params.args;
+	env = (t_env *)scene->env;
 	if (!env || !args)
 		return (APP_ERROR);
-	scene->env = env;
 	env->camera = (t_aabb){0, 0, app->params.w, app->params.h};
 	env->ecs = ecs_create(NB_COMPONENTS, sizeof(t_vector),
 			sizeof(t_collider), sizeof(t_sprite));
@@ -99,6 +97,7 @@ int	__on_init(t_app *app, t_scene *scene)
 	env->player = player_create(env->ecs, (t_vector){
 		TILE_SIZE * args->tilemap.spawn.j,
 		TILE_SIZE * args->tilemap.spawn.i}, env->textures);
-	place_tiles(env->ecs, &args->tilemap, env->textures);
+	place_tiles(env->ecs, args->tilemap, env->textures);
+	env->to_collect = args->tilemap.to_collect;
 	return (0);
 }

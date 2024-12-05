@@ -6,15 +6,15 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:35:58 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 13:52:40 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 19:18:18 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-static bool	parse_line(t_tilemap *map, const char *line, uint16_t i)
+static bool	parse_line(t_tilemap *map, const char *line, uint8_t i)
 {
-	uint16_t	j;
+	uint8_t	j;
 
 	j = 0;
 	while (*line && *line != '\n')
@@ -23,10 +23,10 @@ static bool	parse_line(t_tilemap *map, const char *line, uint16_t i)
 			return (false);
 		line++;
 	}
-	return (j == map->w);
+	return (j == map->size.j);
 }
 
-static t_parse_error	get_bounds(const char *path, uint16_t *w, uint16_t *h)
+static t_parse_error	get_bounds(const char *path, uint8_t *w, uint8_t *h)
 {
 	int			fd;
 	char		*line;
@@ -52,7 +52,7 @@ void	print_parse_error(t_parse_error error)
 	static const char	*error_messages[8] = {
 		"Ok\n",
 		"Couldn't open file.\n",
-		"Couldn't crate tilemap.\n",
+		"Couldn't create tilemap.\n",
 		"Bounds are not closed !\n",
 		"Spawn is invalid !\n",
 		"Bounds invalid (could be invalid char).\n",
@@ -67,14 +67,14 @@ void	print_parse_error(t_parse_error error)
 
 t_parse_error	tilemap_parse(t_tilemap *map, const char *path)
 {
-	char			*line;
-	int				fd;
-	uint16_t		i;
-	bool			is_rect;
+	char		*line;
+	int			fd;
+	uint8_t		i;
+	bool		is_rect;
 
-	if(get_bounds(path, &map->w, &map->h) != PARSE_OK)
+	if(get_bounds(path, &map->size.j, &map->size.i) != PARSE_OK)
 		return (PARSE_ERROR_FILECRASH);
-	if (!tilemap_create(map, map->w, map->h))
+	if (!tilemap_create(map, map->size.j, map->size.i))
 		return (PARSE_ERROR_MEMCRASH);
 	fd = open(path, O_RDONLY);
 	if (fd < 0)

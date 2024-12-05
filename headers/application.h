@@ -6,18 +6,20 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:46:45 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 13:26:09 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 18:05:51 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef APPLICATION_H
 # define APPLICATION_H
 
-# include "mlx.h"
+# include <mlx.h>
+# include <libft_allocs.h>
 
 # include <stdint.h>
 # include <stdbool.h>
 # include <stdarg.h>
+# include <stdlib.h>
 
 # define MAX_SCENES 5
 # define APP_ERROR -1
@@ -40,6 +42,7 @@ typedef struct s_win_params
 typedef struct s_scene
 {
 	void				*env;
+	size_t				env_size;			
 	t_scene_callback	on_init;
 	t_event_callback	on_event;
 	t_scene_callback	on_update;
@@ -56,7 +59,6 @@ typedef struct s_app
 	uint8_t				scene_index;
 	uint8_t				scene_cap;
 	bool				scene_loading;
-	bool				app_error;
 }						t_app;
 
 void					app_autorun(t_win_params params,

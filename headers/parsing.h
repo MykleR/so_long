@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:57:36 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 13:49:11 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 19:11:43 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <fcntl.h>
 
 # define TILE_SIZE 32
+# define TILEMAP_MAX_SIZE 80
 
 typedef enum e_parse_error
 {
@@ -41,26 +42,26 @@ typedef enum e_tile
 
 typedef struct s_point
 {
-	uint16_t	i;
-	uint16_t	j;
+	uint8_t	i;
+	uint8_t	j;
 }	t_point;
 
 typedef struct s_tilemap
 {
 	t_tile		*tiles;
-	uint32_t	area;
-	uint16_t	w;
-	uint16_t	h;
+	uint16_t	area;
+	uint16_t	to_collect;
+	t_point		size;
 	t_point		spawn;
 	t_point		exit;
 }	t_tilemap;
 
-t_parse_error	tilemap_check(t_tilemap *map);
 t_parse_error	tilemap_parse(t_tilemap *map, const char *path);
-bool			tilemap_copy(t_tilemap *dst, t_tilemap *src);
-bool			tilemap_create(t_tilemap *map, uint16_t w, uint16_t h);
-bool			tilemap_set(t_tilemap *map, uint16_t i, uint16_t j, t_tile t);
-t_tile			tilemap_get(t_tilemap *map, uint16_t i, uint16_t j);
+t_parse_error	tilemap_check(t_tilemap *map);
+bool			tilemap_copy(t_tilemap *dst, t_tilemap src);
+bool			tilemap_create(t_tilemap *map, uint8_t w, uint8_t h);
+bool			tilemap_set(t_tilemap *map, uint8_t i, uint8_t j, t_tile t);
+t_tile			tilemap_get(t_tilemap map, uint8_t i, uint8_t j);
 void			tilemap_destroy(t_tilemap *map);
 void			print_parse_error(t_parse_error error);	
 

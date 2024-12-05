@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:20:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 16:17:56 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 16:11:28 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,9 @@ int	__on_clear(t_app *app, t_scene *scene)
 {
 	t_env		*env;
 
-	if (!scene->env)
-		return (0);
 	env = (t_env *)scene->env;
 	ecs_destroy(env->ecs);
 	grid_destroy(&env->grid);
 	destroy_textures(app->mlx, env->textures, NB_TEXTURES);
-	free(env);
 	return (0);
 }
