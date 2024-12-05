@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:23:49 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 18:16:08 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 20:27:55 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	tilemap_create(t_tilemap *map, uint8_t w, uint8_t h)
 {
 	if (__builtin_expect(!map || !w || !h || w >= TILEMAP_MAX_SIZE
-		|| h >= TILEMAP_MAX_SIZE, 0))
+			|| h >= TILEMAP_MAX_SIZE, 0))
 		return (false);
 	map->size = (t_point){h, w};
 	map->area = w * h;
@@ -55,7 +55,7 @@ t_tile	tilemap_get(t_tilemap map, uint8_t i, uint8_t j)
 bool	tilemap_set(t_tilemap *map, uint8_t i, uint8_t j, t_tile t)
 {
 	if (__builtin_expect(!map || !map->tiles
-		|| j >= map->size.j || i >= map->size.i, 0))
+			|| j >= map->size.j || i >= map->size.i, 0))
 		return (false);
 	if (__builtin_expect(t != FLOOR && t != WALL && t != ITEM
 			&& t != EXIT && t != SPAWN, 0))

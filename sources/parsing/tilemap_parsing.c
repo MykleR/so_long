@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:35:58 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 19:18:18 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 20:29:35 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	print_parse_error(t_parse_error error)
 		"Exit is not reachable/found !\n",
 		"No collectibles found !\n",
 	};
+
 	if (error != PARSE_OK)
 		ft_printf(2, "Error\n");
 	ft_printf(2, "Invalid map: ");
@@ -72,7 +73,7 @@ t_parse_error	tilemap_parse(t_tilemap *map, const char *path)
 	uint8_t		i;
 	bool		is_rect;
 
-	if(get_bounds(path, &map->size.j, &map->size.i) != PARSE_OK)
+	if (get_bounds(path, &map->size.j, &map->size.i) != PARSE_OK)
 		return (PARSE_ERROR_FILECRASH);
 	if (!tilemap_create(map, map->size.j, map->size.i))
 		return (PARSE_ERROR_MEMCRASH);

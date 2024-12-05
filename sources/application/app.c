@@ -6,13 +6,13 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:09:21 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 16:53:00 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 20:30:42 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application.h"
 
-static bool app_scene_init(t_app *app, t_scene *scene)
+static bool	app_scene_init(t_app *app, t_scene *scene)
 {
 	scene->env = NULL;
 	if (scene->env_size)
@@ -27,7 +27,7 @@ static bool app_scene_init(t_app *app, t_scene *scene)
 static bool	app_switch_scene(t_app *app)
 {
 	t_scene	*n_scene;
-	t_scene *l_scene;
+	t_scene	*l_scene;
 	bool	success;
 
 	n_scene = app->scenes + app->scene_index;
@@ -97,7 +97,7 @@ void	app_autorun(t_win_params params, uint32_t nb_scenes, ...)
 	va_start(scenes, nb_scenes);
 	if (app_init(&app, params, nb_scenes, scenes))
 	{
-		if (app_scene_init(&app, app.scenes))	
+		if (app_scene_init(&app, app.scenes))
 			mlx_loop(app.mlx);
 		scene = app.scenes + app.scene_index;
 		if (scene->on_destroy)

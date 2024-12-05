@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:17:59 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 16:54:28 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 20:30:59 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int ac, char **av)
 			(t_scene){NULL, sizeof(t_env),
 			__on_init, __on_event, __on_update, __on_clear});
 	}
-	else 
+	else
 		print_parse_error(status);
 	tilemap_destroy(&args.tilemap);
 }

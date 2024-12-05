@@ -6,18 +6,25 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:23:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 16:11:09 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 20:32:23 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <manda.h>
 
-static bool	import_sprite(void *mlx, char *path, t_sprite *out)
+static void	import_sprites(void *mlx, t_sprite t[NB_TEXTURES])
 {
-	if (!out)
-		return (false);
-	out->texture = mlx_png_file_to_image(mlx, path, &out->w, &out->h);
-	return (out->texture != NULL);
+	static uint8_t	i = -1;
+	static char		*paths[NB_TEXTURES] = {
+		"resources/hero/idle_f2.png",
+		"resources/env/tile113.png",
+		"resources/env/tile005.png",
+		"resources/coin.png",
+		"resources/env/tile071.png",
+	};
+
+	while (++i < NB_TEXTURES)
+		t[i].texture = mlx_png_file_to_image(mlx, paths[i], &t[i].w, &t[i].h);
 }
 
 static uint32_t	tile_create(t_ecs *ecs, t_vector pos,
@@ -34,10 +41,10 @@ static uint32_t	tile_create(t_ecs *ecs, t_vector pos,
 		tile_create(ecs, pos, sprites, FLOOR);
 	if (tile == EXIT)
 		ecs_entity_add(ecs, id, C_COLLIDER, &((t_collider){NULL,
-			sprite->w, sprite->h, T_EXIT}));
+				sprite->w, sprite->h, T_EXIT}));
 	if (tile == ITEM)
 		ecs_entity_add(ecs, id, C_COLLIDER, &((t_collider){NULL,
-			sprite->w, sprite->h, T_ITEM}));
+				sprite->w, sprite->h, T_ITEM}));
 	ecs_entity_add(ecs, id, C_SPRITE, sprite);
 	ecs_entity_add(ecs, id, C_POSITION, &pos);
 	return (id);
@@ -80,23 +87,19 @@ int	__on_init(t_app *app, t_scene *scene)
 	t_env		*env;
 	t_prog_args	*args;
 
-	args = (t_prog_args *)app->params.args;
 	env = (t_env *)scene->env;
+	args = (t_prog_args *)app->params.args;
 	if (!env || !args)
 		return (APP_ERROR);
 	env->camera = (t_aabb){0, 0, app->params.w, app->params.h};
 	env->ecs = ecs_create(NB_COMPONENTS, sizeof(t_vector),
 			sizeof(t_collider), sizeof(t_sprite));
 	if (!env->ecs || !grid_create(&env->grid, env->camera))
-		return (APP_ERROR);	
-	import_sprite(app->mlx, "resources/hero/idle_f2.png", env->textures);
-	import_sprite(app->mlx, "resources/env/tile113.png", env->textures + 1);
-	import_sprite(app->mlx, "resources/env/tile005.png", env->textures + 2);
-	import_sprite(app->mlx, "resources/coin.png", env->textures + 3);
-	import_sprite(app->mlx, "resources/env/tile071.png", env->textures + 4);
+		return (APP_ERROR);
+	import_sprites(app->mlx, env->textures);
 	env->player = player_create(env->ecs, (t_vector){
-		TILE_SIZE * args->tilemap.spawn.j,
-		TILE_SIZE * args->tilemap.spawn.i}, env->textures);
+			TILE_SIZE * args->tilemap.spawn.j,
+			TILE_SIZE * args->tilemap.spawn.i}, env->textures);
 	place_tiles(env->ecs, args->tilemap, env->textures);
 	env->to_collect = args->tilemap.to_collect;
 	return (0);
