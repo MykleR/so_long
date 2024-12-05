@@ -6,28 +6,30 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:11:29 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/04 22:38:54 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 13:51:04 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-static bool find_exit(t_tilemap *map, uint16_t i, uint16_t j)
+static uint16_t exit_check(t_tilemap *map, uint16_t i, uint16_t j, bool *found)
 {
-	t_tile	tile;
+	t_tile		tile;
 
 	if (__builtin_expect(!map || !map->tiles || j >= map->w || j >= map->h, 0))
-		return (false);
+		return (0);
 	tile = tilemap_get(map, i, j);
-	if (tile != FLOOR && tile != SPAWN)
+	if (tile == EXIT)
 	{
-		if (tile == EXIT)
-			map->exit = (t_point){i, j};
-		return (tile == EXIT);
+		*found = (map->exit.i == UINT16_MAX);
+		map->exit = (t_point){i, j};
 	}
+	if (tile != FLOOR && tile != SPAWN && tile != EXIT && tile != ITEM)
+		return (0);
 	*(map->tiles + i * map->w + j) = 'V';
-	return (find_exit(map, i + 1, j) || find_exit(map, i - 1, j)
-		 || find_exit(map, i, j + 1) || find_exit(map, i, j - 1));
+	return (exit_check(map, i + 1, j, found) + exit_check(map, i - 1, j, found)
+		+ exit_check(map, i, j + 1, found) + exit_check(map, i, j -  1, found)
+		+ (tile == ITEM));
 }
 
 static bool	border_check(t_tilemap *map, uint16_t coord, bool axis)
@@ -41,42 +43,58 @@ static bool	border_check(t_tilemap *map, uint16_t coord, bool axis)
 		max = map->w;
 	while (++i < max)
 	{
-		if (axis && tilemap_get(map, coord, i) != WALL)
-			return (false);
-		else if (!axis && tilemap_get(map, i, coord) != WALL)
+		if ((axis && tilemap_get(map, coord, i) != WALL)
+			|| (!axis && tilemap_get(map, i, coord) != WALL))
 			return (false);
 	}
 	return (true);
 }
 
-static void find_spawn(t_tilemap *map)
+static bool spawn_check(t_tilemap *map, uint16_t *nb_items)
 {
+	t_tile		tile;
 	uint16_t	i;
 	uint16_t	j;
+	uint16_t	nb_spawns;
 
+	*nb_items = 0;
+	nb_spawns = 0;
 	i = -1;
 	while (++i < map->h)
 	{
 		j = -1;
 		while (++j < map->w)
-			if (tilemap_get(map, i, j) == SPAWN)
+		{
+			tile = tilemap_get(map, i, j);
+			(*nb_items) += tile == ITEM;
+			nb_spawns += tile == SPAWN;
+			if (tile == SPAWN)
 				map->spawn = (t_point){i, j};
+		}
 	}
+	return (nb_spawns == 1);
 }
 
-bool	tilemap_check(t_tilemap *map)
+t_parse_error	tilemap_check(t_tilemap *map)
 {
 	t_tilemap	cpy;
+	uint16_t	nb_items;
 	bool		found_exit;
-	
+
+	found_exit = false;
 	if (!tilemap_copy(&cpy, map))
-		return (false);
+		return (PARSE_ERROR_MEMCRASH);
 	if (!border_check(map, 0, 1) || !border_check(map, map->h - 1, 1)
 		|| !border_check(map, 0, 0) || !border_check(map, map->w - 1, 0))
-		return (false);
-	find_spawn(map);
-	found_exit = find_exit(&cpy, map->spawn.i, map->spawn.j);
+		return (PARSE_ERROR_NOBOUNDS);
+	if( !spawn_check(map, &nb_items))
+		return (PARSE_ERROR_BADSPAWN);
+	if (!nb_items)
+		return (PARSE_ERROR_NOITEM);
+	if (exit_check(&cpy, map->spawn.i, map->spawn.j, &found_exit) != nb_items
+		|| !found_exit)
+		return (PARSE_ERROR_BADEXIT);
 	map->exit = cpy.exit;
 	tilemap_destroy(&cpy);
-	return (found_exit);
+	return (PARSE_OK);
 }
