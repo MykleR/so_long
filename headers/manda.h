@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 11:37:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 20:27:01 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 23:03:52 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define K_RIGHT 7
 # define K_UP 26
 # define K_DOWN 22
+# define K_R 21
 # define K_ESCAPE 41
 
 //

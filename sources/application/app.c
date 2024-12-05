@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:09:21 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 20:30:42 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/05 22:27:41 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static int	__app_update(void *param)
 	}
 	if (__builtin_expect(!app->scene_loading, 1))
 		return (0);
+	app->scene_loading = false;
 	if (!app_switch_scene(app))
 		mlx_loop_end(app->mlx);
 	return (0);
