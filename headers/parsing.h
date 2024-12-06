@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:57:36 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 19:11:43 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/06 00:06:39 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 typedef enum e_parse_error
 {
 	PARSE_OK,
+	PARSE_ERROR_NOARGS,
 	PARSE_ERROR_FILECRASH,
 	PARSE_ERROR_MEMCRASH,
 	PARSE_ERROR_NOBOUNDS,

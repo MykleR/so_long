@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:35:58 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 20:29:35 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/06 00:07:12 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ static t_parse_error	get_bounds(const char *path, uint8_t *w, uint8_t *h)
 
 void	print_parse_error(t_parse_error error)
 {
-	static const char	*error_messages[8] = {
+	static const char	*error_messages[9] = {
 		"Ok\n",
+		"Invalid number of arguments.\n",
 		"Couldn't open file.\n",
 		"Couldn't create tilemap.\n",
 		"Bounds are not closed !\n",

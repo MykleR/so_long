@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 12:17:59 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/06 00:06:20 by mrouves          ###   ########.fr       */
+/*   Created: 2024/12/06 01:30:01 by mrouves           #+#    #+#             */
+/*   Updated: 2024/12/06 01:31:07 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <manda.h>
+#include <bonus.h>
 
 int	main(int ac, char **av)
 {
@@ -27,8 +27,10 @@ int	main(int ac, char **av)
 	if (status == PARSE_OK)
 	{
 		app_autorun((t_win_params){&args, "so_long", 800, 600, 60}, 1,
+			(t_scene){NULL, 0,
+			__menu_init, __menu_event, __menu_update, __menu_clear},
 			(t_scene){NULL, sizeof(t_env),
-			__on_init, __on_event, __on_update, __on_clear});
+			__game_init, __game_event, __game_update, __game_clear});
 	}
 	else
 		print_parse_error(status);
