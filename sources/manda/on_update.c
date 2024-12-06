@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:24:01 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 20:26:58 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/06 17:04:10 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static float	lerp(float v0, float v1, float t)
 	return (v0 + t * (v1 - v0));
 }
 
-void	collide_system(t_ecs *ecs, t_col_grid *grid)
+static void	collide_system(t_ecs *ecs, t_col_grid *grid)
 {
 	t_ecs_ulist	query;
 	t_vector	*pos;
@@ -34,7 +34,7 @@ void	collide_system(t_ecs *ecs, t_col_grid *grid)
 	}
 }
 
-void	draw_system(t_ecs *ecs, void *mlx, void *win, t_aabb cam)
+static void	draw_system(t_ecs *ecs, void *mlx, void *win, t_aabb cam)
 {
 	t_ecs_ulist	query;
 	t_sprite	*img;

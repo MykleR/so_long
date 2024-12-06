@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/06 14:59:57 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/06 17:04:26 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define K_R 21
 # define K_ESCAPE 41
 
-# define MENU_FONT_SIZE 100
+# define MENU_FONT_SIZE 50
 
 //
 //	============================== ENUMS ==============================
@@ -121,6 +121,5 @@ int		__menu_event(t_app *app, t_scene *scene, mlx_event_type t, int e);
 void	__player_collide(uint32_t self, uint32_t other, void *data);
 void	__ennemy_collide(uint32_t self, uint32_t other, void *data);
 void	__item_collide(uint32_t self, uint32_t other, void *data);
-
 
 #endif
