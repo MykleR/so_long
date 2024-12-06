@@ -6,11 +6,11 @@
 #    By: mrouves <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 18:27:35 by mrouves           #+#    #+#              #
-#    Updated: 2024/12/04 22:35:22 by mrouves          ###   ########.fr        #
+#    Updated: 2024/12/06 16:35:43 by mrouves          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-ifeq ($(MODE), bonus)
+ifeq (bonus,$(MAKECMDGOALS))
 include sources/sources_bonus.mk
 else
 include sources/sources_manda.mk
@@ -39,20 +39,39 @@ OBJS			:= $(addprefix $(DIR_OBJS)/, $(SOURCES:%.c=%.o))
 CC				:= clang
 CFLAGS			:= -Wall -Wextra -Werror -g
 IFLAGS			:= -I $(DIR_HEADERS) -I $(MLX_INCLUDES) -I $(LIBFT_INCLUDES) -I $(ECS_INCLUDES)
-
-GREEN			= \033[0;32m
-RED				= \033[0;31m
-END				= \033[0m
 DIR_DUP			= mkdir -p $(@D)
+
+BOLD		= \033[1m
+OK_COLOR    = \033[0;32m
+ERROR_COLOR = \033[0;31m
+WARN_COLOR  = \033[0;33m
+NO_COLOR    = \033[m
+OK_STRING    = "[OK]"
+ERROR_STRING = "[ERROR]"
+WARN_STRING  = "[WARNING]"
+COM_STRING   = "Compiling"
+define run_and_test
+printf "%b" "$(COM_STRING) $(@F)$(NO_COLOR)\r"; \
+$(1) 2> $@.log; \
+RESULT=$$?; \
+if [ $$RESULT -ne 0 ]; then \
+  printf "%-60b%b" "$(COM_STRING) $(BOLD)$@" "$(ERROR_COLOR)$(ERROR_STRING)$(NO_COLOR)\n"   ; \
+elif [ -s $@.log ]; then \
+  printf "%-60b%b" "$(COM_STRING) $(BOLD)$@" "$(WARN_COLOR)$(WARN_STRING)$(NO_COLOR)\n"   ; \
+else  \
+  printf "%-60b%b" "$(COM_STRING) $(BOLD)$(@F)" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"   ; \
+fi; \
+cat $@.log; \
+rm -f $@.log; \
+exit $$RESULT
+endef
+
 
 all: $(NAME) $(OBJS)
 
-bonus: 
-	@$(MAKE) MODE=$@ --no-print-directory -j
-
 $(NAME): $(OBJS) $(ECS) $(MLX) $(LIBFT)
 	@$(CC) $(CFLAGS) $(IFLAGS) $^ -o $@ -lm -lSDL2
-	@printf "$(GREEN)$(NAME) compiled$(END)\n"
+	@printf "$(BOLD)$(NAME)$(NO_COLOR) compiled $(OK_COLOR)successfully$(NO_COLOR)\n"
 
 $(ECS):
 	@$(MAKE) -C $(DIR_ECS) --no-print-directory -j
@@ -65,19 +84,21 @@ $(MLX):
 
 $(DIR_OBJS)/%.o: $(DIR_SOURCES)/%.c
 	@$(DIR_DUP)
-	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+	@$(call run_and_test,$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@)
 
 clean:
 	@rm -rf $(DIR_OBJS)
-	@printf "$(RED)$(NAME) cleaned objs$(END)\n"
+	@printf "Cleaned $(BOLD)$(DIR_OBJS)$(NO_COLOR)\n"
 
 fclean: clean
 	@rm -f $(NAME)
-	@printf "$(RED)$(NAME) removed$(END)\n"
+	@printf "Cleaned $(BOLD)$(NAME)$(NO_COLOR)\n"
 	@$(MAKE) -C $(DIR_ECS) --no-print-directory fclean
 	@$(MAKE) -C $(DIR_LIBFT) --no-print-directory fclean
 #	@$(MAKE) -C $(DIR_MLX) --no-print-directory fclean
 
 re: fclean all
 
-.PHONY: clean fclean re all
+bonus: all
+
+.PHONY: clean fclean re bonus all

@@ -6,9 +6,21 @@
 #    By: mrouves <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/29 16:59:36 by mrouves           #+#    #+#              #
-#    Updated: 2024/12/04 20:04:50 by mrouves          ###   ########.fr        #
+#    Updated: 2024/12/06 16:04:18 by mrouves          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+define TITLE
+
+┌────────────────────────────┐
+│░█▀▀░█▀█░░░░░█░░░█▀█░█▀█░█▀▀│
+│░▀▀█░█░█░░░░░█░░░█░█░█░█░█░█│
+│░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀│
+└────────────────────────────┘
+           MANDA
+endef
+export TITLE
+text-style 		= $(shell tput $1)$2$(shell tput sgr0)
+PRINT_TITLE		:= $(shell $(info $(call text-style,setaf 6, $(TITLE))))
 
 SOURCES		:=	manda/main.c\
 				manda/on_init.c\
