@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:35:58 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/06 00:07:12 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/06 14:47:42 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,22 @@ static t_parse_error	get_bounds(const char *path, uint8_t *w, uint8_t *h)
 	return (PARSE_OK);
 }
 
+static bool	get_extension(const char *path)
+{
+	size_t	len;
+
+	len = ft_strlen(path);
+	if (len < 5)
+		return (false);
+	return (ft_strncmp(path + len - 4, ".ber", 4) == 0);
+}
+
 void	print_parse_error(t_parse_error error)
 {
 	static const char	*error_messages[9] = {
 		"Ok\n",
 		"Invalid number of arguments.\n",
-		"Couldn't open file.\n",
+		"Couldn't open file, not .ber or does not exists\n",
 		"Couldn't create tilemap.\n",
 		"Bounds are not closed !\n",
 		"Spawn is invalid !\n",
@@ -74,7 +84,8 @@ t_parse_error	tilemap_parse(t_tilemap *map, const char *path)
 	uint8_t		i;
 	bool		is_rect;
 
-	if (get_bounds(path, &map->size.j, &map->size.i) != PARSE_OK)
+	if (!get_extension(path) || get_bounds(
+		path, &map->size.j, &map->size.i) != PARSE_OK)
 		return (PARSE_ERROR_FILECRASH);
 	if (!tilemap_create(map, map->size.j, map->size.i))
 		return (PARSE_ERROR_MEMCRASH);
