@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:09:21 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 22:27:41 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/06 18:00:38 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,23 @@ static bool	app_switch_scene(t_app *app)
 	return (success && app_scene_init(app, n_scene));
 }
 
+#include <stdio.h>
+
 static int	__app_update(void *param)
 {
 	t_app	*app;
 	t_scene	*scene;
 
 	app = (t_app *)param;
-	scene = (app->scenes + app->scene_index);
-	if (scene->on_update && scene->on_update(app, scene) == APP_ERROR)
+	if (__builtin_expect(app->scene_loading, 0))
 	{
-		mlx_loop_end(app->mlx);
+		app->scene_loading = false;
+		if (!app_switch_scene(app))
+			mlx_loop_end(app->mlx);
 		return (0);
 	}
-	if (__builtin_expect(!app->scene_loading, 1))
-		return (0);
-	app->scene_loading = false;
-	if (!app_switch_scene(app))
+	scene = (app->scenes + app->scene_index);
+	if (scene->on_update && scene->on_update(app, scene) == APP_ERROR)
 		mlx_loop_end(app->mlx);
 	return (0);
 }

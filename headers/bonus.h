@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/06 17:04:26 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/06 17:39:44 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include <parsing.h>
 
 # define NB_SCENES 2
-# define NB_COMPONENTS 7
-# define NB_TEXTURES 5
+# define NB_COMPS 7
+# define NB_TEXTURES 1
 
 # define K_LEFT 4
 # define K_RIGHT 7
@@ -38,8 +38,8 @@
 typedef enum __attribute__((__packed__)) e_component
 {
 	C_POSITION,
+	C_VELOCITY,
 	C_COLLIDER,
-	C_PHYBODY,
 	C_SPRITE,
 	C_ENNEMY,
 	C_HEALTH,
@@ -61,7 +61,7 @@ typedef enum __attribute__((__packed__)) e_collider_tag
 //
 // /!\ Some components are represented as only integers ! (like health)
 //
-// Vector, used to represent POSITION AND PHYBODY component
+// Vector, used to represent POSITION AND VELOCITY component
 // And used in other components
 typedef struct s_vector
 {
@@ -105,7 +105,8 @@ typedef struct s_game
 	t_aabb		camera;
 	uint32_t	player;
 	uint32_t	nb_bullets;
-}			t_env;
+	t_vector	gravity;
+}	t_game;
 
 //	============================== Functions =============================
 
