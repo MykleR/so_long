@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:09:21 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/06 18:00:38 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/09 16:15:36 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ static bool	app_scene_init(t_app *app, t_scene *scene)
 		if (!scene->env)
 			return (false);
 	}
-	return (!scene->on_init || scene->on_init(app, scene) != APP_ERROR);
+	app->scene_loading = scene->on_init
+		&& scene->on_init(app, scene) == APP_ERROR;
+	return (!app->scene_loading);
 }
 
 static bool	app_switch_scene(t_app *app)
@@ -39,8 +41,6 @@ static bool	app_switch_scene(t_app *app)
 	l_scene->env = NULL;
 	return (success && app_scene_init(app, n_scene));
 }
-
-#include <stdio.h>
 
 static int	__app_update(void *param)
 {
@@ -72,43 +72,49 @@ static bool	app_init(t_app *app, t_win_params params,
 	if (!app->mlx)
 		return (false);
 	mlx_set_fps_goal(app->mlx, params.fps);
+	mlx_loop_hook(app->mlx, __app_update, app);
 	app->win = mlx_new_window(app->mlx, params.w, params.h, params.name);
 	if (!app->win)
+	{
+		mlx_destroy_display(app->mlx);
 		return (false);
+	}
 	mlx_on_event(app->mlx, app->win, MLX_KEYUP, __app_kup_hook, app);
 	mlx_on_event(app->mlx, app->win, MLX_KEYDOWN, __app_kdown_hook, app);
 	mlx_on_event(app->mlx, app->win, MLX_MOUSEUP, __app_mup_hook, app);
 	mlx_on_event(app->mlx, app->win, MLX_MOUSEDOWN, __app_mdown_hook, app);
 	mlx_on_event(app->mlx, app->win, MLX_MOUSEWHEEL, __app_mwheel_hook, app);
 	mlx_on_event(app->mlx, app->win, MLX_WINDOW_EVENT, __app_window_hook, app);
-	mlx_loop_hook(app->mlx, __app_update, app);
 	index = -1;
 	while (++index < nb_scenes)
 		app->scenes[index] = va_arg(scenes, t_scene);
 	return (true);
 }
 
-void	app_autorun(t_win_params params, uint32_t nb_scenes, ...)
+void	app_autorun(t_win_params params, t_app_callback on_start,
+			t_app_callback on_stop, uint32_t nb_scenes, ...)
 {
 	static t_app	app = {0};
+	static bool		initialised;
 	va_list			scenes;
-	t_scene			*scene;
 
-	if (app.mlx || app.win || !nb_scenes || nb_scenes > MAX_SCENES)
+	if (initialised || !nb_scenes || nb_scenes > MAX_SCENES)
 		return ;
 	va_start(scenes, nb_scenes);
-	if (app_init(&app, params, nb_scenes, scenes))
-	{
-		if (app_scene_init(&app, app.scenes))
-			mlx_loop(app.mlx);
-		scene = app.scenes + app.scene_index;
-		if (scene->on_destroy)
-			scene->on_destroy(&app, scene);
-		free(scene->env);
-	}
+	initialised = app_init(&app, params, nb_scenes, scenes);
 	va_end(scenes);
-	if (app.mlx && app.win)
-		mlx_destroy_window(app.mlx, app.win);
-	if (app.mlx)
-		mlx_destroy_display(app.mlx);
+	if (!initialised)
+		return;	
+	if (on_start)
+		on_start(&app);
+	if (app_scene_init(&app, app.scenes))
+		mlx_loop(app.mlx);
+	if ((app.scenes + app.scene_index)->on_destroy)
+		(app.scenes + app.scene_index)->on_destroy(&app,
+		(app.scenes + app.scene_index));
+	free((app.scenes + app.scene_index)->env);
+	if (on_stop)
+		on_stop(&app);
+	mlx_destroy_window(app.mlx, app.win);
+	mlx_destroy_display(app.mlx);
 }

@@ -6,25 +6,11 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:23:51 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 23:47:13 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/09 16:21:07 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <manda.h>
-
-static void	import_sprites(void *mlx, t_sprite t[NB_TEXTURES])
-{
-	uint8_t			i;
-	static char		*paths[NB_TEXTURES] = {
-		"resources/hero/idle_f2.png", "resources/env/tile113.png",
-		"resources/env/tile005.png", "resources/coin.png",
-		"resources/env/tile071.png",
-	};
-
-	i = -1;
-	while (++i < NB_TEXTURES)
-		t[i].texture = mlx_png_file_to_image(mlx, paths[i], &t[i].w, &t[i].h);
-}
 
 static uint32_t	tile_create(t_ecs *ecs, t_vector pos,
 		t_sprite *sprites, t_tile tile)
@@ -98,11 +84,10 @@ int	__on_init(t_app *app, t_scene *scene)
 			sizeof(t_collider), sizeof(t_sprite));
 	if (!env->ecs || !grid_create(&env->grid, env->camera))
 		return (APP_ERROR);
-	import_sprites(app->mlx, env->textures);
-	env->player = player_create(env->ecs, env->textures, (t_vector){
+	env->player = player_create(env->ecs, args->textures, (t_vector){
 			TILE_SIZE * args->tilemap.spawn.j,
 			TILE_SIZE * args->tilemap.spawn.i});
-	place_tiles(env->ecs, args->tilemap, env->textures);
+	place_tiles(env->ecs, args->tilemap, args->textures);
 	env->to_collect = args->tilemap.to_collect;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:46:45 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/05 18:05:51 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/09 16:17:39 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 
 typedef struct s_scene	t_scene;
 typedef struct s_app	t_app;
+typedef void			(*t_app_callback)(t_app *);
 typedef int				(*t_scene_callback)(t_app *, t_scene *);
 typedef int				(*t_event_callback)(t_app *, t_scene *,
 		mlx_event_type, int);
@@ -42,7 +43,7 @@ typedef struct s_win_params
 typedef struct s_scene
 {
 	void				*env;
-	size_t				env_size;			
+	size_t				env_size;
 	t_scene_callback	on_init;
 	t_event_callback	on_event;
 	t_scene_callback	on_update;
@@ -54,6 +55,8 @@ typedef struct s_app
 	t_scene				scenes[MAX_SCENES];
 	void				*mlx;
 	void				*win;
+	t_app_callback		on_app_start;
+	t_app_callback		on_app_stop;
 	t_win_params		params;
 	uint8_t				scene_last;
 	uint8_t				scene_index;
@@ -62,6 +65,7 @@ typedef struct s_app
 }						t_app;
 
 void					app_autorun(t_win_params params,
+							t_app_callback on_start, t_app_callback on_stop,
 							uint32_t nb_scenes, ...);
 void					app_load(t_app *app, uint8_t scene);
 

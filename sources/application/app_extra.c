@@ -6,13 +6,12 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:33:40 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/06 17:53:09 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/09 15:58:29 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application.h"
 
-#include <stdio.h>
 void	app_load(t_app *app, uint8_t index)
 {
 	if (__builtin_expect(!app || index >= app->scene_cap
