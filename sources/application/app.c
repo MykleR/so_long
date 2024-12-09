@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:09:21 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/09 16:15:36 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/09 16:44:32 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,7 @@ static bool	app_init(t_app *app, t_win_params params,
 	return (true);
 }
 
-void	app_autorun(t_win_params params, t_app_callback on_start,
-			t_app_callback on_stop, uint32_t nb_scenes, ...)
+void	app_autorun(t_win_params params, uint32_t nb_scenes, ...)
 {
 	static t_app	app = {0};
 	static bool		initialised;
@@ -104,17 +103,17 @@ void	app_autorun(t_win_params params, t_app_callback on_start,
 	initialised = app_init(&app, params, nb_scenes, scenes);
 	va_end(scenes);
 	if (!initialised)
-		return;	
-	if (on_start)
-		on_start(&app);
+		return ;
+	if (params.on_start)
+		params.on_start(&app);
 	if (app_scene_init(&app, app.scenes))
 		mlx_loop(app.mlx);
 	if ((app.scenes + app.scene_index)->on_destroy)
 		(app.scenes + app.scene_index)->on_destroy(&app,
 		(app.scenes + app.scene_index));
 	free((app.scenes + app.scene_index)->env);
-	if (on_stop)
-		on_stop(&app);
+	if (params.on_stop)
+		params.on_stop(&app);
 	mlx_destroy_window(app.mlx, app.win);
 	mlx_destroy_display(app.mlx);
 }

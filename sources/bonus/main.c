@@ -6,11 +6,38 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:30:01 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/06 17:49:16 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/09 16:47:25 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bonus.h>
+
+static void	__app_start(t_app *app)
+{
+	uint8_t					i;
+	t_sprite				*t;
+	static const char		*paths[NB_TEXTURES] = {
+		"resources/hero/idle_f2.png",
+	};
+
+	i = -1;
+	t = ((t_prog_args *)app->params.args)->sprites;
+	while (++i < NB_TEXTURES)
+		t[i].texture = mlx_png_file_to_image(app->mlx,
+				(char *)paths[i], &t[i].w, &t[i].h);
+}
+
+static void	__app_stop(t_app *app)
+{
+	uint16_t	i;
+	t_sprite	*t;
+
+	i = -1;
+	t = ((t_prog_args *)app->params.args)->sprites;
+	while (++i < NB_TEXTURES)
+		if (t[i].texture)
+			mlx_destroy_image(app->mlx, t[i].texture);
+}
 
 int	main(int ac, char **av)
 {
@@ -26,7 +53,8 @@ int	main(int ac, char **av)
 		status = tilemap_check(&args.tilemap);
 	if (status == PARSE_OK)
 	{
-		app_autorun((t_win_params){&args, "so_long", 800, 600, 60}, NB_SCENES,
+		app_autorun((t_win_params){
+			__app_start, __app_stop, &args, "so_long", 800, 600, 60}, NB_SCENES,
 			(t_scene){NULL, 0,
 			__menu_init, __menu_event, __menu_update, __menu_clear},
 			(t_scene){NULL, sizeof(t_game),

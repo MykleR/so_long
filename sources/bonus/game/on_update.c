@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:20:21 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/06 18:01:47 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/09 16:50:50 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,12 @@ int	__game_update(t_app *app, t_scene *scene)
 	collide_system(game->ecs, &game->grid);
 	grid_process(&game->grid, app);
 	pos = ecs_entity_get(game->ecs, game->player, C_POSITION);
-	game->camera.x = lerp(game->camera.x, pos->x - (float)game->camera.w / 2, .05);
-	game->camera.y = lerp(game->camera.y, pos->y - (float)game->camera.h / 2, .05);
+	game->camera.x = lerp(game->camera.x,
+			pos->x - (float)game->camera.w / 2, .05);
+	game->camera.y = lerp(game->camera.y,
+			pos->y - (float)game->camera.h / 2, .05);
 	game->grid.bounds.x = game->camera.x;
 	game->grid.bounds.y = game->camera.y;
 	draw_system(game->ecs, app->mlx, app->win, game->camera);
-	mlx_clear_window(app->mlx, app->win);
 	return (0);
 }

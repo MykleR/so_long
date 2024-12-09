@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:46:45 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/09 16:17:39 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/09 16:42:39 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef int				(*t_event_callback)(t_app *, t_scene *,
 
 typedef struct s_win_params
 {
+	t_app_callback		on_start;
+	t_app_callback		on_stop;
 	void				*args;
 	const char			*name;
 	uint32_t			w;
@@ -55,8 +57,6 @@ typedef struct s_app
 	t_scene				scenes[MAX_SCENES];
 	void				*mlx;
 	void				*win;
-	t_app_callback		on_app_start;
-	t_app_callback		on_app_stop;
 	t_win_params		params;
 	uint8_t				scene_last;
 	uint8_t				scene_index;
@@ -65,7 +65,6 @@ typedef struct s_app
 }						t_app;
 
 void					app_autorun(t_win_params params,
-							t_app_callback on_start, t_app_callback on_stop,
 							uint32_t nb_scenes, ...);
 void					app_load(t_app *app, uint8_t scene);
 

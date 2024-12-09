@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/06 17:39:44 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/09 16:46:40 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,11 @@ typedef struct s_prog_args
 	char		**argv;
 	int			argc;
 	t_tilemap	tilemap;
+	t_sprite	sprites[NB_TEXTURES];
 }	t_prog_args;
 
 typedef struct s_game
 {
-	t_sprite	sprites[NB_TEXTURES];
 	t_ecs		*ecs;
 	t_col_grid	grid;
 	t_aabb		camera;
