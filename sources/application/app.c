@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:09:21 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/09 16:44:32 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/13 20:16:11 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,10 @@ void	app_autorun(t_win_params params, uint32_t nb_scenes, ...)
 	va_end(scenes);
 	if (!initialised)
 		return ;
-	if (params.on_start)
-		params.on_start(&app);
-	if (app_scene_init(&app, app.scenes))
+	initialised = (!params.on_start || params.on_start(&app) != APP_ERROR);
+	if (initialised && app_scene_init(&app, app.scenes))
 		mlx_loop(app.mlx);
-	if ((app.scenes + app.scene_index)->on_destroy)
+	if (initialised && (app.scenes + app.scene_index)->on_destroy)
 		(app.scenes + app.scene_index)->on_destroy(&app,
 		(app.scenes + app.scene_index));
 	free((app.scenes + app.scene_index)->env);

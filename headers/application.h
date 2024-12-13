@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:46:45 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/09 16:42:39 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/13 20:11:40 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 typedef struct s_scene	t_scene;
 typedef struct s_app	t_app;
-typedef void			(*t_app_callback)(t_app *);
+typedef int				(*t_app_callback)(t_app *);
 typedef int				(*t_scene_callback)(t_app *, t_scene *);
 typedef int				(*t_event_callback)(t_app *, t_scene *,
 		mlx_event_type, int);

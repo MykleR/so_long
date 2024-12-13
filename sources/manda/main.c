@@ -6,13 +6,13 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:17:59 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/09 16:45:40 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/13 20:23:18 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <manda.h>
 
-static void	__app_start(t_app *app)
+static int	__app_start(t_app *app)
 {
 	uint8_t					i;
 	t_sprite				*t;
@@ -25,11 +25,16 @@ static void	__app_start(t_app *app)
 	i = -1;
 	t = ((t_prog_args *)app->params.args)->textures;
 	while (++i < NB_TEXTURES)
+	{
+		if (open(paths[i], O_RDONLY) < 0)
+			return (APP_ERROR);
 		t[i].texture = mlx_png_file_to_image(app->mlx,
 				(char *)paths[i], &t[i].w, &t[i].h);
+	}
+	return (0);
 }
 
-static void	__app_stop(t_app *app)
+static int	__app_stop(t_app *app)
 {
 	uint16_t	i;
 	t_sprite	*t;
@@ -39,6 +44,7 @@ static void	__app_stop(t_app *app)
 	while (++i < NB_TEXTURES)
 		if (t[i].texture)
 			mlx_destroy_image(app->mlx, t[i].texture);
+	return (0);
 }
 
 int	main(int ac, char **av)
