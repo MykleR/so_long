@@ -6,7 +6,7 @@
 #    By: mrouves <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 18:27:35 by mrouves           #+#    #+#              #
-#    Updated: 2024/12/06 16:35:43 by mrouves          ###   ########.fr        #
+#    Updated: 2024/12/14 17:20:53 by mrouves          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ include sources/sources_bonus.mk
 else
 include sources/sources_manda.mk
 endif
+
+include sources/pretty_compile.mk
 
 NAME 			:= so_long
 DIR_HEADERS		:= headers
@@ -41,33 +43,9 @@ CFLAGS			:= -Wall -Wextra -Werror -g
 IFLAGS			:= -I $(DIR_HEADERS) -I $(MLX_INCLUDES) -I $(LIBFT_INCLUDES) -I $(ECS_INCLUDES)
 DIR_DUP			= mkdir -p $(@D)
 
-BOLD		= \033[1m
-OK_COLOR    = \033[0;32m
-ERROR_COLOR = \033[0;31m
-WARN_COLOR  = \033[0;33m
-NO_COLOR    = \033[m
-OK_STRING    = "[OK]"
-ERROR_STRING = "[ERROR]"
-WARN_STRING  = "[WARNING]"
-COM_STRING   = "Compiling"
-define run_and_test
-printf "%b" "$(COM_STRING) $(@F)$(NO_COLOR)\r"; \
-$(1) 2> $@.log; \
-RESULT=$$?; \
-if [ $$RESULT -ne 0 ]; then \
-  printf "%-60b%b" "$(COM_STRING) $(BOLD)$@" "$(ERROR_COLOR)$(ERROR_STRING)$(NO_COLOR)\n"   ; \
-elif [ -s $@.log ]; then \
-  printf "%-60b%b" "$(COM_STRING) $(BOLD)$@" "$(WARN_COLOR)$(WARN_STRING)$(NO_COLOR)\n"   ; \
-else  \
-  printf "%-60b%b" "$(COM_STRING) $(BOLD)$(@F)" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"   ; \
-fi; \
-cat $@.log; \
-rm -f $@.log; \
-exit $$RESULT
-endef
-
-
 all: $(NAME) $(OBJS)
+
+bonus: all
 
 $(NAME): $(OBJS) $(ECS) $(MLX) $(LIBFT)
 	@$(CC) $(CFLAGS) $(IFLAGS) $^ -o $@ -lm -lSDL2
@@ -80,7 +58,7 @@ $(LIBFT):
 	@$(MAKE) -C $(DIR_LIBFT) --no-print-directory -j
 
 $(MLX):
-	@$(MAKE) -C $(DIR_MLX) --no-print-directory -j
+	@$(MAKE) -C $(DIR_MLX) --no-print-directory -j)
 
 $(DIR_OBJS)/%.o: $(DIR_SOURCES)/%.c
 	@$(DIR_DUP)
@@ -95,10 +73,9 @@ fclean: clean
 	@printf "Cleaned $(BOLD)$(NAME)$(NO_COLOR)\n"
 	@$(MAKE) -C $(DIR_ECS) --no-print-directory fclean
 	@$(MAKE) -C $(DIR_LIBFT) --no-print-directory fclean
-#	@$(MAKE) -C $(DIR_MLX) --no-print-directory fclean
+#	@$(MAKE) -C $(DIR_MLX) --no-print-directory fclean	
 
 re: fclean all
 
-bonus: all
-
+.SILENT:
 .PHONY: clean fclean re bonus all
