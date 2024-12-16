@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/09 16:46:40 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/16 22:43:01 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 # define BONUS_H
 
 # include <application.h>
-# include <ecs.h>
+# include <ecs_extra.h>
 # include <collision.h>
 # include <parsing.h>
+# include <math.h>
 
 # define NB_SCENES 2
 # define NB_COMPS 7
-# define NB_TEXTURES 1
+# define NB_TEXTURES 3
 
 # define K_LEFT 4
 # define K_RIGHT 7
@@ -30,6 +31,11 @@
 # define K_ESCAPE 41
 
 # define MENU_FONT_SIZE 50
+# define PLAYER_JUMP_F 12
+# define BULLET_SHOOT_F 15
+# define PLAYER_SHOOT_NB 4
+# define PLAYER_SHOOT_FOV 30
+# define PLAYER_FRICTION 0.8
 
 //
 //	============================== ENUMS ==============================
@@ -54,6 +60,7 @@ typedef enum __attribute__((__packed__)) e_collider_tag
 	T_EXIT,
 	T_ENNEMY,
 	T_PROJECTILE,
+	T_ITEM,
 }	t_collider_tag;
 
 //
@@ -90,6 +97,14 @@ typedef struct s_sprite
 	int		h;
 }	t_sprite;
 
+typedef struct s_box_resolve
+{
+	t_collider	*c1;
+	t_collider	*c2;
+	t_vector	*p1;
+	t_vector	*p2;
+}	t_box_resolve;
+
 typedef struct s_prog_args
 {
 	char		**argv;
@@ -120,6 +135,7 @@ int		__menu_clear(t_app *app, t_scene *scene);
 int		__menu_event(t_app *app, t_scene *scene, mlx_event_type t, int e);
 
 void	__player_collide(uint32_t self, uint32_t other, void *data);
+void	__bullet_collide(uint32_t self, uint32_t other, void *data);
 void	__ennemy_collide(uint32_t self, uint32_t other, void *data);
 void	__item_collide(uint32_t self, uint32_t other, void *data);
 

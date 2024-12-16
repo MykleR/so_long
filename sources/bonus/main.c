@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:30:01 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/13 20:24:55 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/16 21:39:17 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static int	__app_start(t_app *app)
 	t_sprite				*t;
 	static const char		*paths[NB_TEXTURES] = {
 		"resources/hero/idle_f2.png",
+		"resources/hero/bullet.png",
+		"resources/env/tile041.png"
 	};
 
 	i = -1;
