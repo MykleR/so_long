@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:20:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/16 22:41:43 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/17 21:14:44 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ int	__game_init(t_app *app, t_scene *scene)
 			sizeof(uint32_t), sizeof(uint32_t));
 	if (!game->ecs || !grid_create(&game->grid, game->camera))
 		return (APP_ERROR);
-	game->player = player_create(game->ecs, *args->sprites,
+	game->player = player_create(game->ecs, *args->imgs_hero,
 			args->tilemap.spawn.j * TILE_SIZE,
 			args->tilemap.spawn.i * TILE_SIZE);
-	game->gravity = (t_vector){0, 0.7};
-	place_tiles(game->ecs, args->tilemap, args->sprites + 2);
+	game->gravity = (t_vector){0, 0.6};
+	place_tiles(game->ecs, args->tilemap, args->imgs_env);
 	return (0);
 }

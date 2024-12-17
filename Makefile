@@ -6,7 +6,7 @@
 #    By: mrouves <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 18:27:35 by mrouves           #+#    #+#              #
-#    Updated: 2024/12/14 17:20:53 by mrouves          ###   ########.fr        #
+#    Updated: 2024/12/17 15:53:20 by mrouves          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ all: $(NAME) $(OBJS)
 bonus: all
 
 $(NAME): $(OBJS) $(ECS) $(MLX) $(LIBFT)
-	@$(CC) $(CFLAGS) $(IFLAGS) $^ -o $@ -lm -lSDL2
+	@$(call run_and_test, $(CC) $(CFLAGS) $(IFLAGS) $^ -o $@ -lm -lSDL2)
 	@printf "$(BOLD)$(NAME)$(NO_COLOR) compiled $(OK_COLOR)successfully$(NO_COLOR)\n"
 
 $(ECS):
@@ -77,5 +77,4 @@ fclean: clean
 
 re: fclean all
 
-.SILENT:
 .PHONY: clean fclean re bonus all

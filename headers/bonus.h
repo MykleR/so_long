@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/16 22:43:01 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/18 00:11:36 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,25 @@
 # include <parsing.h>
 # include <math.h>
 
-# define NB_SCENES 2
-# define NB_COMPS 7
-# define NB_TEXTURES 3
+# define NB_SCENES			2
+# define NB_COMPS			7
+# define NB_IMGS_ENV		1
+# define NB_IMGS_BG			1
+# define NB_IMGS_HERO		2
 
-# define K_LEFT 4
-# define K_RIGHT 7
-# define K_UP 26
-# define K_DOWN 22
-# define K_R 21
-# define K_ESCAPE 41
+# define K_LEFT		4
+# define K_RIGHT	7
+# define K_UP		26
+# define K_DOWN		22
+# define K_R		21
+# define K_ESCAPE	41
 
-# define MENU_FONT_SIZE 50
-# define PLAYER_JUMP_F 12
-# define BULLET_SHOOT_F 15
-# define PLAYER_SHOOT_NB 4
-# define PLAYER_SHOOT_FOV 30
-# define PLAYER_FRICTION 0.8
+# define S_MENU_FONT_S		50
+# define S_PLAYER_SHOOT_F	12
+# define S_PLAYER_SHOOT_NB	6
+# define S_PLAYER_SHOOT_FOV	60
+# define S_PLAYER_FRICTION	0.8
+# define S_BULLET_SHOOT_F	20
 
 //
 //	============================== ENUMS ==============================
@@ -50,6 +52,7 @@ typedef enum __attribute__((__packed__)) e_component
 	C_ENNEMY,
 	C_HEALTH,
 	C_DAMAGE,
+	C_GRAVITY
 }	t_component;
 
 // COLLISIONS
@@ -110,7 +113,9 @@ typedef struct s_prog_args
 	char		**argv;
 	int			argc;
 	t_tilemap	tilemap;
-	t_sprite	sprites[NB_TEXTURES];
+	t_sprite	imgs_env[NB_IMGS_ENV];
+	t_sprite	imgs_hero[NB_IMGS_HERO];
+	t_sprite	imgs_bg[NB_IMGS_BG];
 }	t_prog_args;
 
 typedef struct s_game

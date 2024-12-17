@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:16:41 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/16 22:41:55 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/18 00:25:45 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ static void create_bullet(t_app *app, t_game *game, t_vector pos, t_vector vel)
 	id = ecs_entity_create(game->ecs);
 	ecs_entity_add(game->ecs, id, C_POSITION, &pos);
 	ecs_entity_add(game->ecs, id, C_VELOCITY, &vel);
-	ecs_entity_add(game->ecs, id, C_SPRITE, args->sprites + 1);
+	ecs_entity_add(game->ecs, id, C_SPRITE, args->imgs_hero + 1);
 	ecs_entity_add(game->ecs, id, C_COLLIDER, &((t_collider){__bullet_collide,
-		args->sprites[1].w, args->sprites[1].h, T_PROJECTILE}));
+		args->imgs_hero[1].w, args->imgs_hero[1].h, T_PROJECTILE}));
 }
 
 static void shotgun(t_app *app, t_game *game, t_vector pos, float angle)
@@ -44,15 +44,15 @@ static void shotgun(t_app *app, t_game *game, t_vector pos, float angle)
 	float		current_angle;
 
 	i = -1;
-	fov = PLAYER_SHOOT_FOV * M_PI / 180;
+	fov = S_PLAYER_SHOOT_FOV * M_PI / 180;
 	current_angle = angle - fov * .5;
-	while (++i < PLAYER_SHOOT_NB)
+	while (++i < S_PLAYER_SHOOT_NB)
 	{
-		create_bullet(app, game, pos, (t_vector){
-			cos(current_angle) * BULLET_SHOOT_F,
-			sin(current_angle) * BULLET_SHOOT_F
+		create_bullet(app, game, (t_vector){pos.x + 8, pos.y + 8}, (t_vector){
+			cos(current_angle) * S_BULLET_SHOOT_F,
+			sin(current_angle) * S_BULLET_SHOOT_F
 		});
-		current_angle += fov / PLAYER_SHOOT_NB;
+		current_angle += fov / S_PLAYER_SHOOT_NB;
 	}
 }
 
@@ -68,8 +68,8 @@ static void	player_shoot(t_app *app, t_game *game)
 	vel = ecs_entity_get(game->ecs, game->player, C_VELOCITY);
 	pos = ecs_entity_get(game->ecs, game->player, C_POSITION);
 	angle = atan2(my + game->camera.y - pos->y, mx + game->camera.x - pos->x);
-	vel->x = cos(angle) * -PLAYER_JUMP_F;
-	vel->y = sin(angle) * -PLAYER_JUMP_F;
+	vel->x = cos(angle) * -S_PLAYER_SHOOT_F;
+	vel->y = sin(angle) * -S_PLAYER_SHOOT_F;
 	shotgun(app, game, *pos, angle);
 }
 

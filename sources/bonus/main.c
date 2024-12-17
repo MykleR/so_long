@@ -6,45 +6,60 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:30:01 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/16 21:39:17 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/18 00:20:44 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bonus.h>
 
+static int	load_imgs(void *mlx, const char **paths, t_sprite *s, uint8_t n)
+{
+	while (n--)
+	{
+		if (open(paths[n], O_RDONLY) < 0)
+			return (APP_ERROR);
+		s[n].texture = mlx_png_file_to_image(mlx,
+				(char *)paths[n], &s[n].w, &s[n].h);
+		if (!s[n].texture)
+			return (APP_ERROR);
+	}
+	return (0);
+}
+
+static void	unload_imgs(void *mlx, t_sprite *s, uint8_t n)
+{
+	while (n--)
+		if (s[n].texture)
+			mlx_destroy_image(mlx, s[n].texture);
+}
+
 static int	__app_start(t_app *app)
 {
-	uint8_t					i;
-	t_sprite				*t;
-	static const char		*paths[NB_TEXTURES] = {
+	t_prog_args			*args;
+	static const char	*p_hero[NB_IMGS_HERO] = {
 		"resources/hero/idle_f2.png",
-		"resources/hero/bullet.png",
-		"resources/env/tile041.png"
-	};
+		"resources/hero/bullet.png"};
+	static const char	*p_env[NB_IMGS_ENV] = {
+		"resources/env/tile041.png"};
+	static const char	*p_bg[NB_IMGS_BG] = {
+		"resources/env/background.png"};
 
-	i = -1;
-	t = ((t_prog_args *)app->params.args)->sprites;
-	while (++i < NB_TEXTURES)
-	{
-		if (open(paths[i], O_RDONLY) < 0)
-			return (APP_ERROR);
-		t[i].texture = mlx_png_file_to_image(app->mlx,
-				(char *)paths[i], &t[i].w, &t[i].h);
-
-	}
+	args = (t_prog_args *)app->params.args;
+	if (load_imgs(app->mlx, p_hero, args->imgs_hero, NB_IMGS_HERO) == APP_ERROR
+		|| load_imgs(app->mlx, p_env, args->imgs_env, NB_IMGS_ENV) == APP_ERROR
+		|| load_imgs(app->mlx, p_bg, args->imgs_bg, NB_IMGS_BG) == APP_ERROR)
+		return (APP_ERROR);
 	return (0);
 }
 
 static int	__app_stop(t_app *app)
 {
-	uint16_t	i;
-	t_sprite	*t;
+	t_prog_args	*args;
 
-	i = -1;
-	t = ((t_prog_args *)app->params.args)->sprites;
-	while (++i < NB_TEXTURES)
-		if (t[i].texture)
-			mlx_destroy_image(app->mlx, t[i].texture);
+	args = (t_prog_args *)app->params.args;
+	unload_imgs(app->mlx, args->imgs_bg, NB_IMGS_BG);
+	unload_imgs(app->mlx, args->imgs_env, NB_IMGS_ENV);
+	unload_imgs(app->mlx, args->imgs_hero, NB_IMGS_HERO);
 	return (0);
 }
 
