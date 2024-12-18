@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:20:21 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/18 00:11:59 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/18 16:36:21 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,11 @@ static void move_system(t_ecs *ecs, t_vector grav)
 	{
 		pos = ecs_entity_get(ecs, query.values[query.len], C_POSITION);
 		vel = ecs_entity_get(ecs, query.values[query.len], C_VELOCITY);
-		vel->x += grav.x;
-		vel->y += grav.y;
+		if (ecs_entity_has(ecs, query.values[query.len], C_GRAVITY))
+		{
+			vel->x += grav.x;
+			vel->y += grav.y;
+		}
 		pos->x += vel->x;
 		pos->y += vel->y;
 	}

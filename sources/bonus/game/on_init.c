@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:20:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/17 21:14:44 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/18 17:13:10 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static uint32_t	player_create(t_ecs *ecs, t_sprite sprite, float x, float y)
 	ecs_entity_add(ecs, id, C_VELOCITY, &((t_vector){0, 0}));
 	ecs_entity_add(ecs, id, C_COLLIDER, &((t_collider){__player_collide,
 			sprite.w, sprite.h, T_PLAYER}));
+	ecs_entity_add(ecs, id, C_GRAVITY,
+			&((t_vector){S_PLAYER_GRAVX, S_PLAYER_GRAVY}));
 	return (id);
 }
 
@@ -70,7 +72,8 @@ int	__game_init(t_app *app, t_scene *scene)
 		return (APP_ERROR);
 	game->camera = (t_aabb){0, 0, app->params.w, app->params.h};
 	game->ecs = ecs_create(NB_COMPS, sizeof(t_vector), sizeof(t_vector),
-			sizeof(t_collider), sizeof(t_sprite), sizeof(uint32_t),
+			sizeof(t_vector), sizeof(t_collider),
+			sizeof(t_sprite), sizeof(uint32_t),
 			sizeof(uint32_t), sizeof(uint32_t));
 	if (!game->ecs || !grid_create(&game->grid, game->camera))
 		return (APP_ERROR);

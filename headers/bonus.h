@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/18 00:11:36 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/18 17:10:59 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <math.h>
 
 # define NB_SCENES			2
-# define NB_COMPS			7
+# define NB_COMPS			8
 # define NB_IMGS_ENV		1
 # define NB_IMGS_BG			1
 # define NB_IMGS_HERO		2
@@ -37,6 +37,8 @@
 # define S_PLAYER_SHOOT_NB	6
 # define S_PLAYER_SHOOT_FOV	60
 # define S_PLAYER_FRICTION	0.8
+# define S_PLAYER_GRAVX		0
+# define S_PLAYER_GRAVY		0.7
 # define S_BULLET_SHOOT_F	20
 
 //
@@ -47,12 +49,12 @@ typedef enum __attribute__((__packed__)) e_component
 {
 	C_POSITION,
 	C_VELOCITY,
+	C_GRAVITY,
 	C_COLLIDER,
 	C_SPRITE,
 	C_ENNEMY,
 	C_HEALTH,
 	C_DAMAGE,
-	C_GRAVITY
 }	t_component;
 
 // COLLISIONS
