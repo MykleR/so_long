@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/18 17:10:59 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/19 21:23:52 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@
 # include <parsing.h>
 # include <math.h>
 
-# define NB_SCENES			2
-# define NB_COMPS			8
-# define NB_IMGS_ENV		1
-# define NB_IMGS_BG			1
-# define NB_IMGS_HERO		2
+# define N_SCENES			2
+# define N_COMPS			8
+# define N_IMGS_ENV			1
+# define N_IMGS_BG			1
+# define N_IMGS_HERO		1
+# define N_IMGS_OTHER		1
 
 # define K_LEFT		4
 # define K_RIGHT	7
@@ -37,9 +38,9 @@
 # define S_PLAYER_SHOOT_NB	6
 # define S_PLAYER_SHOOT_FOV	60
 # define S_PLAYER_FRICTION	0.8
-# define S_PLAYER_GRAVX		0
-# define S_PLAYER_GRAVY		0.7
 # define S_BULLET_SHOOT_F	20
+# define S_WORLD_GRAVX		0
+# define S_WORLD_GRAVY		0.7
 
 //
 //	============================== ENUMS ==============================
@@ -47,25 +48,25 @@
 // COMPONENTS
 typedef enum __attribute__((__packed__)) e_component
 {
-	C_POSITION,
-	C_VELOCITY,
-	C_GRAVITY,
-	C_COLLIDER,
-	C_SPRITE,
-	C_ENNEMY,
-	C_HEALTH,
-	C_DAMAGE,
+	COMP_POS,
+	COMP_VEL,
+	COMP_GRAV,
+	COMP_COL,
+	COMP_IMG,
+	COMP_TARGET,
+	COMP_HP,
+	COMP_DPS,
 }	t_component;
 
 // COLLISIONS
 typedef enum __attribute__((__packed__)) e_collider_tag
 {
-	T_BLOCK,
-	T_PLAYER,
-	T_EXIT,
-	T_ENNEMY,
-	T_PROJECTILE,
-	T_ITEM,
+	TAG_BLOCK,
+	TAG_PLAYER,
+	TAG_EXIT,
+	TAG_ENNEMY,
+	TAG_BULLET,
+	TAG_ITEM,
 }	t_collider_tag;
 
 //
@@ -115,35 +116,48 @@ typedef struct s_prog_args
 	char		**argv;
 	int			argc;
 	t_tilemap	tilemap;
-	t_sprite	imgs_env[NB_IMGS_ENV];
-	t_sprite	imgs_hero[NB_IMGS_HERO];
-	t_sprite	imgs_bg[NB_IMGS_BG];
+	t_sprite	imgs_env[N_IMGS_ENV];
+	t_sprite	imgs_hero[N_IMGS_HERO];
+	t_sprite	imgs_bg[N_IMGS_BG];
+	t_sprite	imgs_other[N_IMGS_OTHER];
 }	t_prog_args;
 
 typedef struct s_game
 {
 	t_ecs		*ecs;
 	t_col_grid	grid;
+	t_ecs_queue	queue;
 	t_aabb		camera;
 	uint32_t	player;
-	uint32_t	nb_bullets;
-	t_vector	gravity;
 }	t_game;
 
 //	============================== Functions =============================
 
-int		__game_init(t_app *app, t_scene *scene);
-int		__game_update(t_app *app, t_scene *scene);
-int		__game_clear(t_app *app, t_scene *scene);
-int		__game_event(t_app *app, t_scene *scene, mlx_event_type t, int e);
-int		__menu_init(t_app *app, t_scene *scene);
-int		__menu_update(t_app *app, t_scene *scene);
-int		__menu_clear(t_app *app, t_scene *scene);
-int		__menu_event(t_app *app, t_scene *scene, mlx_event_type t, int e);
+uint32_t	instantiate_player(t_ecs *ecs, t_sprite sprite,
+				float x, float y);
+uint32_t	instantiate_bullet(t_ecs *ecs, t_vector pos,
+				t_vector vel, t_sprite sprite);
+uint32_t	instantiate_tile(t_ecs *ecs, t_sprite *imgs,
+				t_vector pos, t_tile tile);
 
-void	__player_collide(uint32_t self, uint32_t other, void *data);
-void	__bullet_collide(uint32_t self, uint32_t other, void *data);
-void	__ennemy_collide(uint32_t self, uint32_t other, void *data);
-void	__item_collide(uint32_t self, uint32_t other, void *data);
+int			unload_app_resources(void *mlx, t_prog_args *args);
+int			load_app_resources(void *mlx, t_prog_args *args);
+
+void		game_render(t_app *app, t_game *game);
+void		game_physics(t_scene *scene, t_game *game);
+int			__game_init(t_app *app, t_scene *scene);
+int			__game_update(t_app *app, t_scene *scene);
+int			__game_clear(t_app *app, t_scene *scene);
+int			__game_event(t_app *app, t_scene *scene, mlx_event_type t, int e);
+
+int			__menu_init(t_app *app, t_scene *scene);
+int			__menu_update(t_app *app, t_scene *scene);
+int			__menu_clear(t_app *app, t_scene *scene);
+int			__menu_event(t_app *app, t_scene *scene, mlx_event_type t, int e);
+
+void		__player_collide(uint32_t self, uint32_t other, void *data);
+void		__bullet_collide(uint32_t self, uint32_t other, void *data);
+void		__ennemy_collide(uint32_t self, uint32_t other, void *data);
+void		__item_collide(uint32_t self, uint32_t other, void *data);
 
 #endif
