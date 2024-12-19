@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:03:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/19 23:27:12 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 00:44:42 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,21 @@ int	unload_app_resources(void *mlx, t_prog_args *args)
 int	load_app_resources(void *mlx, t_prog_args *args)
 {
 	static const char	*p_hero[N_IMGS_HERO] = {
-		"resources/hero/idle_f1.png",
-		"resources/hero/idle_f2.png"};
+		"resources/hero/idle_f2.png",
+		"resources/hero/idle_f1.png"};
 	static const char	*p_env[N_IMGS_ENV] = {
 		"resources/env/tile041.png"};
 	static const char	*p_bg[N_IMGS_BG] = {
 		"resources/env/background.png"};
 	static const char	*p_other[N_IMGS_OTHER] = {
-		"resources/hero/bullet.png"};
+		"resources/bullets/tile196.png",
+		"resources/bullets/tile197.png",
+		"resources/bullets/tile198.png",
+		"resources/bullets/tile199.png",
+		"resources/bullets/tile091.png",
+		"resources/bullets/tile092.png",
+		"resources/bullets/tile093.png",
+		"resources/bullets/tile094.png"};
 
 	if (load_imgs(mlx, p_hero, args->imgs_hero, N_IMGS_HERO) == APP_ERROR
 		|| load_imgs(mlx, p_env, args->imgs_env, N_IMGS_ENV) == APP_ERROR

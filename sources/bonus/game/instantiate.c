@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:27:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/19 21:21:30 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 00:50:18 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,30 @@ uint32_t	instantiate_tile(t_ecs *ecs, t_sprite *imgs,
 	return (id);
 }
 
-uint32_t	instantiate_bullet(t_ecs *ecs, t_vector pos,
-				t_vector vel, t_sprite img)
+uint32_t	instantiate_bullet(t_ecs *ecs, t_sprite *imgs,
+				t_vector pos, t_vector vel)
 {
 	uint32_t	id;
 
 	id = ecs_entity_create(ecs);
 	ecs_entity_add(ecs, id, COMP_POS, &pos);
 	ecs_entity_add(ecs, id, COMP_VEL, &vel);
-	ecs_entity_add(ecs, id, COMP_IMG, &img);
+	ecs_entity_add(ecs, id, COMP_IMG, imgs);
 	ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
-			__bullet_collide, img.w, img.h, TAG_BULLET}));
+			__bullet_collide, imgs->w, imgs->h, TAG_BULLET}));
+	ecs_entity_add(ecs, id, COMP_ANIM, &((t_animation){
+			imgs, 4, 0, 2, 0, 1, 1}));
+	return (id);
+}
+
+uint32_t	instantiate_particule(t_ecs *ecs, t_sprite *imgs, t_vector pos)
+{
+	uint32_t	id;
+
+	id = ecs_entity_create(ecs);
+	ecs_entity_add(ecs, id, COMP_POS, &pos);
+	ecs_entity_add(ecs, id, COMP_IMG, imgs);
+	ecs_entity_add(ecs, id, COMP_ANIM, &((t_animation){
+			imgs, 4, 0, 5, 0, 1, 1}));
 	return (id);
 }

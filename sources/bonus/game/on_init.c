@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:20:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/19 23:17:31 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 00:50:00 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,8 @@ int	__game_init(t_app *app, t_scene *scene)
 	game->player = instantiate_player(game->ecs, *args->imgs_hero,
 			args->tilemap.spawn.j * TILE_SIZE,
 			args->tilemap.spawn.i * TILE_SIZE);
-	uint32_t test = ecs_entity_create(game->ecs);
-	ecs_entity_add(game->ecs, test, COMP_POS, &((t_vector){100,100}));
-	ecs_entity_add(game->ecs, test, COMP_IMG, args->imgs_hero);
-	ecs_entity_add(game->ecs, test, COMP_ANIM, &((t_animation){args->imgs_hero, N_IMGS_HERO, 0, 60, 0, 1}));
+	instantiate_particule(game->ecs, args->imgs_other + 4, (t_vector){
+		args->tilemap.exit.j * TILE_SIZE, args->tilemap.exit.i * TILE_SIZE});
 	place_tiles(game->ecs, args->tilemap, args->imgs_env);
 	return (0);
 }

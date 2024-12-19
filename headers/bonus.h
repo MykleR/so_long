@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/19 23:17:29 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 00:49:02 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define N_IMGS_ENV			1
 # define N_IMGS_BG			1
 # define N_IMGS_HERO		2
-# define N_IMGS_OTHER		1
+# define N_IMGS_OTHER		8
 
 # define K_LEFT		4
 # define K_RIGHT	7
@@ -38,7 +38,7 @@
 # define S_PLAYER_SHOOT_NB	6
 # define S_PLAYER_SHOOT_FOV	60
 # define S_PLAYER_FRICTION	0.8
-# define S_BULLET_SHOOT_F	20
+# define S_BULLET_SHOOT_F	5
 # define S_WORLD_GRAVX		0
 # define S_WORLD_GRAVY		0.7
 
@@ -112,6 +112,7 @@ typedef struct s_animation
 	uint16_t	delay;
 	uint8_t		count;
 	bool		play;
+	bool		replay;
 }	t_animation;
 
 typedef struct s_box_resolve
@@ -146,10 +147,11 @@ typedef struct s_game
 
 uint32_t	instantiate_player(t_ecs *ecs, t_sprite sprite,
 				float x, float y);
-uint32_t	instantiate_bullet(t_ecs *ecs, t_vector pos,
-				t_vector vel, t_sprite sprite);
+uint32_t	instantiate_bullet(t_ecs *ecs, t_sprite *sprite,
+				t_vector pos, t_vector vel);
 uint32_t	instantiate_tile(t_ecs *ecs, t_sprite *imgs,
 				t_vector pos, t_tile tile);
+uint32_t	instantiate_particule(t_ecs *ecs, t_sprite *imgs, t_vector pos);
 
 int			unload_app_resources(void *mlx, t_prog_args *args);
 int			load_app_resources(void *mlx, t_prog_args *args);
