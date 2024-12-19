@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/19 21:23:52 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/19 23:17:29 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 # include <math.h>
 
 # define N_SCENES			2
-# define N_COMPS			8
+# define N_COMPS			9
 # define N_IMGS_ENV			1
 # define N_IMGS_BG			1
-# define N_IMGS_HERO		1
+# define N_IMGS_HERO		2
 # define N_IMGS_OTHER		1
 
 # define K_LEFT		4
@@ -53,6 +53,7 @@ typedef enum __attribute__((__packed__)) e_component
 	COMP_GRAV,
 	COMP_COL,
 	COMP_IMG,
+	COMP_ANIM,
 	COMP_TARGET,
 	COMP_HP,
 	COMP_DPS,
@@ -102,6 +103,16 @@ typedef struct s_sprite
 	int		w;
 	int		h;
 }	t_sprite;
+
+typedef struct s_animation
+{
+	t_sprite	*frames;
+	uint16_t	nb_frames;
+	uint16_t	frame;
+	uint16_t	delay;
+	uint8_t		count;
+	bool		play;
+}	t_animation;
 
 typedef struct s_box_resolve
 {

@@ -6,7 +6,7 @@
 #    By: mrouves <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 18:27:35 by mrouves           #+#    #+#              #
-#    Updated: 2024/12/17 15:53:20 by mrouves          ###   ########.fr        #
+#    Updated: 2024/12/19 23:21:12 by mrouves          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ ECS				:= $(DIR_ECS)/lib-ecs.a
 OBJS			:= $(addprefix $(DIR_OBJS)/, $(SOURCES:%.c=%.o))
 
 CC				:= clang
-CFLAGS			:= -Wall -Wextra -Werror -g
+CFLAGS			:= -Wall -Wextra -Werror -O3
 IFLAGS			:= -I $(DIR_HEADERS) -I $(MLX_INCLUDES) -I $(LIBFT_INCLUDES) -I $(ECS_INCLUDES)
 DIR_DUP			= mkdir -p $(@D)
 

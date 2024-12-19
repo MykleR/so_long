@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:20:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/19 21:23:20 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/19 23:17:31 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	__game_init(t_app *app, t_scene *scene)
 		return (APP_ERROR);
 	game->camera = (t_aabb){0, 0, app->params.w, app->params.h};
 	game->ecs = ecs_create(N_COMPS, sizeof(t_vector), sizeof(t_vector),
-			sizeof(t_vector), sizeof(t_collider),
-			sizeof(t_sprite), sizeof(uint32_t),
+			sizeof(t_vector), sizeof(t_collider), sizeof(t_sprite),
+			sizeof(t_animation), sizeof(uint32_t),
 			sizeof(uint32_t), sizeof(uint32_t));
 	if (!game->ecs || !grid_create(&game->grid, game->camera)
 		|| !ecs_queue_create(&game->queue))
@@ -52,6 +52,10 @@ int	__game_init(t_app *app, t_scene *scene)
 	game->player = instantiate_player(game->ecs, *args->imgs_hero,
 			args->tilemap.spawn.j * TILE_SIZE,
 			args->tilemap.spawn.i * TILE_SIZE);
+	uint32_t test = ecs_entity_create(game->ecs);
+	ecs_entity_add(game->ecs, test, COMP_POS, &((t_vector){100,100}));
+	ecs_entity_add(game->ecs, test, COMP_IMG, args->imgs_hero);
+	ecs_entity_add(game->ecs, test, COMP_ANIM, &((t_animation){args->imgs_hero, N_IMGS_HERO, 0, 60, 0, 1}));
 	place_tiles(game->ecs, args->tilemap, args->imgs_env);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:21:11 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/19 17:11:50 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/19 23:13:45 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ bool	intersects(t_aabb b, t_aabb a)
 		&& b.y < a.y + a.h && b.y + b.h > a.y);
 }
 
-static bool	is_ingrid(int16_t row, int16_t col, uint16_t w, uint16_t h)
+static inline bool	is_ingrid(int16_t row, int16_t col, uint16_t w, uint16_t h)
 {
 	return (row >= 0 && row < h && col >= 0 && col < w);
 }

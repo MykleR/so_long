@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:18:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/19 21:25:28 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/19 23:20:06 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,5 @@ void	game_physics(t_scene *scene, t_game *game)
 	move_system(game->ecs);
 	collide_system(game->ecs, &game->grid);
 	grid_process(&game->grid, scene);
-	ecs_queue_process(game->ecs, &game->queue);
+	//ecs_queue_process(game->ecs, &game->queue);
 }
