@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:20:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 00:50:00 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 19:03:44 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,13 @@ int	__game_init(t_app *app, t_scene *scene)
 			sizeof(t_vector), sizeof(t_collider), sizeof(t_sprite),
 			sizeof(t_animation), sizeof(uint32_t),
 			sizeof(uint32_t), sizeof(uint32_t));
-	if (!game->ecs || !grid_create(&game->grid, game->camera)
+	if (!game->ecs || !grid_create(&game->grid, (t_aabb){0, 0,
+			args->tilemap.size.j * TILE_SIZE, args->tilemap.size.i * TILE_SIZE})
 		|| !ecs_queue_create(&game->queue))
 		return (APP_ERROR);
 	game->player = instantiate_player(game->ecs, *args->imgs_hero,
 			args->tilemap.spawn.j * TILE_SIZE,
 			args->tilemap.spawn.i * TILE_SIZE);
-	instantiate_particule(game->ecs, args->imgs_other + 4, (t_vector){
-		args->tilemap.exit.j * TILE_SIZE, args->tilemap.exit.i * TILE_SIZE});
 	place_tiles(game->ecs, args->tilemap, args->imgs_env);
 	return (0);
 }

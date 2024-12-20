@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 18:14:09 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 18:35:28 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef enum __attribute__((__packed__)) e_component
 	COMP_COL,
 	COMP_IMG,
 	COMP_ANIM,
-	COMP_TARGET,
+	COMP_LIFETIME,
 	COMP_HP,
 	COMP_DPS,
 }	t_component;
@@ -151,7 +151,8 @@ uint32_t	instantiate_bullet(t_ecs *ecs, t_sprite *sprite,
 				t_vector pos, t_vector vel);
 uint32_t	instantiate_tile(t_ecs *ecs, t_sprite *imgs,
 				t_vector pos, t_tile tile);
-uint32_t	instantiate_particule(t_ecs *ecs, t_sprite *imgs, t_vector pos);
+uint32_t	instantiate_particule(t_ecs *ecs, t_animation anim,
+				t_vector pos, int lifetime);
 
 int			unload_app_resources(void *mlx, t_prog_args *args);
 int			load_app_resources(void *mlx, t_prog_args *args);

@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:18:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/19 23:20:06 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 19:00:15 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,32 @@ static void	collide_system(t_ecs *ecs, t_col_grid *grid)
 	}
 }
 
+void	lifetime_system(t_ecs *ecs, t_ecs_queue *queue)
+{
+	t_ecs_ulist	query;
+	uint32_t	*life;
+	uint16_t	time;
+	uint16_t	count;
+
+	query = *ecs_query(ecs, (1ULL << COMP_LIFETIME));
+	while (query.len--)
+	{
+		life = ecs_entity_get(ecs, query.values[query.len], COMP_LIFETIME);
+		time = *life & UINT16_MAX;
+		count = *life >> 16;
+		if (count++ >= time)
+			ecs_queue_add(queue, (t_ecs_queue_entry){
+				0, query.values[query.len], 0, KILL});
+		else
+			*life = (count << 16) | time;
+	}
+}
+
 void	game_physics(t_scene *scene, t_game *game)
 {
-	game->grid.bounds.x = game->camera.x;
-	game->grid.bounds.y = game->camera.y;
 	move_system(game->ecs);
 	collide_system(game->ecs, &game->grid);
 	grid_process(&game->grid, scene);
-	//ecs_queue_process(game->ecs, &game->queue);
+	lifetime_system(game->ecs, &game->queue);
+	ecs_queue_process(game->ecs, &game->queue);
 }

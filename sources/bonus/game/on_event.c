@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:16:41 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 00:16:36 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 18:59:13 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ static void	shotgun(t_app *app, t_game *game, t_vector pos, float angle)
 	fov = S_PLAYER_SHOOT_FOV * M_PI / 180;
 	current_angle = angle - fov * .5;
 	i = -1;
+	instantiate_particule(game->ecs, (t_animation){
+		imgs + 4, 5, 0, 4, 0, 1, 1}, (t_vector){
+		pos.x - (float)imgs->w, pos.y - (float)imgs->h}, 10);
 	while (++i < S_PLAYER_SHOOT_NB)
 	{
 		instantiate_bullet(game->ecs, imgs, pos, (t_vector){
