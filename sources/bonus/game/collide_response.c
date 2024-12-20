@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:19:13 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 18:50:06 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 20:40:51 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,19 @@ static void	resolve_player_to_block(t_box_resolve info, t_vector *pvel)
 	info.p1->x += pvel->x;
 }
 
-void	__player_collide(uint32_t player, uint32_t other, void *ptr)
+void	__player_collide(uint32_t player, uint32_t other, void *data)
 {
 	t_game		*game;
 	t_collider	*ocol;
 
-	game = (t_game *)((t_scene *)ptr)->env;
+	game = (t_game *)((t_scene *)data)->env;
 	ocol = ecs_entity_get(game->ecs, other, COMP_COL);
-	if (ocol->tag != TAG_BLOCK)
-		return ;
-	resolve_player_to_block((t_box_resolve){
-		ecs_entity_get(game->ecs, player, COMP_COL), ocol,
-		ecs_entity_get(game->ecs, player, COMP_POS),
-		ecs_entity_get(game->ecs, other, COMP_POS)},
-		ecs_entity_get(game->ecs, player, COMP_VEL));
+	if (ocol->tag == TAG_BLOCK)
+		resolve_player_to_block((t_box_resolve){
+			ecs_entity_get(game->ecs, player, COMP_COL), ocol,
+			ecs_entity_get(game->ecs, player, COMP_POS),
+			ecs_entity_get(game->ecs, other, COMP_POS)},
+			ecs_entity_get(game->ecs, player, COMP_VEL));
 }
 
 void	__bullet_collide(uint32_t self, uint32_t other, void *data)
@@ -65,4 +64,17 @@ void	__bullet_collide(uint32_t self, uint32_t other, void *data)
 	other_col = ecs_entity_get(game->ecs, other, COMP_COL);
 	if (other_col->tag == TAG_BLOCK && ecs_entity_alive(game->ecs, other))
 		ecs_entity_kill(game->ecs, self);
+}
+
+void	__item_collide(uint32_t	self, uint32_t other, void *data)
+{
+	t_game		*game;
+	t_collider	*other_col;
+
+	game = (t_game *)((t_scene *)data)->env;
+	other_col = ecs_entity_get(game->ecs, other, COMP_COL);
+	if (other_col->tag != TAG_PLAYER)
+		return ;
+	ecs_entity_kill(game->ecs, self);
+	game->collected++;
 }

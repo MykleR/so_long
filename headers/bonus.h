@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 19:53:47 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 20:50:51 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # define N_SCENES			2
 # define N_COMPS			9
-# define N_IMGS_ENV			2
+# define N_IMGS_ENV			4
 # define N_IMGS_HERO		2
 # define N_IMGS_OTHER		8
 
@@ -36,7 +36,7 @@
 # define S_PLAYER_SHOOT_F	12
 # define S_PLAYER_SHOOT_NB	4
 # define S_PLAYER_SHOOT_FOV	60
-# define S_PLAYER_FRICTION	0.8
+# define S_PLAYER_FRICTION	0.75
 # define S_BULLET_SHOOT_F	8
 # define S_BULLET_DURATION	20
 # define S_WORLD_GRAVX		0
@@ -140,6 +140,8 @@ typedef struct s_game
 	t_ecs_queue	queue;
 	t_aabb		camera;
 	uint32_t	player;
+	uint32_t	collected;
+	uint32_t	to_collect;
 }	t_game;
 
 //	============================== Functions =============================
@@ -172,5 +174,6 @@ void		__player_collide(uint32_t self, uint32_t other, void *data);
 void		__bullet_collide(uint32_t self, uint32_t other, void *data);
 void		__ennemy_collide(uint32_t self, uint32_t other, void *data);
 void		__item_collide(uint32_t self, uint32_t other, void *data);
+void		__exit_collide(uint32_t self, uint32_t other, void *data);
 
 #endif

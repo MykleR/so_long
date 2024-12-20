@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:03:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 19:37:38 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 21:05:01 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,13 @@ int	load_app_resources(void *mlx, t_prog_args *args)
 	static const char	*p_hero[N_IMGS_HERO] = {
 		"resources/hero/idle_f2.png", "resources/hero/idle_f1.png"};
 	static const char	*p_env[N_IMGS_ENV] = {
-		"resources/env/background.png", "resources/env/tile041.png"};
+		"resources/env/background.png", "resources/env/wall_2.png",
+		"resources/env/coin.png", "resources/env/exit_f1.png"};
 	static const char	*p_other[N_IMGS_OTHER] = {
-		"resources/bullets/tile076.png", "resources/bullets/tile077.png",
-		"resources/bullets/tile078.png", "resources/bullets/tile079.png",
-		"resources/bullets/tile151.png", "resources/bullets/tile152.png",
-		"resources/bullets/tile153.png", "resources/bullets/tile154.png"};
+		"resources/effects/pbullet_f1.png", "resources/effects/pbullet_f2.png",
+		"resources/effects/pbullet_f3.png", "resources/effects/pbullet_f4.png",
+		"resources/effects/shoot_f1.png", "resources/effects/shoot_f2.png",
+		"resources/effects/shoot_f3.png", "resources/effects/shoot_f4.png"};
 
 	if (load_imgs(mlx, p_hero, args->imgs_hero, N_IMGS_HERO) == APP_ERROR
 		|| load_imgs(mlx, p_other, args->imgs_other, N_IMGS_OTHER) == APP_ERROR

@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:27:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 19:57:47 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 20:50:48 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,21 @@ uint32_t	instantiate_tile(t_ecs *ecs, t_sprite *imgs,
 				t_vector pos, t_tile tile)
 {
 	uint32_t	id;
-
-	if (tile != WALL)
+	
+	if (tile == FLOOR || tile == SPAWN)
 		return (UINT32_MAX);
+	imgs += tile == ITEM;
+	if (tile == EXIT)
+		imgs += 2;
 	id = ecs_entity_create(ecs);
 	ecs_entity_add(ecs, id, COMP_IMG, imgs);
 	ecs_entity_add(ecs, id, COMP_POS, &pos);
-	ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
-			NULL, imgs->w, imgs->h, TAG_BLOCK}));
+	if (tile == WALL)
+		ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
+				NULL, imgs->w, imgs->h, TAG_BLOCK}));
+	if (tile == ITEM)
+		ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
+				__item_collide, imgs->w, imgs->h, TAG_ITEM}));
 	return (id);
 }
 
