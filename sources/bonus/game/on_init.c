@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:20:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 19:03:44 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 19:35:52 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ int	__game_init(t_app *app, t_scene *scene)
 	game->player = instantiate_player(game->ecs, *args->imgs_hero,
 			args->tilemap.spawn.j * TILE_SIZE,
 			args->tilemap.spawn.i * TILE_SIZE);
-	place_tiles(game->ecs, args->tilemap, args->imgs_env);
+	place_tiles(game->ecs, args->tilemap, args->imgs_env + 1);
 	return (0);
 }

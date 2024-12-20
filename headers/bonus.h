@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 18:35:28 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 19:36:14 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@
 
 # define N_SCENES			2
 # define N_COMPS			9
-# define N_IMGS_ENV			1
-# define N_IMGS_BG			1
+# define N_IMGS_ENV			2
 # define N_IMGS_HERO		2
 # define N_IMGS_OTHER		8
 
@@ -35,7 +34,7 @@
 
 # define S_MENU_FONT_S		50
 # define S_PLAYER_SHOOT_F	12
-# define S_PLAYER_SHOOT_NB	6
+# define S_PLAYER_SHOOT_NB	4
 # define S_PLAYER_SHOOT_FOV	60
 # define S_PLAYER_FRICTION	0.8
 # define S_BULLET_SHOOT_F	5
@@ -130,7 +129,6 @@ typedef struct s_prog_args
 	t_tilemap	tilemap;
 	t_sprite	imgs_env[N_IMGS_ENV];
 	t_sprite	imgs_hero[N_IMGS_HERO];
-	t_sprite	imgs_bg[N_IMGS_BG];
 	t_sprite	imgs_other[N_IMGS_OTHER];
 }	t_prog_args;
 

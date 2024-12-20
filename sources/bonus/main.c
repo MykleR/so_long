@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:30:01 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/19 21:09:23 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 19:38:25 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ static int	__app_start(t_app *app)
 
 static int	__app_stop(t_app *app)
 {
-	unload_app_resources(app->mlx, app->params.args);
-	return (0);
+	return (unload_app_resources(app->mlx, app->params.args));
 }
 
 int	main(int ac, char **av)
@@ -38,7 +37,7 @@ int	main(int ac, char **av)
 	if (status == PARSE_OK)
 	{
 		app_autorun((t_win_params){
-			__app_start, __app_stop, &args, "so_long", 800, 600, 60}, N_SCENES,
+			__app_start, __app_stop, &args, "so_long", 1280, 720, 60}, N_SCENES,
 			(t_scene){NULL, 0,
 			__menu_init, __menu_event, __menu_update, __menu_clear},
 			(t_scene){NULL, sizeof(t_game),

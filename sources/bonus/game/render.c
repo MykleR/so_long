@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:17:50 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/19 23:26:28 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 19:35:40 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	game_render(t_app *app, t_game *game)
 {
 	t_sprite	*bg;
 
-	bg = ((t_prog_args *)app->params.args)->imgs_bg;
+	bg = ((t_prog_args *)app->params.args)->imgs_env;
 	mlx_clear_window(app->mlx, app->win);
 	mlx_put_image_to_window(app->mlx, app->win, bg->texture,
 		(app->params.w >> 1) - (bg->w >> 1),
