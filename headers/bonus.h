@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 00:49:02 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 18:14:09 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,12 +107,12 @@ typedef struct s_sprite
 typedef struct s_animation
 {
 	t_sprite	*frames;
-	uint16_t	nb_frames;
-	uint16_t	frame;
 	uint16_t	delay;
-	uint8_t		count;
-	bool		play;
-	bool		replay;
+	uint16_t	count;
+	uint8_t		nb_frames;
+	uint8_t		frame;
+	uint8_t		play;
+	uint8_t		replay;
 }	t_animation;
 
 typedef struct s_box_resolve
