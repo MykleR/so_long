@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:27:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 20:50:48 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 21:11:00 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ uint32_t	instantiate_tile(t_ecs *ecs, t_sprite *imgs,
 	if (tile == ITEM)
 		ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
 				__item_collide, imgs->w, imgs->h, TAG_ITEM}));
+	if (tile == EXIT)
+		ecs_entity_add(ecs, id, COMP_ANIM, &((t_animation){
+				imgs, 5, 0, 4, 0, 1, 1}));
 	return (id);
 }
 

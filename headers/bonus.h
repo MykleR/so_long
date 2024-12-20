@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 20:50:51 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 21:25:14 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 
 # define N_SCENES			2
 # define N_COMPS			9
-# define N_IMGS_ENV			4
-# define N_IMGS_HERO		2
+# define N_IMGS_ENV			7
+# define N_IMGS_HERO		1
 # define N_IMGS_OTHER		8
 
 # define K_LEFT		4
@@ -35,10 +35,10 @@
 # define S_MENU_FONT_S		50
 # define S_PLAYER_SHOOT_F	12
 # define S_PLAYER_SHOOT_NB	4
-# define S_PLAYER_SHOOT_FOV	60
+# define S_PLAYER_SHOOT_FOV	45
 # define S_PLAYER_FRICTION	0.75
 # define S_BULLET_SHOOT_F	8
-# define S_BULLET_DURATION	20
+# define S_BULLET_DURATION	30
 # define S_WORLD_GRAVX		0
 # define S_WORLD_GRAVY		0.7
 
