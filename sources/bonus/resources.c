@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:03:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 00:44:42 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 18:11:44 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,10 @@ int	load_app_resources(void *mlx, t_prog_args *args)
 	static const char	*p_bg[N_IMGS_BG] = {
 		"resources/env/background.png"};
 	static const char	*p_other[N_IMGS_OTHER] = {
-		"resources/bullets/tile196.png",
-		"resources/bullets/tile197.png",
-		"resources/bullets/tile198.png",
-		"resources/bullets/tile199.png",
-		"resources/bullets/tile091.png",
-		"resources/bullets/tile092.png",
-		"resources/bullets/tile093.png",
-		"resources/bullets/tile094.png"};
+		"resources/bullets/tile076.png", "resources/bullets/tile077.png",
+		"resources/bullets/tile078.png", "resources/bullets/tile079.png",
+		"resources/bullets/tile091.png", "resources/bullets/tile092.png",
+		"resources/bullets/tile093.png", "resources/bullets/tile094.png"};
 
 	if (load_imgs(mlx, p_hero, args->imgs_hero, N_IMGS_HERO) == APP_ERROR
 		|| load_imgs(mlx, p_env, args->imgs_env, N_IMGS_ENV) == APP_ERROR
