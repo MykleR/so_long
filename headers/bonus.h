@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 19:36:14 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 19:53:47 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@
 # define S_PLAYER_SHOOT_NB	4
 # define S_PLAYER_SHOOT_FOV	60
 # define S_PLAYER_FRICTION	0.8
-# define S_BULLET_SHOOT_F	5
+# define S_BULLET_SHOOT_F	8
+# define S_BULLET_DURATION	20
 # define S_WORLD_GRAVX		0
 # define S_WORLD_GRAVY		0.7
 

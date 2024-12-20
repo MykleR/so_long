@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:57:36 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/06 14:36:35 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 20:28:17 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <fcntl.h>
 
 # define TILE_SIZE 32
-# define TILEMAP_MAX_SIZE 80
+# define TILEMAP_MAX_SIZE 60
 
 typedef enum e_parse_error
 {

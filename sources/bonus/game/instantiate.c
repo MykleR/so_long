@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:27:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 18:35:30 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 19:57:47 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ uint32_t	instantiate_bullet(t_ecs *ecs, t_sprite *imgs,
 	ecs_entity_add(ecs, id, COMP_POS, &pos);
 	ecs_entity_add(ecs, id, COMP_VEL, &vel);
 	ecs_entity_add(ecs, id, COMP_IMG, imgs);
+	ecs_entity_add(ecs, id, COMP_LIFETIME, &((uint32_t){S_BULLET_DURATION}));
 	ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
 			__bullet_collide, imgs->w, imgs->h, TAG_BULLET}));
 	ecs_entity_add(ecs, id, COMP_ANIM, &((t_animation){

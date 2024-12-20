@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:21:11 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/19 23:13:45 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/20 20:11:54 by mrouves          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,11 @@ static void	check_collisions(t_array_list *l1, t_array_list *l2, void *data)
 	{
 		col1 = array_list_get(l1, i);
 		j = -1;
-		while (++j < l2->len)
+		while (col1->on_collide && ++j < l2->len)
 		{
 			col2 = array_list_get(l2, j);
 			if (col1->id != col2->id && intersects(col1->bounds, col2->bounds))
-			{
-				if (__builtin_expect(col1->on_collide != NULL, 1))
-					col1->on_collide(col1->id, col2->id, data);
-				if (__builtin_expect(col2->on_collide != NULL, 1))
-					col2->on_collide(col2->id, col1->id, data);
-			}
+				col1->on_collide(col1->id, col2->id, data);
 		}
 	}
 }
