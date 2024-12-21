@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:03:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 21:09:50 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/21 12:43:12 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ int	unload_app_resources(void *mlx, t_prog_args *args)
 
 int	load_app_resources(void *mlx, t_prog_args *args)
 {
-	static const char	*p_hero[N_IMGS_HERO] = {"resources/hero/idle_f2.png"};
+	static const char	*p_hero[N_IMGS_HERO] = {"resources/hero/idle_f2.png",
+		"resources/hero/enemy_f1.png", "resources/hero/enemy_f2.png",
+		"resources/hero/enemy_f3.png", "resources/hero/enemy_f4.png"};
 	static const char	*p_env[N_IMGS_ENV] = {"resources/env/background.png",
 		"resources/env/wall_2.png", "resources/env/coin.png",
 		"resources/env/exit_f1.png", "resources/env/exit_f2.png",
@@ -52,7 +54,9 @@ int	load_app_resources(void *mlx, t_prog_args *args)
 		"resources/effects/pbullet_f1.png", "resources/effects/pbullet_f2.png",
 		"resources/effects/pbullet_f3.png", "resources/effects/pbullet_f4.png",
 		"resources/effects/shoot_f1.png", "resources/effects/shoot_f2.png",
-		"resources/effects/shoot_f3.png", "resources/effects/shoot_f4.png"};
+		"resources/effects/shoot_f3.png", "resources/effects/shoot_f4.png",
+		"resources/effects/ebullet_f1.png", "resources/effects/ebullet_f2.png",
+		"resources/effects/ebullet_f3.png", "resources/effects/ebullet_f4.png"};
 
 	if (load_imgs(mlx, p_hero, args->imgs_hero, N_IMGS_HERO) == APP_ERROR
 		|| load_imgs(mlx, p_other, args->imgs_other, N_IMGS_OTHER) == APP_ERROR

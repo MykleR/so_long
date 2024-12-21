@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:16:41 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 18:59:13 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/21 13:03:07 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	shotgun(t_app *app, t_game *game, t_vector pos, float angle)
 		pos.x - (float)imgs->w, pos.y - (float)imgs->h}, 10);
 	while (++i < S_PLAYER_SHOOT_NB)
 	{
-		instantiate_bullet(game->ecs, imgs, pos, (t_vector){
+		instantiate_pbullet(game->ecs, imgs, pos, (t_vector){
 			cos(current_angle) * S_BULLET_SHOOT_F,
 			sin(current_angle) * S_BULLET_SHOOT_F});
 		current_angle += fov / S_PLAYER_SHOOT_NB;

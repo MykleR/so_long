@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 21:25:14 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/21 13:01:51 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # define N_SCENES			2
 # define N_COMPS			9
 # define N_IMGS_ENV			7
-# define N_IMGS_HERO		1
-# define N_IMGS_OTHER		8
+# define N_IMGS_HERO		5
+# define N_IMGS_OTHER		12
 
 # define K_LEFT		4
 # define K_RIGHT	7
@@ -55,8 +55,8 @@ typedef enum __attribute__((__packed__)) e_component
 	COMP_IMG,
 	COMP_ANIM,
 	COMP_LIFETIME,
-	COMP_HP,
-	COMP_DPS,
+	COMP_ENEMY,
+	COMP_OWNER,
 }	t_component;
 
 // COLLISIONS
@@ -65,8 +65,9 @@ typedef enum __attribute__((__packed__)) e_collider_tag
 	TAG_BLOCK,
 	TAG_PLAYER,
 	TAG_EXIT,
-	TAG_ENNEMY,
-	TAG_BULLET,
+	TAG_ENEMY,
+	TAG_PBULLET,
+	TAG_EBULLET,
 	TAG_ITEM,
 }	t_collider_tag;
 
@@ -148,7 +149,11 @@ typedef struct s_game
 
 uint32_t	instantiate_player(t_ecs *ecs, t_sprite sprite,
 				float x, float y);
-uint32_t	instantiate_bullet(t_ecs *ecs, t_sprite *sprite,
+uint32_t	instantiate_enemy(t_ecs *ecs, t_sprite *imgs,
+				t_vector pos, uint32_t player_id);
+uint32_t	instantiate_pbullet(t_ecs *ecs, t_sprite *sprite,
+				t_vector pos, t_vector vel);
+uint32_t	instantiate_ebullet(t_ecs *ecs, t_sprite *sprite,
 				t_vector pos, t_vector vel);
 uint32_t	instantiate_tile(t_ecs *ecs, t_sprite *imgs,
 				t_vector pos, t_tile tile);
@@ -172,7 +177,7 @@ int			__menu_event(t_app *app, t_scene *scene, mlx_event_type t, int e);
 
 void		__player_collide(uint32_t self, uint32_t other, void *data);
 void		__bullet_collide(uint32_t self, uint32_t other, void *data);
-void		__ennemy_collide(uint32_t self, uint32_t other, void *data);
+void		__enemy_collide(uint32_t self, uint32_t other, void *data);
 void		__item_collide(uint32_t self, uint32_t other, void *data);
 void		__exit_collide(uint32_t self, uint32_t other, void *data);
 

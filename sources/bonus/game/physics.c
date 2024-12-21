@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:18:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 19:00:15 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/21 13:05:03 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	collide_system(t_ecs *ecs, t_col_grid *grid)
 	}
 }
 
-void	lifetime_system(t_ecs *ecs, t_ecs_queue *queue)
+static void	lifetime_system(t_ecs *ecs, t_ecs_queue *queue)
 {
 	t_ecs_ulist	query;
 	uint32_t	*life;
