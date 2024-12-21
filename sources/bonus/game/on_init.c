@@ -6,49 +6,11 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:20:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 16:47:42 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 20:03:29 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bonus.h>
-
-uint32_t	instantiate_particule(t_ecs *ecs, t_animation anim,
-				t_vector pos, int lifetime)
-{
-	uint32_t	id;
-
-	id = ecs_entity_create(ecs);
-	ecs_entity_add(ecs, id, COMP_POS, &pos);
-	ecs_entity_add(ecs, id, COMP_IMG, anim.frames);
-	ecs_entity_add(ecs, id, COMP_ANIM, &anim);
-	if (lifetime)
-		ecs_entity_add(ecs, id, COMP_LIFETIME, &lifetime);
-	return (id);
-}
-
-uint32_t	instantiate_tile(t_ecs *ecs, t_sprite *imgs,
-				t_vector pos, t_tile tile)
-{
-	uint32_t	id;
-
-	if (tile == FLOOR || tile == SPAWN)
-		return (UINT32_MAX);
-	imgs += tile == ITEM;
-	if (tile == EXIT)
-		imgs += 5;
-	id = ecs_entity_create(ecs);
-	ecs_entity_add(ecs, id, COMP_IMG, imgs);
-	ecs_entity_add(ecs, id, COMP_POS, &pos);
-	if (tile == WALL)
-		ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
-				NULL, imgs->w, imgs->h, TAG_BLOCK}));
-	if (tile == ITEM)
-		ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
-				__item_collide, imgs->w, imgs->h, TAG_ITEM}));
-	if (tile == ITEM || tile == EXIT)
-		ecs_entity_add(ecs, id, COMP_ANIM, &((t_animation){imgs, 8, 0, 4, 0}));
-	return (id);
-}
 
 static void	place_tiles(t_ecs *ecs, t_tilemap map, t_sprite *sprites)
 {
@@ -75,17 +37,17 @@ int	__game_init(t_app *app, t_scene *scene)
 	t_game		*game;
 	t_prog_args	*args;
 
-	game = (t_game *)scene->env;
-	args = (t_prog_args *)app->params.args;
+	game = scene->env;
+	args = app->params.args;
 	if (!game || !args)
 		return (APP_ERROR);
 	game->camera = (t_aabb){0, 0, app->params.w, app->params.h};
-	game->ecs = ecs_create(N_COMPS, sizeof(t_vector), sizeof(t_vector),
-			sizeof(t_vector), sizeof(t_collider), sizeof(t_sprite),
-			sizeof(t_animation), sizeof(uint32_t),
-			sizeof(uint32_t), sizeof(int32_t));
+	game->ecs = ecs_create(N_COMPS,
+			sizeof(t_vector), sizeof(t_vector), sizeof(t_vector),
+			sizeof(t_collider), sizeof(t_sprite), sizeof(t_animation),
+			sizeof(uint32_t), sizeof(uint32_t), sizeof(int32_t));
 	if (!game->ecs || !grid_create(&game->grid, (t_aabb){0, 0,
-			args->tilemap.size.j * TILE_SIZE, args->tilemap.size.i * TILE_SIZE})
+		args->tilemap.size.j * TILE_SIZE, args->tilemap.size.i * TILE_SIZE})
 		|| !ecs_queue_create(&game->queue))
 		return (APP_ERROR);
 	game->player = instantiate_player(game->ecs, *args->imgs_hero,

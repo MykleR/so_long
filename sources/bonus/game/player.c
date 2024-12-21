@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 12:52:16 by mykle             #+#    #+#             */
-/*   Updated: 2024/12/21 17:40:51 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 18:50:37 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ uint32_t	instantiate_player(t_ecs *ecs, t_sprite sprite,
 	ecs_entity_add(ecs, id, COMP_IMG, &sprite);
 	ecs_entity_add(ecs, id, COMP_VEL, &(t_vector){0, 0});
 	ecs_entity_add(ecs, id, COMP_COL, &(t_collider){
-			__player_collide, sprite.w, sprite.h, TAG_PLAYER});
+		__player_collide, sprite.w, sprite.h, TAG_PLAYER});
 	ecs_entity_add(ecs, id, COMP_GRAV, &(t_vector){
-			S_WORLD_GRAVX, S_WORLD_GRAVY});
+		S_WORLD_GRAVX, S_WORLD_GRAVY});
 	ecs_entity_add(ecs, id, COMP_HP, &(int32_t){S_PLAYER_HP});
 	return (id);
 }

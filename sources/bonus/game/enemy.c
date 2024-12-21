@@ -6,13 +6,14 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:05:47 by mykle             #+#    #+#             */
-/*   Updated: 2024/12/21 17:16:02 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 19:11:52 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bonus.h>
 
-uint32_t	instantiate_ebullet(t_ecs *ecs, t_sprite *imgs, t_vector pos, t_vector vel)
+uint32_t	instantiate_ebullet(t_ecs *ecs, t_sprite *imgs,
+				t_vector pos, t_vector vel)
 {
 	uint32_t	id;
 

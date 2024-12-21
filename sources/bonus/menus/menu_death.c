@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:33:02 by mykle             #+#    #+#             */
-/*   Updated: 2024/12/21 18:33:06 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 18:36:07 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	__death_update(t_app *app, t_scene *scene)
 			(app->params.h >> 1), 0xFFFFFFFF, "YOU DIED");
 	else
 		mlx_put_image_to_window(app->mlx, app->win,
-				args->imgs_hero[menu->frame].texture,
-				(app->params.w >> 1) - 128,
-				(app->params.h >> 1) - 128);
+			args->imgs_hero[menu->frame].texture,
+			(app->params.w >> 1) - 128,
+			(app->params.h >> 1) - 128);
 	return (0);
 }

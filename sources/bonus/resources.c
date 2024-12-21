@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:03:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 18:20:26 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 18:35:38 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	unload_imgs(void *mlx, t_sprite *s, uint8_t n)
 			mlx_destroy_image(mlx, s[n].texture);
 }
 
-static int load_effects(void *mlx, t_prog_args *args)
+static int	load_effects(void *mlx, t_prog_args *args)
 {
 	static const char	*p_fx[N_IMGS_FX] = {"resources/effects/pbullet_f1.png",
 		"resources/effects/pbullet_f2.png", "resources/effects/pbullet_f3.png",

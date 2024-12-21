@@ -6,11 +6,16 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:18:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 17:39:49 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 20:01:10 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bonus.h>
+
+static inline void	vec_add(t_vector a, t_vector b, t_vector *out)
+{
+	*out = (t_vector){a.x + b.x, a.y + b.y};
+}
 
 static void	move_system(t_ecs *ecs)
 {
@@ -26,14 +31,10 @@ static void	move_system(t_ecs *ecs)
 		id = query.values[query.len];
 		pos = ecs_entity_get(ecs, id, COMP_POS);
 		vel = ecs_entity_get(ecs, id, COMP_VEL);
+		grav = ecs_entity_get(ecs, id, COMP_GRAV);
 		if (ecs_entity_has(ecs, id, COMP_GRAV))
-		{
-			grav = ecs_entity_get(ecs, id, COMP_GRAV);
-			vel->x += grav->x;
-			vel->y += grav->y;
-		}
-		pos->x += vel->x;
-		pos->y += vel->y;
+			vec_add(*vel, *grav, vel);
+		vec_add(*pos, *vel, pos);
 	}
 }
 
@@ -57,25 +58,25 @@ static void	collide_system(t_ecs *ecs, t_col_grid *grid)
 static void	enemy_system(t_ecs *ecs, uint32_t player, t_sprite *bullet_imgs)
 {
 	t_ecs_ulist	query;
-	t_vector	*target_pos;
-	t_vector	*self_pos;
-	uint32_t	*shoot_rate;
+	t_vector	*target;
+	t_vector	*pos;
+	uint32_t	*rate;
 	float		angle;
 
+	target = ecs_entity_get(ecs, player, COMP_POS);
 	query = *ecs_query(ecs, (1ULL << COMP_ENEMY) | (1ULL << COMP_VEL));
 	while (query.len--)
 	{
-		target_pos = ecs_entity_get(ecs, player, COMP_POS);
-		self_pos = ecs_entity_get(ecs, query.values[query.len], COMP_POS);
-		shoot_rate = ecs_entity_get(ecs, query.values[query.len], COMP_ENEMY);
-		angle = atan2((target_pos->y - self_pos->y), (target_pos->x - self_pos->x));
+		pos = ecs_entity_get(ecs, query.values[query.len], COMP_POS);
+		rate = ecs_entity_get(ecs, query.values[query.len], COMP_ENEMY);
+		angle = atan2((target->y - pos->y), (target->x - pos->x));
 		*(t_vector *)ecs_entity_get(ecs, query.values[query.len], COMP_VEL) =
 			(t_vector){cos(angle) * S_ENEMY_SPEED, sin(angle) * S_ENEMY_SPEED};
-		*shoot_rate += (1 << 16);
-		if ((*shoot_rate >> 16) >= (*shoot_rate & UINT16_MAX))
+		*rate += (1 << 16);
+		if ((*rate >> 16) >= (*rate & UINT16_MAX))
 		{
-			*shoot_rate &= UINT16_MAX;
-			instantiate_ebullet(ecs, bullet_imgs, *self_pos, (t_vector){
+			*rate &= UINT16_MAX;
+			instantiate_ebullet(ecs, bullet_imgs, *pos, (t_vector){
 				cos(angle) * S_ENEMY_BULLET_F, sin(angle) * S_ENEMY_BULLET_F});
 		}
 	}
@@ -83,14 +84,11 @@ static void	enemy_system(t_ecs *ecs, uint32_t player, t_sprite *bullet_imgs)
 
 void	game_physics(t_app *app, t_game *game)
 {
-	int32_t	*player_hp;
-
 	move_system(game->ecs);
 	enemy_system(game->ecs, game->player,
-			((t_prog_args *)app->params.args)->imgs_fx + 8);
+		((t_prog_args *)app->params.args)->imgs_fx + 8);
 	collide_system(game->ecs, &game->grid);
 	grid_process(&game->grid, app);
-	player_hp = ecs_entity_get(game->ecs, game->player, COMP_HP);
-	if (*player_hp <= 0)
+	if (*(int32_t *)ecs_entity_get(game->ecs, game->player, COMP_HP) <= 0)
 		app_load(app, 2);
 }
