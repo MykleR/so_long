@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:16:41 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 16:00:27 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 16:46:51 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,20 @@ static void	shotgun(t_app *app, t_game *game, t_vector pos, float angle)
 	float		current_angle;
 	t_sprite	*imgs;
 
-	imgs = ((t_prog_args *)app->params.args)->imgs_other;
+	imgs = ((t_prog_args *)app->params.args)->imgs_fx;
 	fov = S_PLAYER_SHOOT_FOV * M_PI / 180;
-	current_angle = angle - fov * .5;
+	current_angle = angle;
+	if (game->collected > 0)
+		current_angle = angle - fov * .5;
 	i = -1;
 	instantiate_particule(game->ecs, (t_animation){imgs + 4, 5, 0, 4, 0},
 		(t_vector){pos.x - (float)imgs->w, pos.y - (float)imgs->h}, 10);
-	while (++i < S_PLAYER_SHOOT_NB)
+	while (++i < game->collected + 1)
 	{
 		instantiate_pbullet(game->ecs, imgs, pos, (t_vector){
 			cos(current_angle) * S_BULLET_SHOOT_F,
 			sin(current_angle) * S_BULLET_SHOOT_F});
-		current_angle += fov / S_PLAYER_SHOOT_NB;
+		current_angle += fov / (game->collected + 1);
 	}
 }
 

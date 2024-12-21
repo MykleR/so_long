@@ -6,13 +6,14 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 12:52:16 by mykle             #+#    #+#             */
-/*   Updated: 2024/12/21 16:25:21 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 16:35:59 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bonus.h>
 
-uint32_t	instantiate_player(t_ecs *ecs, t_sprite sprite, float x, float y)
+uint32_t	instantiate_player(t_ecs *ecs, t_sprite sprite,
+				float x, float y)
 {
 	uint32_t	id;
 
@@ -27,7 +28,8 @@ uint32_t	instantiate_player(t_ecs *ecs, t_sprite sprite, float x, float y)
 	return (id);
 }
 
-uint32_t	instantiate_pbullet(t_ecs *ecs, t_sprite *imgs, t_vector pos, t_vector vel)
+uint32_t	instantiate_pbullet(t_ecs *ecs, t_sprite *imgs,
+				t_vector pos, t_vector vel)
 {
 	uint32_t	id;
 

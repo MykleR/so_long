@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 16:11:53 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 16:50:11 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@
 # include <parsing.h>
 # include <math.h>
 
-# define N_SCENES			2
-# define N_COMPS			9
-# define N_IMGS_ENV			10
-# define N_IMGS_HERO		5
-# define N_IMGS_OTHER		15
+# define N_SCENES		2
+# define N_COMPS		9
+# define N_IMGS_ENV		10
+# define N_IMGS_HERO	5
+# define N_IMGS_FX		15
 
 # define K_LEFT		4
 # define K_RIGHT	7
@@ -34,7 +34,6 @@
 
 # define S_MENU_FONT_S		50
 # define S_PLAYER_SHOOT_F	12
-# define S_PLAYER_SHOOT_NB	4
 # define S_PLAYER_SHOOT_FOV	45
 # define S_PLAYER_FRICTION	0.75
 # define S_BULLET_SHOOT_F	8
@@ -44,6 +43,7 @@
 # define S_ENEMY_SHOOTRATE	90
 # define S_ENEMY_SPEED		1
 # define S_ENEMY_BULLET_F	2.5
+# define S_ENEMY_HP			10
 
 //
 //	============================== ENUMS ==============================
@@ -132,7 +132,7 @@ typedef struct s_prog_args
 	t_tilemap	tilemap;
 	t_sprite	imgs_env[N_IMGS_ENV];
 	t_sprite	imgs_hero[N_IMGS_HERO];
-	t_sprite	imgs_other[N_IMGS_OTHER];
+	t_sprite	imgs_fx[N_IMGS_FX];
 }	t_prog_args;
 
 typedef struct s_game

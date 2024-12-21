@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:18:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 16:23:27 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 16:34:17 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	game_physics(t_app *app, t_game *game)
 {
 	move_system(game->ecs);
 	enemy_system(game->ecs, game->player,
-			((t_prog_args *)app->params.args)->imgs_other + 8);
+			((t_prog_args *)app->params.args)->imgs_fx + 8);
 	collide_system(game->ecs, &game->grid);
 	grid_process(&game->grid, app);
 	lifetime_system(game->ecs, &game->queue);

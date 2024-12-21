@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:20:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 16:00:12 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 16:47:42 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	__game_init(t_app *app, t_scene *scene)
 	game->ecs = ecs_create(N_COMPS, sizeof(t_vector), sizeof(t_vector),
 			sizeof(t_vector), sizeof(t_collider), sizeof(t_sprite),
 			sizeof(t_animation), sizeof(uint32_t),
-			sizeof(uint32_t), sizeof(uint32_t));
+			sizeof(uint32_t), sizeof(int32_t));
 	if (!game->ecs || !grid_create(&game->grid, (t_aabb){0, 0,
 			args->tilemap.size.j * TILE_SIZE, args->tilemap.size.i * TILE_SIZE})
 		|| !ecs_queue_create(&game->queue))

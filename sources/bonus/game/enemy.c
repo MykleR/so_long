@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:05:47 by mykle             #+#    #+#             */
-/*   Updated: 2024/12/21 16:23:10 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 16:48:13 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ uint32_t	instantiate_enemy(t_ecs *ecs, t_sprite *imgs,
 	ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
 			__enemy_collide, imgs->w, imgs->h, TAG_ENEMY}));
 	ecs_entity_add(ecs, id, COMP_ENEMY, &shoot_rate);
+	ecs_entity_add(ecs, id, COMP_HP, &(int32_t){S_ENEMY_HP});
 	return (id);
 }
 

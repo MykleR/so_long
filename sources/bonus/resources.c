@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:03:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 15:54:28 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 16:32:38 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	unload_app_resources(void *mlx, t_prog_args *args)
 {
 	unload_imgs(mlx, args->imgs_env, N_IMGS_ENV);
 	unload_imgs(mlx, args->imgs_hero, N_IMGS_HERO);
-	unload_imgs(mlx, args->imgs_other, N_IMGS_OTHER);
+	unload_imgs(mlx, args->imgs_fx, N_IMGS_FX);
 	return (0);
 }
 
@@ -49,10 +49,10 @@ int	load_app_resources(void *mlx, t_prog_args *args)
 	static const char	*p_env[N_IMGS_ENV] = {"resources/env/background.png",
 		"resources/env/wall_2.png", "resources/env/item_f1.png",
 		"resources/env/item_f2.png", "resources/env/item_f3.png",
-		"resources/env/item_f4.png", "resources/env/exit_f1.png", 
+		"resources/env/item_f4.png", "resources/env/exit_f1.png",
 		"resources/env/exit_f2.png", "resources/env/exit_f3.png",
 		"resources/env/exit_f4.png"};
-	static const char	*p_other[N_IMGS_OTHER] = {"resources/effects/pbullet_f1.png",
+	static const char	*p_fx[N_IMGS_FX] = {"resources/effects/pbullet_f1.png",
 		"resources/effects/pbullet_f2.png", "resources/effects/pbullet_f3.png",
 		"resources/effects/pbullet_f4.png", "resources/effects/shoot_f1.png",
 		"resources/effects/shoot_f2.png", "resources/effects/shoot_f3.png",
@@ -62,7 +62,7 @@ int	load_app_resources(void *mlx, t_prog_args *args)
 		"resources/effects/pop_f2.png", "resources/effects/pop_f3.png"};
 
 	if (load_imgs(mlx, p_hero, args->imgs_hero, N_IMGS_HERO) == APP_ERROR
-		|| load_imgs(mlx, p_other, args->imgs_other, N_IMGS_OTHER) == APP_ERROR
+		|| load_imgs(mlx, p_fx, args->imgs_fx, N_IMGS_FX) == APP_ERROR
 		|| load_imgs(mlx, p_env, args->imgs_env, N_IMGS_ENV) == APP_ERROR)
 		return (APP_ERROR);
 	return (0);
