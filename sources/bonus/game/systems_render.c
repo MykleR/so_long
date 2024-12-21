@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:17:50 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 16:35:20 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 16:57:41 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,22 @@ void	animation_system(t_ecs *ecs)
 	}
 }
 
+static void	lifetime_system(t_ecs *ecs, t_ecs_queue *queue)
+{
+	t_ecs_ulist	query;
+	uint32_t	*time;
+
+	query = *ecs_query(ecs, (1ULL << COMP_LIFETIME));
+	while (query.len--)
+	{
+		time = ecs_entity_get(ecs, query.values[query.len], COMP_LIFETIME);
+		*time += (1 << 16);
+		if ((*time >> 16) >= (*time & UINT16_MAX))
+			ecs_queue_add(queue, (t_ecs_queue_entry){0,
+				query.values[query.len], 0, KILL});
+	}
+}
+
 void	game_render(t_app *app, t_game *game)
 {
 	t_sprite	*bg;
@@ -67,6 +83,8 @@ void	game_render(t_app *app, t_game *game)
 
 	camera = &game->camera;
 	bg = ((t_prog_args *)app->params.args)->imgs_env;
+	lifetime_system(game->ecs, &game->queue);
+	ecs_queue_process(game->ecs, &game->queue);
 	mlx_clear_window(app->mlx, app->win);
 	mlx_put_image_to_window(app->mlx, app->win, bg->texture,
 		(app->params.w >> 1) - (bg->w >> 1),

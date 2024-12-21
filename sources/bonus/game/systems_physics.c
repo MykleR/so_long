@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   physics.c                                          :+:      :+:    :+:   */
+/*   systems_physics.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:18:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 16:34:17 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 17:39:49 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,6 @@ static void	collide_system(t_ecs *ecs, t_col_grid *grid)
 	}
 }
 
-static void	lifetime_system(t_ecs *ecs, t_ecs_queue *queue)
-{
-	t_ecs_ulist	query;
-	uint32_t	*time;
-
-	query = *ecs_query(ecs, (1ULL << COMP_LIFETIME));
-	while (query.len--)
-	{
-		time = ecs_entity_get(ecs, query.values[query.len], COMP_LIFETIME);
-		*time += (1 << 16);
-		if ((*time >> 16) >= (*time & UINT16_MAX))
-			ecs_queue_add(queue, (t_ecs_queue_entry){
-				0, query.values[query.len], 0, KILL});
-	}
-}
-
 static void	enemy_system(t_ecs *ecs, uint32_t player, t_sprite *bullet_imgs)
 {
 	t_ecs_ulist	query;
@@ -99,11 +83,14 @@ static void	enemy_system(t_ecs *ecs, uint32_t player, t_sprite *bullet_imgs)
 
 void	game_physics(t_app *app, t_game *game)
 {
+	int32_t	*player_hp;
+
 	move_system(game->ecs);
 	enemy_system(game->ecs, game->player,
 			((t_prog_args *)app->params.args)->imgs_fx + 8);
 	collide_system(game->ecs, &game->grid);
 	grid_process(&game->grid, app);
-	lifetime_system(game->ecs, &game->queue);
-	ecs_queue_process(game->ecs, &game->queue);
+	player_hp = ecs_entity_get(game->ecs, game->player, COMP_HP);
+	if (*player_hp <= 0)
+		app_load(app, 2);
 }

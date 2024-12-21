@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 16:50:11 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 17:36:14 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <parsing.h>
 # include <math.h>
 
-# define N_SCENES		2
+# define N_SCENES		3
 # define N_COMPS		9
 # define N_IMGS_ENV		10
 # define N_IMGS_HERO	5
@@ -36,6 +36,7 @@
 # define S_PLAYER_SHOOT_F	12
 # define S_PLAYER_SHOOT_FOV	45
 # define S_PLAYER_FRICTION	0.75
+# define S_PLAYER_HP		20
 # define S_BULLET_SHOOT_F	8
 # define S_BULLET_DURATION	30
 # define S_WORLD_GRAVX		0
@@ -173,8 +174,10 @@ int			__game_event(t_app *app, t_scene *scene, mlx_event_type t, int e);
 
 int			__menu_init(t_app *app, t_scene *scene);
 int			__menu_update(t_app *app, t_scene *scene);
-int			__menu_clear(t_app *app, t_scene *scene);
 int			__menu_event(t_app *app, t_scene *scene, mlx_event_type t, int e);
+int			__death_init(t_app *app, t_scene *scene);
+int			__death_update(t_app *app, t_scene *scene);
+int			__death_event(t_app *app, t_scene *scene, mlx_event_type t, int e);
 
 void		__player_collide(uint32_t self, uint32_t other, void *data);
 void		__bullet_collide(uint32_t self, uint32_t other, void *data);
