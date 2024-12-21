@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:20:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 13:06:44 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 16:00:12 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ uint32_t	instantiate_tile(t_ecs *ecs, t_sprite *imgs,
 		return (UINT32_MAX);
 	imgs += tile == ITEM;
 	if (tile == EXIT)
-		imgs += 2;
+		imgs += 5;
 	id = ecs_entity_create(ecs);
 	ecs_entity_add(ecs, id, COMP_IMG, imgs);
 	ecs_entity_add(ecs, id, COMP_POS, &pos);
@@ -45,9 +45,8 @@ uint32_t	instantiate_tile(t_ecs *ecs, t_sprite *imgs,
 	if (tile == ITEM)
 		ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
 				__item_collide, imgs->w, imgs->h, TAG_ITEM}));
-	if (tile == EXIT)
-		ecs_entity_add(ecs, id, COMP_ANIM, &((t_animation){
-				imgs, 5, 0, 4, 0, 1, 1}));
+	if (tile == ITEM || tile == EXIT)
+		ecs_entity_add(ecs, id, COMP_ANIM, &((t_animation){imgs, 8, 0, 4, 0}));
 	return (id);
 }
 
@@ -92,7 +91,9 @@ int	__game_init(t_app *app, t_scene *scene)
 	game->player = instantiate_player(game->ecs, *args->imgs_hero,
 			args->tilemap.spawn.j * TILE_SIZE,
 			args->tilemap.spawn.i * TILE_SIZE);
-	instantiate_enemy(game->ecs, args->imgs_hero + 1, (t_vector){100, 100}, game->player);
+	instantiate_enemy(game->ecs, args->imgs_hero + 1, (t_vector){100, 100}, S_ENEMY_SHOOTRATE);
+	instantiate_enemy(game->ecs, args->imgs_hero + 1, (t_vector){600, 600}, S_ENEMY_SHOOTRATE);
+	instantiate_enemy(game->ecs, args->imgs_hero + 1, (t_vector){800, 100}, S_ENEMY_SHOOTRATE);
 	place_tiles(game->ecs, args->tilemap, args->imgs_env + 1);
 	return (0);
 }

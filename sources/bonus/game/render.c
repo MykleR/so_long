@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:17:50 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/20 19:35:40 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/21 16:03:27 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,34 +47,33 @@ void	animation_system(t_ecs *ecs)
 	{
 		anim = ecs_entity_get(ecs, query.values[query.len], COMP_ANIM);
 		img = ecs_entity_get(ecs, query.values[query.len], COMP_IMG);
-		anim->count = ((anim->count + 1) * anim->play) % anim->delay;
-		if (anim->play && !anim->count)
-			anim->frame = (anim->frame + 1) % anim->nb_frames;
-		if (!anim->play)
+		if (!anim->delay || !anim->nb_frames)
 			anim->frame = 0;
+		else
+		{
+			anim->count = (anim->count + 1) % anim->delay;
+			if (!anim->count)
+				anim->frame = (anim->frame + 1) % anim->nb_frames;
+		}
 		*img = anim->frames[anim->frame];
 	}
-}
-
-static void	move_camera_target(t_ecs *ecs, t_aabb *camera, uint32_t target)
-{
-	t_vector	*pos;
-
-	pos = ecs_entity_get(ecs, target, COMP_POS);
-	camera->x = lerp(camera->x, pos->x - (float)camera->w / 2, 0.08);
-	camera->y = lerp(camera->y, pos->y - (float)camera->h / 2, 0.08);
 }
 
 void	game_render(t_app *app, t_game *game)
 {
 	t_sprite	*bg;
+	t_vector	*pos;
+	t_aabb		*camera;
 
+	camera = &game->camera;
 	bg = ((t_prog_args *)app->params.args)->imgs_env;
 	mlx_clear_window(app->mlx, app->win);
 	mlx_put_image_to_window(app->mlx, app->win, bg->texture,
 		(app->params.w >> 1) - (bg->w >> 1),
 		(app->params.h >> 1) - (bg->h >> 1));
-	move_camera_target(game->ecs, &game->camera, game->player);
+	pos = ecs_entity_get(game->ecs, game->player, COMP_POS);
+	camera->x = lerp(camera->x, pos->x - (float)(camera->w >> 1), 0.08);
+	camera->y = lerp(camera->y, pos->y - (float)(camera->h >> 1), 0.08);
 	animation_system(game->ecs);
-	draw_system(game->ecs, app->mlx, app->win, game->camera);
+	draw_system(game->ecs, app->mlx, app->win, *camera);
 }

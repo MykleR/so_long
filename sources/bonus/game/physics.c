@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:18:07 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 13:05:03 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 16:23:27 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,29 +57,53 @@ static void	collide_system(t_ecs *ecs, t_col_grid *grid)
 static void	lifetime_system(t_ecs *ecs, t_ecs_queue *queue)
 {
 	t_ecs_ulist	query;
-	uint32_t	*life;
-	uint16_t	time;
-	uint16_t	count;
+	uint32_t	*time;
 
 	query = *ecs_query(ecs, (1ULL << COMP_LIFETIME));
 	while (query.len--)
 	{
-		life = ecs_entity_get(ecs, query.values[query.len], COMP_LIFETIME);
-		time = *life & UINT16_MAX;
-		count = *life >> 16;
-		if (count++ >= time)
+		time = ecs_entity_get(ecs, query.values[query.len], COMP_LIFETIME);
+		*time += (1 << 16);
+		if ((*time >> 16) >= (*time & UINT16_MAX))
 			ecs_queue_add(queue, (t_ecs_queue_entry){
 				0, query.values[query.len], 0, KILL});
-		else
-			*life = (count << 16) | time;
 	}
 }
 
-void	game_physics(t_scene *scene, t_game *game)
+static void	enemy_system(t_ecs *ecs, uint32_t player, t_sprite *bullet_imgs)
+{
+	t_ecs_ulist	query;
+	t_vector	*target_pos;
+	t_vector	*self_pos;
+	uint32_t	*shoot_rate;
+	float		angle;
+
+	query = *ecs_query(ecs, (1ULL << COMP_ENEMY) | (1ULL << COMP_VEL));
+	while (query.len--)
+	{
+		target_pos = ecs_entity_get(ecs, player, COMP_POS);
+		self_pos = ecs_entity_get(ecs, query.values[query.len], COMP_POS);
+		shoot_rate = ecs_entity_get(ecs, query.values[query.len], COMP_ENEMY);
+		angle = atan2((target_pos->y - self_pos->y), (target_pos->x - self_pos->x));
+		*(t_vector *)ecs_entity_get(ecs, query.values[query.len], COMP_VEL) =
+			(t_vector){cos(angle) * S_ENEMY_SPEED, sin(angle) * S_ENEMY_SPEED};
+		*shoot_rate += (1 << 16);
+		if ((*shoot_rate >> 16) >= (*shoot_rate & UINT16_MAX))
+		{
+			*shoot_rate &= UINT16_MAX;
+			instantiate_ebullet(ecs, bullet_imgs, *self_pos, (t_vector){
+				cos(angle) * S_ENEMY_BULLET_F, sin(angle) * S_ENEMY_BULLET_F});
+		}
+	}
+}
+
+void	game_physics(t_app *app, t_game *game)
 {
 	move_system(game->ecs);
+	enemy_system(game->ecs, game->player,
+			((t_prog_args *)app->params.args)->imgs_other + 8);
 	collide_system(game->ecs, &game->grid);
-	grid_process(&game->grid, scene);
+	grid_process(&game->grid, app);
 	lifetime_system(game->ecs, &game->queue);
 	ecs_queue_process(game->ecs, &game->queue);
 }

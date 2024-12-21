@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 13:01:51 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 16:11:53 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 
 # define N_SCENES			2
 # define N_COMPS			9
-# define N_IMGS_ENV			7
+# define N_IMGS_ENV			10
 # define N_IMGS_HERO		5
-# define N_IMGS_OTHER		12
+# define N_IMGS_OTHER		15
 
 # define K_LEFT		4
 # define K_RIGHT	7
@@ -41,6 +41,9 @@
 # define S_BULLET_DURATION	30
 # define S_WORLD_GRAVX		0
 # define S_WORLD_GRAVY		0.7
+# define S_ENEMY_SHOOTRATE	90
+# define S_ENEMY_SPEED		1
+# define S_ENEMY_BULLET_F	2.5
 
 //
 //	============================== ENUMS ==============================
@@ -56,7 +59,7 @@ typedef enum __attribute__((__packed__)) e_component
 	COMP_ANIM,
 	COMP_LIFETIME,
 	COMP_ENEMY,
-	COMP_OWNER,
+	COMP_HP,
 }	t_component;
 
 // COLLISIONS
@@ -110,10 +113,8 @@ typedef struct s_animation
 	t_sprite	*frames;
 	uint16_t	delay;
 	uint16_t	count;
-	uint8_t		nb_frames;
-	uint8_t		frame;
-	uint8_t		play;
-	uint8_t		replay;
+	uint16_t	nb_frames;
+	uint16_t	frame;
 }	t_animation;
 
 typedef struct s_box_resolve
@@ -164,7 +165,7 @@ int			unload_app_resources(void *mlx, t_prog_args *args);
 int			load_app_resources(void *mlx, t_prog_args *args);
 
 void		game_render(t_app *app, t_game *game);
-void		game_physics(t_scene *scene, t_game *game);
+void		game_physics(t_app *app, t_game *game);
 int			__game_init(t_app *app, t_scene *scene);
 int			__game_update(t_app *app, t_scene *scene);
 int			__game_clear(t_app *app, t_scene *scene);

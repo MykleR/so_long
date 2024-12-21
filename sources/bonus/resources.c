@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:03:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 12:43:12 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 15:54:28 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,19 @@ int	load_app_resources(void *mlx, t_prog_args *args)
 		"resources/hero/enemy_f1.png", "resources/hero/enemy_f2.png",
 		"resources/hero/enemy_f3.png", "resources/hero/enemy_f4.png"};
 	static const char	*p_env[N_IMGS_ENV] = {"resources/env/background.png",
-		"resources/env/wall_2.png", "resources/env/coin.png",
-		"resources/env/exit_f1.png", "resources/env/exit_f2.png",
-		"resources/env/exit_f3.png", "resources/env/exit_f4.png"};
-	static const char	*p_other[N_IMGS_OTHER] = {
-		"resources/effects/pbullet_f1.png", "resources/effects/pbullet_f2.png",
-		"resources/effects/pbullet_f3.png", "resources/effects/pbullet_f4.png",
-		"resources/effects/shoot_f1.png", "resources/effects/shoot_f2.png",
-		"resources/effects/shoot_f3.png", "resources/effects/shoot_f4.png",
-		"resources/effects/ebullet_f1.png", "resources/effects/ebullet_f2.png",
-		"resources/effects/ebullet_f3.png", "resources/effects/ebullet_f4.png"};
+		"resources/env/wall_2.png", "resources/env/item_f1.png",
+		"resources/env/item_f2.png", "resources/env/item_f3.png",
+		"resources/env/item_f4.png", "resources/env/exit_f1.png", 
+		"resources/env/exit_f2.png", "resources/env/exit_f3.png",
+		"resources/env/exit_f4.png"};
+	static const char	*p_other[N_IMGS_OTHER] = {"resources/effects/pbullet_f1.png",
+		"resources/effects/pbullet_f2.png", "resources/effects/pbullet_f3.png",
+		"resources/effects/pbullet_f4.png", "resources/effects/shoot_f1.png",
+		"resources/effects/shoot_f2.png", "resources/effects/shoot_f3.png",
+		"resources/effects/shoot_f4.png", "resources/effects/ebullet_f1.png",
+		"resources/effects/ebullet_f2.png", "resources/effects/ebullet_f3.png",
+		"resources/effects/ebullet_f4.png", "resources/effects/pop_f1.png",
+		"resources/effects/pop_f2.png", "resources/effects/pop_f3.png"};
 
 	if (load_imgs(mlx, p_hero, args->imgs_hero, N_IMGS_HERO) == APP_ERROR
 		|| load_imgs(mlx, p_other, args->imgs_other, N_IMGS_OTHER) == APP_ERROR

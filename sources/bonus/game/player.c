@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 12:52:16 by mykle             #+#    #+#             */
-/*   Updated: 2024/12/21 13:04:01 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 16:25:21 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ uint32_t	instantiate_pbullet(t_ecs *ecs, t_sprite *imgs, t_vector pos, t_vector 
 {
 	uint32_t	id;
 
-	id = instantiate_particule(ecs, (t_animation){
-			imgs, 2, 0, 4, 0, 1, 1}, pos, S_BULLET_DURATION);
+	id = instantiate_particule(ecs, (t_animation){imgs, 2, 0, 4, 0},
+			pos, S_BULLET_DURATION);
 	ecs_entity_add(ecs, id, COMP_VEL, &vel);
 	ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
 			__bullet_collide, imgs->w, imgs->h, TAG_PBULLET}));
@@ -69,10 +69,12 @@ static void	resolve_player_to_block(t_box_resolve info, t_vector *pvel)
 
 void	__player_collide(uint32_t player, uint32_t other, void *data)
 {
+	t_app		*app;
 	t_game		*game;
 	t_collider	*ocol;
 
-	game = (t_game *)((t_scene *)data)->env;
+	app = (t_app *)data;
+	game = (t_game *)(app->scenes + app->scene_index)->env;
 	ocol = ecs_entity_get(game->ecs, other, COMP_COL);
 	if (ocol->tag == TAG_BLOCK)
 		resolve_player_to_block((t_box_resolve){
