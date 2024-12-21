@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 12:52:16 by mykle             #+#    #+#             */
-/*   Updated: 2024/12/21 18:50:37 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 20:09:39 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ static void	resolve_player_to_block(t_box_resolve info, t_vector *pvel)
 		if (pvel->x < 0)
 			info.p1->x = info.p2->x + info.c2->w;
 		pvel->x = (pvel->x > 0) - (pvel->x < 0);
-		pvel->y *= S_PLAYER_FRICTION;
+		if (pvel->y > 0)
+			pvel->y *= S_PLAYER_FRICTION;
 	}
 	info.p1->x -= pvel->x;
 	info.p1->y += pvel->y;

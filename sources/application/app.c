@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:09:21 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/13 20:16:11 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/21 20:23:12 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@ static bool	app_switch_scene(t_app *app)
 	t_scene	*l_scene;
 	bool	success;
 
-	n_scene = app->scenes + app->scene_index;
+	n_scene = app->scenes + app->scene_next;
 	l_scene = app->scenes + app->scene_last;
 	app->scene_last = app->scene_index;
+	app->scene_index = app->scene_next;
 	success = !l_scene->on_destroy
 		|| l_scene->on_destroy(app, l_scene) != APP_ERROR;
 	free(l_scene->env);

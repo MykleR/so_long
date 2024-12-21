@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:36:58 by mykle             #+#    #+#             */
-/*   Updated: 2024/12/21 19:37:29 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 20:19:50 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,19 @@ void	__item_collide(uint32_t	self, uint32_t other, void *data)
 	t_app		*app;
 	t_game		*game;
 	t_collider	*other_col;
+	t_collider	*self_col;
 
 	app = (t_app *)data;
 	game = (t_game *)(app->scenes + app->scene_index)->env;
 	other_col = ecs_entity_get(game->ecs, other, COMP_COL);
+	self_col = ecs_entity_get(game->ecs, self, COMP_COL);
 	if (other_col->tag != TAG_PLAYER)
 		return ;
-	ecs_entity_kill(game->ecs, self);
-	game->collected++;
+	if (self_col->tag == TAG_ITEM)
+		ecs_entity_kill(game->ecs, self);
+	game->collected += self_col->tag == TAG_ITEM;
+	if (game->collected >= game->to_collect && self_col->tag == TAG_EXIT)
+		mlx_loop_end(app->mlx);
 }
 
 uint32_t	instantiate_particule(t_ecs *ecs, t_animation anim,
@@ -97,6 +102,9 @@ uint32_t	instantiate_tile(t_ecs *ecs, t_sprite *imgs,
 	if (tile == ITEM)
 		ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
 				__item_collide, imgs->w, imgs->h, TAG_ITEM}));
+	if (tile == EXIT)
+		ecs_entity_add(ecs, id, COMP_COL, &((t_collider){
+				__item_collide, imgs->w, imgs->h, TAG_EXIT}));
 	if (tile == ITEM || tile == EXIT)
 		ecs_entity_add(ecs, id, COMP_ANIM, &((t_animation){imgs, 8, 0, 4, 0}));
 	return (id);

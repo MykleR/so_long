@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 18:23:24 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 20:12:29 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,5 @@ void		__player_collide(uint32_t self, uint32_t other, void *data);
 void		__bullet_collide(uint32_t self, uint32_t other, void *data);
 void		__enemy_collide(uint32_t self, uint32_t other, void *data);
 void		__item_collide(uint32_t self, uint32_t other, void *data);
-void		__exit_collide(uint32_t self, uint32_t other, void *data);
 
 #endif

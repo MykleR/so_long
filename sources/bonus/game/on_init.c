@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:20:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 20:03:29 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 20:14:02 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	__game_init(t_app *app, t_scene *scene)
 	args = app->params.args;
 	if (!game || !args)
 		return (APP_ERROR);
+	game->to_collect = args->tilemap.to_collect;
 	game->camera = (t_aabb){0, 0, app->params.w, app->params.h};
 	game->ecs = ecs_create(N_COMPS,
 			sizeof(t_vector), sizeof(t_vector), sizeof(t_vector),

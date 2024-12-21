@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:46:45 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/13 20:11:40 by mrouves          ###   ########.fr       */
+/*   Updated: 2024/12/21 20:21:13 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_app
 	void				*win;
 	t_win_params		params;
 	uint8_t				scene_last;
+	uint8_t				scene_next;
 	uint8_t				scene_index;
 	uint8_t				scene_cap;
 	bool				scene_loading;
