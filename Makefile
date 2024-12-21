@@ -6,7 +6,7 @@
 #    By: mrouves <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 18:27:35 by mrouves           #+#    #+#              #
-#    Updated: 2024/12/20 20:26:00 by mrouves          ###   ########.fr        #
+#    Updated: 2024/12/21 01:35:25 by mykle            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ $(LIBFT):
 	@$(MAKE) -C $(DIR_LIBFT) --no-print-directory -j
 
 $(MLX):
-	@$(MAKE) -C $(DIR_MLX) --no-print-directory -j)
+	@$(MAKE) -C $(DIR_MLX) --no-print-directory -j
 
 $(DIR_OBJS)/%.o: $(DIR_SOURCES)/%.c
 	@$(DIR_DUP)
