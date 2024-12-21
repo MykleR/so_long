@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 20:12:29 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 20:43:51 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define N_COMPS		9
 # define N_IMGS_ENV		10
 # define N_IMGS_HERO	13
-# define N_IMGS_FX		15
+# define N_IMGS_FX		19
 
 # define K_LEFT		4
 # define K_RIGHT	7
@@ -36,11 +36,11 @@
 # define S_PLAYER_SHOOT_F	12
 # define S_PLAYER_SHOOT_FOV	45
 # define S_PLAYER_FRICTION	0.75
-# define S_PLAYER_HP		1
+# define S_PLAYER_HP		10
 # define S_BULLET_SHOOT_F	8
 # define S_BULLET_DURATION	30
 # define S_WORLD_GRAVX		0
-# define S_WORLD_GRAVY		0.7
+# define S_WORLD_GRAVY		0.6
 # define S_ENEMY_SHOOTRATE	90
 # define S_ENEMY_SPEED		1
 # define S_ENEMY_BULLET_F	2.5

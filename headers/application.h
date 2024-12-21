@@ -6,7 +6,7 @@
 /*   By: mrouves <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 16:46:45 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 20:21:13 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 22:13:34 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_app
 void					app_autorun(t_win_params params,
 							uint32_t nb_scenes, ...);
 void					app_load(t_app *app, uint8_t scene);
+t_scene					*app_scene(t_app *app);
 
 int						__app_kup_hook(int event, void *p);
 int						__app_kdown_hook(int event, void *p);

@@ -1,16 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   on_init.c                                          :+:      :+:    :+:   */
+/*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
+/*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/06 01:20:10 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 20:14:02 by mykle            ###   ########.fr       */
+/*   Created: 2024/12/21 23:29:06 by mykle             #+#    #+#             */
+/*   Updated: 2024/12/21 23:31:24 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <bonus.h>
+
+int	__game_clear(t_app *app, t_scene *scene)
+{
+	t_game		*game;
+
+	(void)app;
+	game = (t_game *)scene->env;
+	grid_destroy(&game->grid);
+	ecs_queue_destroy(&game->queue);
+	ecs_destroy(game->ecs);
+	return (0);
+}
+
+int	__game_update(t_app *app, t_scene *scene)
+{
+	t_game		*game;
+
+	game = (t_game *)scene->env;
+	game_physics(app, game);
+	game_render(app, game);
+	return (0);
+}
 
 static void	place_tiles(t_ecs *ecs, t_tilemap map, t_sprite *sprites)
 {
@@ -54,9 +76,6 @@ int	__game_init(t_app *app, t_scene *scene)
 	game->player = instantiate_player(game->ecs, *args->imgs_hero,
 			args->tilemap.spawn.j * TILE_SIZE,
 			args->tilemap.spawn.i * TILE_SIZE);
-	instantiate_enemy(game->ecs, args->imgs_hero + 1, (t_vector){100, 100}, S_ENEMY_SHOOTRATE);
-	instantiate_enemy(game->ecs, args->imgs_hero + 1, (t_vector){600, 600}, S_ENEMY_SHOOTRATE);
-	instantiate_enemy(game->ecs, args->imgs_hero + 1, (t_vector){800, 100}, S_ENEMY_SHOOTRATE);
 	place_tiles(game->ecs, args->tilemap, args->imgs_env + 1);
 	return (0);
 }

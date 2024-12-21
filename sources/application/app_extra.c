@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:33:40 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 20:23:49 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 22:17:50 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@ void	app_load(t_app *app, uint8_t index)
 	app->scene_last = app->scene_index;
 	app->scene_next = index;
 	app->scene_loading = true;
+}
+
+t_scene	*app_scene(t_app *app)
+{
+	if (__builtin_expect(!app, 0))
+		return (NULL);
+	return (app->scenes + app->scene_index);
 }
 
 int	__app_window_hook(int event, void *p)

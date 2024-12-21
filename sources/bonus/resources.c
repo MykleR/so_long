@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:03:46 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 18:35:38 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 20:44:29 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ static int	load_effects(void *mlx, t_prog_args *args)
 		"resources/effects/shoot_f4.png", "resources/effects/ebullet_f1.png",
 		"resources/effects/ebullet_f2.png", "resources/effects/ebullet_f3.png",
 		"resources/effects/ebullet_f4.png", "resources/effects/pop_f1.png",
-		"resources/effects/pop_f2.png", "resources/effects/pop_f3.png"};
+		"resources/effects/pop_f2.png", "resources/effects/pop_f3.png",
+		"resources/effects/explo_f1.png", "resources/effects/explo_f2.png",
+		"resources/effects/explo_f3.png", "resources/effects/explo_f4.png"};
 
 	return (load_imgs(mlx, p_fx, args->imgs_fx, N_IMGS_FX));
 }
