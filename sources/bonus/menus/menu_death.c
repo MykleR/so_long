@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:33:02 by mykle             #+#    #+#             */
-/*   Updated: 2024/12/21 18:26:52 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 18:33:06 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ int	__death_init(t_app *app, t_scene *scene)
 
 int	__death_event(t_app *app, t_scene *scene, mlx_event_type t, int e)
 {
-	(void) scene;
-	if (t == MLX_MOUSEDOWN && e == 1)
+	t_menu_death	*menu;
+
+	menu = scene->env;
+	if (t == MLX_MOUSEDOWN && e == 1 && menu->frame == N_IMGS_HERO - 1)
 		app_load(app, 1);
 	else if (t == MLX_KEYDOWN && e == K_ESCAPE)
 		mlx_loop_end(app->mlx);
