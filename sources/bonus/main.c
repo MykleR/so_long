@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 01:30:01 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 17:50:14 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 18:23:40 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int ac, char **av)
 			(t_scene){NULL, 0, __menu_init, __menu_event, __menu_update, NULL},
 			(t_scene){NULL, sizeof(t_game), __game_init, __game_event,
 				__game_update, __game_clear},
-			(t_scene){NULL, 0, __death_init, __death_event,
+			(t_scene){NULL, sizeof(t_menu_death), __death_init, __death_event,
 				__death_update, NULL});
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 17:36:14 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/21 18:23:24 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define N_SCENES		3
 # define N_COMPS		9
 # define N_IMGS_ENV		10
-# define N_IMGS_HERO	5
+# define N_IMGS_HERO	13
 # define N_IMGS_FX		15
 
 # define K_LEFT		4
@@ -36,7 +36,7 @@
 # define S_PLAYER_SHOOT_F	12
 # define S_PLAYER_SHOOT_FOV	45
 # define S_PLAYER_FRICTION	0.75
-# define S_PLAYER_HP		20
+# define S_PLAYER_HP		1
 # define S_BULLET_SHOOT_F	8
 # define S_BULLET_DURATION	30
 # define S_WORLD_GRAVX		0
@@ -146,6 +146,12 @@ typedef struct s_game
 	uint32_t	collected;
 	uint32_t	to_collect;
 }	t_game;
+
+typedef struct s_menu_death
+{
+	uint8_t	count;
+	uint8_t	frame;
+}	t_menu_death;
 
 //	============================== Functions =============================
 
