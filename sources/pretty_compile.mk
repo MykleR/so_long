@@ -6,9 +6,22 @@
 #    By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/14 16:26:20 by mrouves           #+#    #+#              #
-#    Updated: 2024/12/14 17:06:59 by mrouves          ###   ########.fr        #
+#    Updated: 2024/12/22 12:57:22 by mrouves          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+define TITLE
+
+┌────────────────────────────┐
+│░█▀▀░█▀█░░░░░█░░░█▀█░█▀█░█▀▀│
+│░▀▀█░█░█░░░░░█░░░█░█░█░█░█░█│
+│░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀│
+└────────────────────────────┘
+
+endef
+export TITLE
+text-style 		= $(shell tput $1)$2$(shell tput sgr0)
+PRINT_TITLE		:= $(shell $(info $(call text-style,setaf 6, $(TITLE))))
 
 BOLD			= \033[1m
 OK_COLOR		= \033[0;32m
