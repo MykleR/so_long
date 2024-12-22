@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 23:29:06 by mykle             #+#    #+#             */
-/*   Updated: 2024/12/22 00:17:46 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/22 01:03:39 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	__game_clear(t_app *app, t_scene *scene)
 	return (0);
 }
 
-#include <stdio.h>
 int	__game_update(t_app *app, t_scene *scene)
 {
 	t_prog_args	*args;
