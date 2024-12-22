@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   on_init.c                                          :+:      :+:    :+:   */
+/*   menu_start.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 00:12:00 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 17:18:11 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/22 00:22:52 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int	__menu_update(t_app *app, t_scene *scene)
 	(void) scene;
 	mlx_clear_window(app->mlx, app->win);
 	mlx_string_put(app->mlx, app->win,
-		(app->params.w >> 1) - (S_MENU_FONT_S << 1),
+		(app->params.w >> 1) - (S_MENU_FONT_S << 2),
 		(app->params.h >> 1),
-		0xFFFFFFFF, "MAIN MENU");
+		0xFFFFFFFF, " CLICK     TO     START");
 	return (0);
 }

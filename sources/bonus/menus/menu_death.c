@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:33:02 by mykle             #+#    #+#             */
-/*   Updated: 2024/12/21 18:36:07 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/22 00:23:22 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	__death_update(t_app *app, t_scene *scene)
 	if (menu->frame >= N_IMGS_HERO - 1)
 		mlx_string_put(app->mlx, app->win,
 			(app->params.w >> 1) - (S_MENU_FONT_S << 1),
-			(app->params.h >> 1), 0xFFFFFFFF, "YOU DIED");
+			(app->params.h >> 1), 0xFFFFFFFF, "YOU     DIED");
 	else
 		mlx_put_image_to_window(app->mlx, app->win,
 			args->imgs_hero[menu->frame].texture,

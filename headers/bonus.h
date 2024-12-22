@@ -6,7 +6,7 @@
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:49:25 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 20:43:51 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/22 00:59:49 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@
 # include <collision.h>
 # include <parsing.h>
 # include <math.h>
+# include <time.h>
 
 # define N_SCENES		3
 # define N_COMPS		9
 # define N_IMGS_ENV		10
 # define N_IMGS_HERO	13
 # define N_IMGS_FX		19
+# define N_IMGS_HUD		5
 
 # define K_LEFT		4
 # define K_RIGHT	7
@@ -33,10 +35,10 @@
 # define K_ESCAPE	41
 
 # define S_MENU_FONT_S		50
-# define S_PLAYER_SHOOT_F	12
+# define S_PLAYER_SHOOT_F	10
 # define S_PLAYER_SHOOT_FOV	45
 # define S_PLAYER_FRICTION	0.75
-# define S_PLAYER_HP		10
+# define S_PLAYER_HP		4
 # define S_BULLET_SHOOT_F	8
 # define S_BULLET_DURATION	30
 # define S_WORLD_GRAVX		0
@@ -44,7 +46,8 @@
 # define S_ENEMY_SHOOTRATE	90
 # define S_ENEMY_SPEED		1
 # define S_ENEMY_BULLET_F	2.5
-# define S_ENEMY_HP			10
+# define S_ENEMY_HP			4
+# define S_ENEMY_SPAWNRATE	180
 
 //
 //	============================== ENUMS ==============================
@@ -134,6 +137,7 @@ typedef struct s_prog_args
 	t_sprite	imgs_env[N_IMGS_ENV];
 	t_sprite	imgs_hero[N_IMGS_HERO];
 	t_sprite	imgs_fx[N_IMGS_FX];
+	t_sprite	imgs_hud[N_IMGS_HUD];
 }	t_prog_args;
 
 typedef struct s_game
@@ -142,9 +146,11 @@ typedef struct s_game
 	t_col_grid	grid;
 	t_ecs_queue	queue;
 	t_aabb		camera;
+	t_aabb		world;
 	uint32_t	player;
 	uint32_t	collected;
 	uint32_t	to_collect;
+	uint32_t	spawn_cooldown;
 }	t_game;
 
 typedef struct s_menu_death
@@ -157,8 +163,7 @@ typedef struct s_menu_death
 
 uint32_t	instantiate_player(t_ecs *ecs, t_sprite sprite,
 				float x, float y);
-uint32_t	instantiate_enemy(t_ecs *ecs, t_sprite *imgs,
-				t_vector pos, uint32_t player_id);
+uint32_t	instantiate_enemy(t_ecs *ecs, t_sprite *imgs, t_vector pos);
 uint32_t	instantiate_pbullet(t_ecs *ecs, t_sprite *sprite,
 				t_vector pos, t_vector vel);
 uint32_t	instantiate_ebullet(t_ecs *ecs, t_sprite *sprite,

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   systems_render.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:17:50 by mrouves           #+#    #+#             */
-/*   Updated: 2024/12/21 16:57:41 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/22 00:56:22 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,17 @@ static void	lifetime_system(t_ecs *ecs, t_ecs_queue *queue)
 
 void	game_render(t_app *app, t_game *game)
 {
+	int32_t		hp;
+	t_sprite	*hud;
 	t_sprite	*bg;
 	t_vector	*pos;
 	t_aabb		*camera;
 
 	camera = &game->camera;
 	bg = ((t_prog_args *)app->params.args)->imgs_env;
+	hp = *(int32_t *)ecs_entity_get(game->ecs, game->player, COMP_HP);
+	hud = ((t_prog_args *)app->params.args)->imgs_hud;
+	hud += (int)roundf(hp / ((float)S_PLAYER_HP) * (N_IMGS_HUD - 1));
 	lifetime_system(game->ecs, &game->queue);
 	ecs_queue_process(game->ecs, &game->queue);
 	mlx_clear_window(app->mlx, app->win);
@@ -94,4 +99,5 @@ void	game_render(t_app *app, t_game *game)
 	camera->y = lerp(camera->y, pos->y - (float)(camera->h >> 1), 0.08);
 	animation_system(game->ecs);
 	draw_system(game->ecs, app->mlx, app->win, *camera);
+	mlx_put_image_to_window(app->mlx, app->win, hud->texture, 0, 0);
 }

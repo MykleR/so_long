@@ -6,7 +6,7 @@
 /*   By: mykle <mykle@42angouleme.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:36:58 by mykle             #+#    #+#             */
-/*   Updated: 2024/12/21 23:28:11 by mykle            ###   ########.fr       */
+/*   Updated: 2024/12/22 00:18:08 by mykle            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	__item_collide(uint32_t	self, uint32_t other, void *data)
 	if (self_col->tag == TAG_ITEM)
 		ecs_entity_kill(game->ecs, self);
 	if (self_col->tag == TAG_EXIT && game->collected >= game->to_collect)
-		mlx_loop_end(((t_app *)data)->mlx);
+		app_load(data, 0);
 }
 
 uint32_t	instantiate_particule(t_ecs *ecs, t_animation anim,

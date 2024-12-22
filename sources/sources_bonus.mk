@@ -6,7 +6,7 @@
 #    By: mrouves <mrouves@42angouleme.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/03 17:46:12 by mrouves           #+#    #+#              #
-#    Updated: 2024/12/21 20:02:59 by mykle            ###   ########.fr        #
+#    Updated: 2024/12/21 23:44:07 by mykle            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 define TITLE
@@ -31,10 +31,8 @@ SOURCES		:=	bonus/main.c\
 				bonus/game/particles.c\
 				bonus/game/player.c\
 				bonus/game/enemy.c\
-				bonus/game/on_init.c\
-				bonus/game/on_event.c\
-				bonus/game/on_update.c\
-				bonus/game/on_clear.c\
+				bonus/game/game.c\
+				bonus/game/game_event.c\
 				application/app.c\
 				application/app_hooks.c\
 				application/app_extra.c\
