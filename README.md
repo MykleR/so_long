@@ -1,7 +1,8 @@
 <div align="center">
-  
-SO_LONG
-==============
+
+<img src="https://github.com/MykleR/so_long/blob/main/so_long.png" width="300" />
+
+##
 
 This game was created as part of the 42 curriculum and showcases a range of exciting features and technical implementations.
 
@@ -20,16 +21,12 @@ This game was created as part of the 42 curriculum and showcases a range of exci
 
 ### Custom ECS (Entity Component System)
 
-<div style="text-align: right">
-
 > The ECS architecture is a powerful pattern commonly used in game development. This system is the backbone of the game's architecture, providing flexible and efficient management of game entities and their components. By using an ECS, I can easily manage complex game logic, optimize performance, and facilitate code reuse. You can find bellow my custom implementation written in C.
 
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=MykleR&repo=42-ecs&theme=nord)](https://github.com/MykleR/42-ecs)
 
-</div>
-
 ### Optimized Collision Detection
-> Our game features fully generic AABB (Axis-Aligned Bounding Box) optimized collision detection with custom replaceable response handlers. This allows for efficient collision checks and responses between various entities such as: Player and walls | Player and bullets | Bullets and walls | Bullets and bullets
+> The game features fully generic AABB (Axis-Aligned Bounding Box) optimized collision detection with custom replaceable response handlers. This allows for efficient collision checks and responses between various entities such as: Player and walls | Player and bullets | Bullets and walls | Bullets and bullets
 
 ### Animations
 > like all other parts of the game, animations are ECS components, so they can be added to a new entity type very quickly. Only the player and the walls have no animations (Graphics are a mix of several free asset packs).
