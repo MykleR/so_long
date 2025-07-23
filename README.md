@@ -1,45 +1,49 @@
-# 42 so_long Project
+<div align="center">
+  
+SO_LONG
+==============
 
-Welcome to the 42 so_long project! This game is created as part of the 42 curriculum and showcases a range of exciting features and technical implementations.
+This game was created as part of the 42 curriculum and showcases a range of exciting features and technical implementations.
 
-![so_long Screenshot](https://github.com/MykleR/so_long/blob/main/resources/Screenshot%20from%202025-04-04%2018-13-12.png)
+<img src="https://github.com/MykleR/so_long/blob/main/resources/Screenshot%20from%202025-04-04%2018-13-12.png" width="800" />
+
+</div>
 
 ## ✨ Features
 
 ### Scene-Based Implementation
-Scene-based implementation. The game allows you to load and unload scenes seamlessly. Each scene is defined by the memory size needed and four function pointers:
-- `on_init`: Initializes the scene.
-- `on_event`: Handles events within the scene.
-- `on_update`: Updates the state of the scene.
-- `on_clear`: Cleans up resources when the scene is unloaded.
+> The game allows you to load and unload scenes seamlessly. A scene is defined by the memory needed and four function pointers:
+> - `on_init`: Initializes the scene.
+> - `on_event`: Handles events within the scene.
+> - `on_update`: Updates the state of the scene.
+> - `on_clear`: Cleans up resources when the scene is unloaded.
 
 ### Custom ECS (Entity Component System)
-For the bonus part of the project, I have integrated a custom ECS implementation written by myself in C. This system is the backbone of the game's architecture, providing flexible and efficient management of game entities and their components.
-The Entity Component System (ECS) architecture is a powerful pattern commonly used in game development. It decouples data and behavior, allowing for greater flexibility and scalability. By using ECS, I can easily manage complex game logic, optimize performance, and facilitate code reuse. The ECS system processes entities through pre-built queries, ensuring O(1) quick access and efficient gameplay mechanics.
+
+<div style="text-align: right">
+
+> The ECS architecture is a powerful pattern commonly used in game development. This system is the backbone of the game's architecture, providing flexible and efficient management of game entities and their components. By using an ECS, I can easily manage complex game logic, optimize performance, and facilitate code reuse. You can find bellow my custom implementation written in C.
+
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=MykleR&repo=42-ecs&theme=nord)](https://github.com/MykleR/42-ecs)
+
+</div>
 
 ### Optimized Collision Detection
-Our game features fully generic AABB (Axis-Aligned Bounding Box) optimized collision detection with custom replaceable response handlers. This allows for efficient collision checks and responses between various entities such as:
-- Player and walls
-- Player and bullets
-- Bullets and walls
-- Bullets and bullets
-
-### ECS Components and Queries
-All gameplay elements are managed using flexible ECS components and processed through pre-built queries for O(1) quick access. This ensures smooth and efficient game mechanics.
+> Our game features fully generic AABB (Axis-Aligned Bounding Box) optimized collision detection with custom replaceable response handlers. This allows for efficient collision checks and responses between various entities such as: Player and walls | Player and bullets | Bullets and walls | Bullets and bullets
 
 ### Animations
-like all other parts of the game, animations are ECS components, so they can be added to a new entity type very quickly. Only the player and the walls have no animations (Graphics are a mix of several free asset packs).
+> like all other parts of the game, animations are ECS components, so they can be added to a new entity type very quickly. Only the player and the walls have no animations (Graphics are a mix of several free asset packs).
 
 ### Responsive Camera
-The game includes a responsive camera that follows the player, providing an immersive experience as you navigate through the level.
+> The game includes a responsive smooth camera that follows the player, provides an example of a basic 2D camera implementation.
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Clang compiler
-- GNU Make
-- SDL2 and Vulkan for [MacroLibx](https://github.com/seekrs/MacroLibX)
+> - Clang compiler
+> - GNU Make
+> - SDL2 and Vulkan for [MacroLibx](https://github.com/seekrs/MacroLibX)
 
 ### Installation
 
