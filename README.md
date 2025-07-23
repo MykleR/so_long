@@ -4,8 +4,6 @@
 
 ##
 
-This game was created as part of the 42 curriculum and showcases a range of exciting features and technical implementations.
-
 <img src="https://github.com/MykleR/so_long/blob/main/resources/Screenshot%20from%202025-04-04%2018-13-12.png" width="800" />
 
 </div>
