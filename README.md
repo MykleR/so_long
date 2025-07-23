@@ -21,7 +21,7 @@
 
 > The ECS architecture is a powerful pattern commonly used in game development. This system is the backbone of the game's architecture, providing flexible and efficient management of game entities and their components. By using an ECS, I can easily manage complex game logic, optimize performance, and facilitate code reuse. You can find bellow my custom implementation written in C.
 
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=MykleR&repo=42-ecs&theme=nord)](https://github.com/MykleR/42-ecs)
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=MykleR&repo=42-ecs&theme=dark&bg_color=30,090a0c,494d59\&title_color=fff\&text_color=fff)](https://github.com/MykleR/42-ecs)
 
 ### Optimized Collision Detection
 > The game features fully generic AABB (Axis-Aligned Bounding Box) optimized collision detection with custom replaceable response handlers. This allows for efficient collision checks and responses between various entities such as: Player and walls | Player and bullets | Bullets and walls | Bullets and bullets
