@@ -52,3 +52,5 @@ cd so_long; make re bonus
 # Have fun
 ./so_long_bonus resources/maps/platformer.ber
 ```
+> [!IMPORTANT]\
+> Don't forget `--recurse-submodules` otherwise dependencies will not be cloned
